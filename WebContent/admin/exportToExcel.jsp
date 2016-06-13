@@ -27,7 +27,7 @@
    
    int totalcnt = dao.cntTotalAdmin(searchKeyword, checked);
    ArrayList<AdminDTO> list = dao.selectAdminListExcel(searchKeyword, pageno, totalcnt, checked);
-   dao.closeConn();
+   //dao.closeConn();
    
 %>
 

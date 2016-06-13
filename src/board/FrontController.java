@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import board.command.Cmd;
+import board.command.ConstructionListCmd;
 import board.command.LoginOkCmd;
 
 /**
@@ -55,6 +56,13 @@ public class FrontController extends HttpServlet {
 			cmd = new LoginOkCmd();
 			cmd.execute(request, response);
 			viewPage = "/home/home.jsp";
+			//viewPage="/test.jsp";
+		}
+		
+		if(cmdURI.equals("/constructionList.bbs")){
+			cmd = new ConstructionListCmd();
+			cmd.execute(request, response);
+			viewPage = "/construction/constructionList.jsp";
 			//viewPage="/test.jsp";
 		}
 		

@@ -19,7 +19,7 @@ ConstructionDAO dao = new ConstructionDAO();
 int totalcnt = dao.cntTotalDelConstruction(searchKeyword, checked);
 
 ArrayList<ConstructionDTO> list = dao.selectConstructionDelList(searchKeyword, pageno, totalcnt, checked);
-dao.closeConn();
+//dao.closeConn();
 %>
 <!DOCTYPE html>
 <html lang="ko">

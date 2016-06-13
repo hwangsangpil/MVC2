@@ -38,7 +38,7 @@
    
    int totalcnt = dao.cntTotalMember(searchKeyword, checked);
    ArrayList<ConstructionDTO> list = dao.selectConstructionListExcel(searchKeyword, pageno, totalcnt, checked);
-   dao.closeConn();
+   //dao.closeConn();
    
 %>
 

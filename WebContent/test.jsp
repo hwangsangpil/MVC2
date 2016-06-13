@@ -11,8 +11,8 @@
 
     <title>CodePen - #9 글꼴 크기를 반응형으로 제어</title>
     <meta name="viewport" content="width=device-width">
-    
-    <%
+<%--     
+     <%
 String memberNum = (String)request.getAttribute("memberNum");
 System.out.println("login result:   "+memberNum);
 
@@ -23,7 +23,7 @@ if("null".equals(memberNum)){
 		history.back();
 </script>
 <% } %>
-    
+     --%>
     
         <style>
       @media (max-width:360px){html{font-size:10px;}}

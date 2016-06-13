@@ -38,7 +38,7 @@
 		
 	result = dao.updateConstruction(ConstNum, constWay, constArea, constPrice, constLower, constOpening, constInstitution, constPercent);
 		
-	dao.closeConn();
+	//dao.closeConn();
 	
 	if(result > 0){ 
 %>

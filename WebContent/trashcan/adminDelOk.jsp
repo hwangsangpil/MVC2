@@ -20,7 +20,7 @@
 	int result = 0;
 	
 	result = dao.deleteAdmin2(adminNum);
-	dao.closeConn();
+	//dao.closeConn();
 	if(result > 0){ 
 %>
 		<script language=javascript>

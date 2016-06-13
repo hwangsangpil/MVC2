@@ -10,7 +10,7 @@ request.setCharacterEncoding("UTF-8");
 String memberNum = (String)request.getAttribute("memberNum");
 System.out.println("memberNum result:   "+memberNum);
 
-if("null".equals(memberNum)){
+if("0".equals(memberNum)){
 %>
 <script language="javascript">
 		alert("아이디와 비밀번호를 확인후 다시 로그인해주세요.");

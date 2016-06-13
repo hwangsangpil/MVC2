@@ -8,81 +8,39 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.concurrent.locks.Lock;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
+
 import com.mysql.jdbc.Statement;
 
 public class ConstructionDAO {
 	
-	Connection conn = null;
-	PreparedStatement pstmt = null;
-	ResultSet rs = null;
-
-	public ConstructionDAO() throws SQLException {
-		super();
-		//conn = ConnectionUtil.getConnection();
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-		}catch(ClassNotFoundException e) {
-			System.out.println("Class not found "+ e);
+	DataSource ds;
+	
+	public ConstructionDAO(){
+		try{
+			Context initContext = (Context)new InitialContext().lookup("java:comp/env/");
+			ds = (DataSource)initContext.lookup("jdbc/mysql");
+		}catch(Exception e){
+			e.printStackTrace();
 		}
-		conn = DriverManager.getConnection("jdbc:mysql://localhost/hwangsangpil","hwangsangpil","hwangsangpil91");
-		//conn = DriverManager.getConnection("jdbc:mysql://hwangsangpil.cafe24.com/hwangsangpil","hwangsangpil","hwangsangpil91");
-	}
-	public void closeConn() throws SQLException{
-		  conn.close();
-	}
-	public static void closeAll (final Object... things) {
-	    for (final Object thing : things) {
-	        if (null != thing) {
-	            try {
-	                if (thing instanceof ResultSet) {
-	                    try {
-	                        ((ResultSet) thing).close ();
-	                    } catch (final SQLException e) {
-	                        /* No Op */
-	                    }
-	                }
-	                if (thing instanceof Statement) {
-	                    try {
-	                        ((Statement) thing).close ();
-	                    } catch (final SQLException e) {
-	                        /* No Op */
-	                    }
-	                }
-	                if (thing instanceof Connection) {
-	                    try {
-	                        ((Connection) thing).close ();
-	                    } catch (final SQLException e) {
-	                        /* No Op */
-	                    }
-	                }
-	                if (thing instanceof Lock) {
-	                    try {
-	                        ((Lock) thing).unlock ();
-	                    } catch (final IllegalMonitorStateException e) {
-	                        /* No Op */
-	                    }
-	                }
-	                if (thing instanceof PreparedStatement) {
-	                    try {
-	                        ((PreparedStatement) thing).close ();
-	                    } catch (final SQLException e) {
-	                        /* No Op */
-	                    }
-	                }
-	            } catch (final RuntimeException e) {
-	                /* No Op */
-	            }
-	        }
-	    }
 	}
 	
 	/*
 	 * 占쏙옙占� 占쏙옙占쏙옙트 占쌀뤄옙占쏙옙占쏙옙 占쌨소듸옙
 	 */
-	public int cntTotalMember(String searchKeyword, String[] checked) throws SQLException {
+	public int cntTotalMember(String searchKeyword, String[] checked){
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+		Connection conn = null;
+		
 		int result = 0;
 		int cnt=0;
 		
+		
+		try {
+		conn = ds.getConnection();
 		StringBuffer sql = new StringBuffer();
 		sql.append("SELECT COUNT(*)	cnt										\n");
 		sql.append("FROM TB_CONSTRUCTION 											\n");
@@ -119,7 +77,6 @@ public class ConstructionDAO {
 			sql.append("OR CONSTRUCTION_AREA LIKE CONCAT('%',?,'%')  OR CONSTRUCTION_PRICE LIKE CONCAT('%',?,'%')  OR CONSTRUCTION_LOWER LIKE CONCAT('%',?,'%')	\n");
 			sql.append("OR CONSTRUCTION_OPENING LIKE CONCAT('%',?,'%')  OR CONSTRUCTION_INSTITUTION LIKE CONCAT('%',?,'%')  OR CONSTRUCTION_PERCENT LIKE CONCAT('%',?,'%'))	\n");
 		}
-		try {
 			pstmt = conn.prepareStatement(sql.toString());
 			if(checked != null){
 				for(int i=0; i<checked.length; i++){
@@ -169,15 +126,27 @@ public class ConstructionDAO {
 		}catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			closeAll(rs, pstmt);
+			try{
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
 		}
 		return result;
 	}
 	
-	public int cntTotalDelConstruction(String searchKeyword, String[] checked) throws SQLException {
+	public int cntTotalDelConstruction(String searchKeyword, String[] checked){
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+		Connection conn = null;
+		
 		int result = 0;
 		int cnt=0;
 		
+		try {
+		conn = ds.getConnection();
 		StringBuffer sql = new StringBuffer();
 		sql.append("SELECT COUNT(*)	cnt										\n");
 		sql.append("FROM TB_CONSTRUCTION 											\n");
@@ -214,7 +183,6 @@ public class ConstructionDAO {
 			sql.append("OR CONSTRUCTION_AREA LIKE CONCAT('%',?,'%')  OR CONSTRUCTION_PRICE LIKE CONCAT('%',?,'%')  OR CONSTRUCTION_LOWER LIKE CONCAT('%',?,'%')	\n");
 			sql.append("OR CONSTRUCTION_OPENING LIKE CONCAT('%',?,'%')  OR CONSTRUCTION_INSTITUTION LIKE CONCAT('%',?,'%')  OR CONSTRUCTION_PERCENT LIKE CONCAT('%',?,'%'))	\n");
 		}
-		try {
 			pstmt = conn.prepareStatement(sql.toString());
 			if(checked != null){
 				for(int i=0; i<checked.length; i++){
@@ -264,7 +232,13 @@ public class ConstructionDAO {
 		}catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			closeAll(rs, pstmt);
+			try{
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
 		}
 		return result;
 	}
@@ -273,8 +247,13 @@ public class ConstructionDAO {
 	/*
 	 * 占쏙옙占� 占쏙옙占쏙옙트 占쏙옙占쏙옙 占쌀뤄옙占쏙옙占쏙옙
 	 */
-	public ArrayList<ConstructionDTO> selectConstructionList(String searchKeyword, int pageno, int totalcnt, String[] checked) throws SQLException {
+	public ArrayList<ConstructionDTO> selectConstructionList(String searchKeyword, int pageno, int totalcnt, String[] checked){
 		ArrayList<ConstructionDTO> list = new ArrayList<ConstructionDTO>();
+		
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+		Connection conn = null;
+		
 		int nCnt = 1;
 		int startRow =0;
 		
@@ -295,7 +274,9 @@ public class ConstructionDAO {
 			System.out.println("checked[]:    "+checked[i]);
 			}
 		}*/
-		
+
+		try {
+		conn = ds.getConnection();
 		StringBuffer sql = new StringBuffer();
 		sql.append("SELECT 					\n");
 		sql.append("CONSTRUCTION_NUM , CONSTRUCTION_NAME, CONSTRUCTION_WAY, CONSTRUCTION_AREA, CONSTRUCTION_PRICE, CONSTRUCTION_LOWER, CONSTRUCTION_OPENING, CONSTRUCTION_INSTITUTION, CONSTRUCTION_PERCENT, date_format(CRT_DATE, '%Y.%m.%d') as CRT_DATE, date_format(UDT_DATE, '%Y.%m.%d') as UDT_DATE 	\n");
@@ -342,7 +323,6 @@ public class ConstructionDAO {
 		sql.append("ORDER BY CONSTRUCTION_NUM DESC												\n");
 		sql.append("LIMIT ?, ?															\n");
 		
-		try {
 			pstmt = conn.prepareStatement(sql.toString());
 			if(checked != null){
 				for(int i=0; i<checked.length; i++){
@@ -406,14 +386,24 @@ public class ConstructionDAO {
 		}catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			closeAll(rs, pstmt);
+			try{
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
 		}
 		return list;
 	}
 	
 	
-	public ArrayList<ConstructionDTO> selectConstructionDelList(String searchKeyword, int pageno, int totalcnt, String[] checked) throws SQLException {
+	public ArrayList<ConstructionDTO> selectConstructionDelList(String searchKeyword, int pageno, int totalcnt, String[] checked){
 		ArrayList<ConstructionDTO> list = new ArrayList<ConstructionDTO>();
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+		Connection conn = null;
+		
 		int nCnt = 1;
 		int startRow =0;
 		
@@ -434,7 +424,9 @@ public class ConstructionDAO {
 			System.out.println("checked[]:    "+checked[i]);
 			}
 		}*/
-		
+
+		try {
+			conn = ds.getConnection();
 		StringBuffer sql = new StringBuffer();
 		sql.append("SELECT 					\n");
 		sql.append("CONSTRUCTION_NUM , CONSTRUCTION_NAME, CONSTRUCTION_WAY, CONSTRUCTION_AREA, CONSTRUCTION_PRICE, CONSTRUCTION_LOWER, CONSTRUCTION_OPENING, CONSTRUCTION_INSTITUTION, CONSTRUCTION_PERCENT, date_format(CRT_DATE, '%Y.%m.%d') as CRT_DATE, date_format(UDT_DATE, '%Y.%m.%d') as UDT_DATE 	\n");
@@ -481,7 +473,6 @@ public class ConstructionDAO {
 		sql.append("ORDER BY CONSTRUCTION_NUM DESC												\n");
 		sql.append("LIMIT ?, ?															\n");
 		
-		try {
 			pstmt = conn.prepareStatement(sql.toString());
 			if(checked != null){
 				for(int i=0; i<checked.length; i++){
@@ -545,7 +536,13 @@ public class ConstructionDAO {
 		}catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			closeAll(rs, pstmt);
+			try{
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
 		}
 		return list;
 	}
@@ -557,13 +554,19 @@ public class ConstructionDAO {
 	
 	public ArrayList<ConstructionDTO> selectConstructionList()throws SQLException{
 		ArrayList<ConstructionDTO> list = new ArrayList<ConstructionDTO>();
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+		Connection conn = null;
+
+		try {
+			conn = ds.getConnection();
 		StringBuffer sql = new StringBuffer();
 		sql.append("SELECT																								\n");
 		sql.append("		CONSTRUCTION_NAME, CONSTRUCTION_NUM									\n");
 		sql.append("FROM																								\n");
 		sql.append("		TB_CONSTRUCTION															\n");
 		sql.append("WHERE DEL_YN <> 'Y'														\n");
-		try{
+
 			pstmt = conn.prepareStatement(sql.toString());
 			rs = pstmt.executeQuery();
 			while(rs.next()){
@@ -575,15 +578,12 @@ public class ConstructionDAO {
 		}catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			closeAll(rs, pstmt);
-			if (rs != null){
-				rs.close();
-			}
-			if (pstmt != null){
-				pstmt.close();
-			}
-			if (conn != null){
-				conn.close();
+			try{
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			}catch(SQLException e){
+				e.printStackTrace();
 			}
 		}
 		return list;
@@ -591,15 +591,20 @@ public class ConstructionDAO {
 	
 	public int insertConstructionAdd(String constName, String constWay, String constArea,
 			 String constPrice, String constLower, String constOpening,
-			String constInstitution, String constPercent) throws SQLException {
-		
-		StringBuffer sql = new StringBuffer();
+			String constInstitution, String constPercent){
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+		Connection conn = null;
+
 		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+		StringBuffer sql = new StringBuffer();
 		sql.append("INSERT INTO TB_CONSTRUCTION(CONSTRUCTION_NAME, CONSTRUCTION_WAY, CONSTRUCTION_AREA, CONSTRUCTION_PRICE, CONSTRUCTION_LOWER, CONSTRUCTION_OPENING, CONSTRUCTION_INSTITUTION			\n");
 		sql.append("	, CONSTRUCTION_PERCENT, CRT_DATE)										\n");
 		sql.append("	   SELECT ?, ?, ?, ?, ?, ?, ?,?, now() FROM DUAL				\n");
 		sql.append("WHERE NOT EXISTS(SELECT CONSTRUCTION_NAME FROM TB_CONSTRUCTION WHERE CONSTRUCTION_NAME=?)				\n");
-		try {
 			pstmt = conn.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
 			
 			pstmt.setString(1, constName);
@@ -628,13 +633,21 @@ public class ConstructionDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			closeAll(rs, pstmt);
-
+			try{
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
 		}
 		return result;
 	}
 	
-	public int totalInsert(String sql) throws SQLException {
+	public int totalInsert(String sql){
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+		Connection conn = null;
 		
 		//StringBuffer sql = new StringBuffer();
 		int result = 0;
@@ -660,8 +673,13 @@ public class ConstructionDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			closeAll(rs, pstmt);
-
+			try{
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
 		}
 		return result;
 	}
@@ -669,14 +687,20 @@ public class ConstructionDAO {
 	/*
 	 * 공고 삭제
 	 */
-	public int deleteConstruction(int ConstNum) throws SQLException {
-		StringBuffer sql = new StringBuffer();
+	public int deleteConstruction(int ConstNum){
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+		Connection conn = null;
+		
 		int result = 0;
+
+		try {
+			conn = ds.getConnection();
+		StringBuffer sql = new StringBuffer();
 		sql.append("UPDATE TB_CONSTRUCTION													\n");
 		sql.append("SET										\n");
 		sql.append("DEL_YN = 'Y' 												\n");
 		sql.append("WHERE TB_CONSTRUCTION.CONSTRUCTION_NUM = ?								\n");
-		try {
 			pstmt = conn.prepareStatement(sql.toString());
 			pstmt.setInt(1, ConstNum);
 			
@@ -684,19 +708,31 @@ public class ConstructionDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			closeAll(rs, pstmt);
+			try{
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
 		}
 		return result;
 	}
 	
-	public int deleteConstructionView(int ConstNum) throws SQLException {
-		StringBuffer sql = new StringBuffer();
+	public int deleteConstructionView(int ConstNum){
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+		Connection conn = null;
+		
 		int result = 0;
+
+		try {
+			conn = ds.getConnection();
+		StringBuffer sql = new StringBuffer();
 		sql.append("UPDATE TB_CONSTRUCTION JOIN TB_BUSINESS												\n");
 		sql.append("ON TB_CONSTRUCTION.CONSTRUCTION_NUM = TB_BUSINESS.CONSTRUCTION_NUM			\n");
 		sql.append("SET TB_BUSINESS.DEL_YN = 'Y' 												\n");
 		sql.append("WHERE TB_BUSINESS.CONSTRUCTION_NUM = ?								\n");
-		try {
 			pstmt = conn.prepareStatement(sql.toString());
 			pstmt.setInt(1, ConstNum);
 			
@@ -704,7 +740,13 @@ public class ConstructionDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			closeAll(rs, pstmt);
+			try{
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
 		}
 		return result;
 	}
@@ -712,9 +754,16 @@ public class ConstructionDAO {
 	/*
 	 * 공고 영구 삭제
 	 */
-	public int deleteConstruction2(int ConstNum) throws SQLException {
-		StringBuffer sql = new StringBuffer();
+	public int deleteConstruction2(int ConstNum){
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+		Connection conn = null;
+		
 		int result = 0;
+
+		try {
+			conn = ds.getConnection();
+		StringBuffer sql = new StringBuffer();
 		/*	두개 이상 삭제 할 때
 		sql.append("DELETE TB_CONSTRUCTION, TB_BUSINESS FROM													\n");
 		sql.append("TB_CONSTRUCTION	JOIN TB_BUSINESS								\n");
@@ -726,7 +775,6 @@ public class ConstructionDAO {
 		sql.append("TB_CONSTRUCTION								\n");
 		sql.append("WHERE DEL_YN='Y' AND CONSTRUCTION_NUM = ?				\n");
 		
-		try {
 			pstmt = conn.prepareStatement(sql.toString());
 			pstmt.setInt(1, ConstNum);
 			
@@ -734,19 +782,31 @@ public class ConstructionDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			closeAll(rs, pstmt);
+			try{
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
 		}
 		return result;
 	}
 	
-	public int restoreConstruction(int ConstNum) throws SQLException {
-		StringBuffer sql = new StringBuffer();
+	public int restoreConstruction(int ConstNum){
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+		Connection conn = null;
+		
 		int result = 0;
+
+		try {
+			conn = ds.getConnection();
+		StringBuffer sql = new StringBuffer();
 		sql.append("UPDATE TB_CONSTRUCTION													\n");
 		sql.append("SET										\n");
 		sql.append("DEL_YN = 'N' 												\n");
 		sql.append("WHERE TB_CONSTRUCTION.CONSTRUCTION_NUM = ?								\n");
-		try {
 			pstmt = conn.prepareStatement(sql.toString());
 			pstmt.setInt(1, ConstNum);
 			
@@ -754,13 +814,23 @@ public class ConstructionDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			closeAll(rs, pstmt);
+			try{
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
 		}
 		return result;
 	}
 	
-	public ArrayList<ConstructionDTO> selectConstructionListExcel(String searchKeyword, int pageno, int totalcnt, String[] checked) throws SQLException {
+	public ArrayList<ConstructionDTO> selectConstructionListExcel(String searchKeyword, int pageno, int totalcnt, String[] checked){
 		ArrayList<ConstructionDTO> list = new ArrayList<ConstructionDTO>();
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+		Connection conn = null;
+		
 		int nCnt = 1;
 		int startRow =0;
 
@@ -782,6 +852,9 @@ public class ConstructionDAO {
 			}
 		}
 		*/
+
+		try {
+			conn = ds.getConnection();
 		StringBuffer sql = new StringBuffer();
 		sql.append("SELECT 					\n");
 		sql.append("CONSTRUCTION_NUM , CONSTRUCTION_NAME, CONSTRUCTION_WAY, CONSTRUCTION_AREA, CONSTRUCTION_PRICE, CONSTRUCTION_LOWER, CONSTRUCTION_OPENING, CONSTRUCTION_INSTITUTION, CONSTRUCTION_PERCENT, date_format(CRT_DATE, '%Y.%m.%d') as CRT_DATE, date_format(UDT_DATE, '%Y.%m.%d') as UDT_DATE 	\n");
@@ -828,7 +901,6 @@ public class ConstructionDAO {
 		sql.append("ORDER BY CONSTRUCTION_NUM DESC												\n");
 		sql.append("LIMIT ?, ?															\n");
 		
-		try {
 			pstmt = conn.prepareStatement(sql.toString());
 			if(checked != null){
 				for(int i=0; i<checked.length; i++){
@@ -892,14 +964,25 @@ public class ConstructionDAO {
 		}catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			closeAll(rs, pstmt);
+			try{
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
 		}
 		return list;
 	}
 	
-	public ConstructionDTO selectConstructionInfo(int ConstNum) throws SQLException {
+	public ConstructionDTO selectConstructionInfo(int ConstNum){
 		ConstructionDTO dto = new ConstructionDTO();
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+		Connection conn = null;
 
+		try {
+			conn = ds.getConnection();
 		StringBuffer sql = new StringBuffer();
 		
 		sql.append("SELECT 					\n");
@@ -908,7 +991,6 @@ public class ConstructionDAO {
 		sql.append("TB_CONSTRUCTION 														\n");
 		sql.append("WHERE CONSTRUCTION_NUM = ?													\n");
 		
-		try {
 			pstmt = conn.prepareStatement(sql.toString());
 			pstmt.setInt(1, ConstNum);
 
@@ -929,21 +1011,33 @@ public class ConstructionDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			closeAll(rs, pstmt);
+			try{
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
 		}
 
 		return dto;
 	}
 	
-	public int updateConstruction(int ConstNum, String constWay, String constArea, String constPrice, String constLower, String constOpening, String constInstitution, String constPercent) throws SQLException {
-		StringBuffer sql = new StringBuffer();
+	public int updateConstruction(int ConstNum, String constWay, String constArea, String constPrice, String constLower, String constOpening, String constInstitution, String constPercent){
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+		Connection conn = null;
+		
 		int result = 0;
+
+		try {
+			conn = ds.getConnection();
+		StringBuffer sql = new StringBuffer();
 		sql.append("UPDATE TB_CONSTRUCTION															  \n");
 		sql.append("SET CONSTRUCTION_WAY = ?, CONSTRUCTION_AREA = ?,			  \n");
 		sql.append("CONSTRUCTION_PRICE = ?, CONSTRUCTION_LOWER = ?, CONSTRUCTION_OPENING = ?, 		  \n");
 		sql.append("CONSTRUCTION_INSTITUTION = ?, CONSTRUCTION_PERCENT = ?,	UDT_DATE = now()		  \n");
 		sql.append("WHERE CONSTRUCTION_NUM = ?												  	      \n");
-		try {
 			pstmt = conn.prepareStatement(sql.toString());
 			pstmt.setString(1, constWay);
 			pstmt.setString(2, constArea);
@@ -958,7 +1052,13 @@ public class ConstructionDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			closeAll(rs, pstmt);
+			try{
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
 		}
 
 		return result;

@@ -17,7 +17,7 @@ String[] checked=request.getParameterValues("check");
 
 AdminDAO dao = new AdminDAO();
 AdminDTO dto = dao.selectAdminInfo(no);
-dao.closeConn();	
+//dao.closeConn();	
 %>
 
 <!DOCTYPE html>

@@ -28,7 +28,7 @@
 	int result = 0;
 	
 	result = dao.insertAdmin(adminId, HashUtil.encryptPassword(adminId, adminPw), adminName, adminPhone, adminEmail, adminRole);
-	dao.closeConn();
+	//dao.closeConn();
 	if(result > 0){ 
 %>
 		<script language=javascript>

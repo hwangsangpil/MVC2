@@ -70,7 +70,7 @@
 	}catch(Exception ex){
 		ex.printStackTrace();
 	}finally{
-		dao.closeConn();
+		//dao.closeConn();
 	}
 	
 	if(result > 0){ 

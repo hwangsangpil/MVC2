@@ -6,20 +6,11 @@
 <%@page import="util.DateUtil"%>
 <%@page import="java.net.URLEncoder"%>
 <%@page import="java.net.URLDecoder"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 request.setCharacterEncoding("UTF-8");
 
-int pageno = Integer.parseInt(StringUtil.nchk(request.getParameter("pageno"), "1"));
-String[] checked=request.getParameterValues("check");
-String searchKeyword = URLDecoder.decode(StringUtil.nchk(request.getParameter("searchKeyword"),""),"UTF-8");
-
-ConstructionDAO dao = new ConstructionDAO();
-
-
-int totalcnt = dao.cntTotalMember(searchKeyword, checked);
-
-ArrayList<ConstructionDTO> list = dao.selectConstructionList(searchKeyword, pageno, totalcnt, checked);
-dao.closeConn();
+//dao.closeConn();
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -30,7 +21,7 @@ dao.closeConn();
 $(document).ready(function() {
 	$("#searchKeyword").focus();
 });
-
+<%-- 
 	function down(){
     
     	location.href = "exportToExcel.jsp?title=constructionList.xls&pageno="+<%=pageno%>
@@ -44,7 +35,7 @@ $(document).ready(function() {
     	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("8")){%>+"&check="+<%=checked[i]%><%}}}%>
     			+"&searchKeyword="+encodeURI(encodeURIComponent("<%=searchKeyword%>"));                                                   
  	}
-
+ --%>
 	function pageLink(arg) {
 		document.frm.pageno.value = arg;
 		document.frm.submit();
@@ -65,7 +56,7 @@ $(document).ready(function() {
 			document.frm.submit();
 			return;
 		}
-		
+<%-- 		
 		if (confirm("정말 삭제하시겠습니까??") == true){    //확인
 			location.href = "constructionDelOk.jsp?ConstNum=" + ConstNum + "&pageno="+<%=pageno%>
 	    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("1")){%>+"&check="+<%=checked[i]%><%}}}%>
@@ -81,14 +72,14 @@ $(document).ready(function() {
 			return;
 		}
 	}
-	
+	 --%>
 	function constructionMod(ConstNum){
 		if(<%="일반관리자".equals(role)%>){
 			alert('<%=role%>는 권한이없습니다.');
 			document.frm.submit();
 			return;
 		}
-		
+<%-- 		
 		if (confirm("정말 수정하시겠습니까??") == true){    //확인
 			location.href = "constructionMod.jsp?ConstNum=" + ConstNum + "&pageno="+<%=pageno%>
 	    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("1")){%>+"&check="+<%=checked[i]%><%}}}%>
@@ -104,7 +95,7 @@ $(document).ready(function() {
 			return;
 		}
 	}
-	
+	 --%>
 	function businessView(ConstNum){
 		location.href = "/business/businessView.jsp?ConstNum=" + ConstNum;
 	}
@@ -139,9 +130,9 @@ $(document).ready(function() {
 				<!--END TITLE & BREADCRUMB PAGE-->
 				<!--BEGIN CONTENT-->
 				<div class="page-content">
-					<form name="frm" action="/construction/constructionList.jsp" method="post">
-						<input type="hidden" name="pageno" value="<%=pageno%>">
-						
+					<form name="frm" action="constructionList.bbs" method="post">
+						<%-- <input type="hidden" name="pageno" value="<%=pageno%>">
+						 --%>
 						<div id="tab-general">
 							<div class="row mbl">
 								<div class="col-lg-12">
@@ -155,7 +146,7 @@ $(document).ready(function() {
 													<div class="input-group">
 													<span class="input-group-addon">
 													<i class="fa fa-search"></i></span>
-													<input type="text" id="searchKeyword" name="searchKeyword" placeholder="검색어를 입력하세요" class="form-control" value="<%=searchKeyword%>" tabindex="1"/>
+													<input type="text" id="searchKeyword" name="searchKeyword" placeholder="검색어를 입력하세요" class="form-control" value="<%-- <%=searchKeyword%> --%>" tabindex="1"/>
 													<span class="input-group-btn"><button type="button" class="btn btn-default" onclick="javascript:fnc_search()" tabindex="2">검색</button>
 													</span></div>
 												</div>
@@ -167,21 +158,21 @@ $(document).ready(function() {
 															<tr>
 																<th style="text-align:center; width: 50px;">NO</th>
 																<th style="text-align:center; width: 200px;">공고명<input type="checkbox" tabindex="3" id="check" name="check" value="1" 
-																<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("1")){ %>checked<%}}}%>/></th>
+																<%-- <%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("1")){ %>checked<%}}}%> --%>/></th>
 																<th style="text-align:center; width: 150px;">계약방법<input type="checkbox" tabindex="4" id="check" name="check" value="2"
-																<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("2")){ %>checked<%}}}%>/></th>
+																<%-- <%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("2")){ %>checked<%}}}%> --%>/></th>
 																<th style="text-align:center; width: 150px;">지역제한<input type="checkbox" tabindex="5" id="check" name="check" value="3"
-																<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("3")){ %>checked<%}}}%>/></th>
+																<%-- <%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("3")){ %>checked<%}}}%> --%>/></th>
 																<th style="text-align:center; width: 150px;">예가변동폭<input type="checkbox" tabindex="6" id="check" name="check" value="4"
-																<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("4")){ %>checked<%}}}%>/></th>
+																<%-- <%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("4")){ %>checked<%}}}%> --%>/></th>
 																<th style="text-align:center; width: 150px;">투찰하한율<input type="checkbox" tabindex="7" id="check" name="check" value="5"
-																<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("5")){ %>checked<%}}}%>/></th>
+																<%-- <%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("5")){ %>checked<%}}}%> --%>/></th>
 																<th style="text-align:center; width: 150px;">개찰일<input type="checkbox" tabindex="8" id="check" name="check" value="6"
-																<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("6")){ %>checked<%}}}%>/></th>
+																<%-- <%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("6")){ %>checked<%}}}%> --%>/></th>
 																<th style="text-align:center; width: 150px;">공고기관<input type="checkbox" tabindex="9" id="check" name="check" value="7"
-																<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("7")){ %>checked<%}}}%>/></th>
+																<%-- <%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("7")){ %>checked<%}}}%> --%>/></th>
 																<th style="text-align:center; width: 150px;">사정률<input type="checkbox" tabindex="10" id="check" name="check" value="8"
-																<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("8")){ %>checked<%}}}%>/></th>
+																<%-- <%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("8")){ %>checked<%}}}%> --%>/></th>
 																<th style="text-align:center; width: 100px;">입력날짜</th>
 																<th style="text-align:center; width: 100px;">수정날짜</th>
 																<th style="text-align:center;">수정</th>
@@ -189,39 +180,45 @@ $(document).ready(function() {
 															</tr>
 														</thead>
 														<tbody>
-															<%
+														<%--
+														<%
 															if (list.size() > 0) {
 																for (int i=0; i<list.size(); i++) {
 																	ConstructionDTO dto = list.get(i);
-																	%>
+														%>
+														--%>
+														<c:forEach items="${constructionList}" var="dto">
+														
 																<tr  style="cursor: pointer;">
-																	<td onclick="businessView(<%=dto.getConstNum() %>);" style="text-align:center;"><%=dto.getConstNum() %></td>
-																	<td onclick="businessView(<%=dto.getConstNum() %>);" style="text-align:center;"><%=dto.getConstName()%></td>
-																	<td onclick="businessView(<%=dto.getConstNum() %>);" style="text-align:center;"><%=dto.getConstWay()%></td>
-																	<td onclick="businessView(<%=dto.getConstNum() %>);" style="text-align:center;"><%=dto.getConstArea()%></td>
-																	<td onclick="businessView(<%=dto.getConstNum() %>);" style="text-align:center;"><%=dto.getConstPrice()%></td>
-																	<td onclick="businessView(<%=dto.getConstNum() %>);" style="text-align:center;"><%=dto.getConstLower()%></td>
-																	<td onclick="businessView(<%=dto.getConstNum() %>);" style="text-align:center;"><%=dto.getConstOpening()%></td>
-																	<td onclick="businessView(<%=dto.getConstNum() %>);" style="text-align:center;"><%=dto.getConstInstitution()%></td>
-																	<td onclick="businessView(<%=dto.getConstNum() %>);" style="text-align:center;"><%=dto.getConstPercent()%></td>
-																	<td onclick="businessView(<%=dto.getConstNum() %>);" style="text-align:center;"><%=dto.getCrtDate()%></td>
-																	<td onclick="businessView(<%=dto.getConstNum() %>);" style="text-align:center;"><%=dto.getUdtDate()%></td>
-																	<td > <button type="button" class="btn btn-primary" tabindex="11" onclick="constructionMod(<%=dto.getConstNum()%>)">수정</button></td>
-																	<td <%if("전체관리자".equals(role)){%>onclick="constructionDel(<%=dto.getConstNum()%>)"<%}else{%>onclick="alert('<%=role%>는 권한이없습니다')" <%}%>  onclick="event.cancelBubble = true;"><button type="button" class="btn btn-primary" tabindex="12" >삭제</button></td>
+													<td onclick="businessView(${dto.getConstNum()});" style="text-align:center;">${dto.getConstNum()}</td>
+													<td onclick="businessView(${dto.getConstName()});" style="text-align:center;">${dto.getConstName()}</td>
+													<td onclick="businessView(${dto.getConstWay()});" style="text-align:center;">${dto.getConstWay()}</td>
+													<td onclick="businessView(${dto.getConstArea()});" style="text-align:center;">${dto.getConstArea()}</td>
+													<td onclick="businessView(${dto.getConstPrice()});" style="text-align:center;">${dto.getConstPrice()}</td>
+													<td onclick="businessView(${dto.getConstLower()});" style="text-align:center;">${dto.getConstLower()}</td>
+													<td onclick="businessView(${dto.getConstOpening()});" style="text-align:center;">${dto.getConstOpening()}</td>
+													<td onclick="businessView(${dto.getConstInstitution()});" style="text-align:center;">${dto.getConstInstitution()}</td>
+													<td onclick="businessView(${dto.getConstPercent()});" style="text-align:center;">${dto.getConstPercent()}</td>
+													<td onclick="businessView(${dto.getCrtDate()});" style="text-align:center;">${dto.getCrtDate()}</td>
+													<td onclick="businessView(${dto.getUdtDate()});" style="text-align:center;">${dto.getUdtDate()}</td>
+													<td > <button type="button" class="btn btn-primary" tabindex="11" onclick="constructionMod(${dto.getConstNum()})">수정</button></td>
+													<td <%if("전체관리자".equals(role)){%>onclick="constructionDel(${dto.getConstNum()})"<%}else{%>onclick="alert('<%=role%>는 권한이없습니다')" <%}%>  onclick="event.cancelBubble = true;"><button type="button" class="btn btn-primary" tabindex="12" >삭제</button></td>
 																</tr>
-																
+														</c:forEach>
+																<%-- 
 																<%
 																}
 															}else{
 																out.println("<tr><td align='center' colspan='9'>조회 결과가 없습니다.</td></tr>");
 															}
-															%>
+															%> --%>
+															
 														</tbody>
 													</table>
 												</div>
 												<jsp:include page="../include/inc_paging.jsp">
-													<jsp:param name="totalRecord" value="<%=totalcnt%>"/>
-													<jsp:param name="pageNo" value="<%=pageno%>"/>
+													<jsp:param name="totalRecord" value="10"/>
+													<jsp:param name="pageNo" value="1"/>
 													<jsp:param name="rowCount" value="10"/> 
 													<jsp:param name="pageGroup" value="10"/>
 												</jsp:include>

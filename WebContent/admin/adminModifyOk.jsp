@@ -31,7 +31,7 @@
 		result = dao.updateAdmin(adminId, HashUtil.encryptPassword(adminId, adminPw), adminName, adminEmail, adminPhone, adminRole, no);
 	}
 	
-	dao.closeConn();
+	//dao.closeConn();
 	if(result > 0){ 
 %>
 		<script language=javascript>

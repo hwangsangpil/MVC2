@@ -22,7 +22,7 @@ AdminDAO dao = new AdminDAO();
 int totalcnt = dao.cntTotalDelAdmin(searchKeyword, checked);
 
 ArrayList<AdminDTO> list = dao.selectAdminDelList(searchKeyword, pageno, totalcnt, checked);
-dao.closeConn();	
+//dao.closeConn();	
 %>
 <!DOCTYPE html>
 <html lang="ko">
