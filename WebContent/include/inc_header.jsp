@@ -4,8 +4,8 @@
 <%@page import="util.DateUtil"%>
 <%@ page import="util.CookieBox"%> 
 <%
-CookieBox cookieBox_header = new CookieBox(request);
-String role = cookieBox_header.getValue("ROLE");
+String role = (String)session.getAttribute("ROLE");
+System.out.println("role:    "+role);
 %>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
