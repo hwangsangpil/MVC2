@@ -78,6 +78,7 @@ public class FrontController extends HttpServlet {
 			cmd = new ConstructionModCmd();
 			cmd.execute(request, response);
 			viewPage = "/construction/constructionMod.jsp";
+			//viewPage = "/test.jsp";
 		}
 		
 		if(cmdURI.equals("/constructionModOk.bbs")){

@@ -13,6 +13,8 @@ request.setCharacterEncoding("UTF-8");
 
 String[] checked=(String[])session.getAttribute("checked");
 String pageno=(String)session.getAttribute("pageno");
+String searchKeyword = (String)session.getAttribute("searchKeyword");
+
 if(checked!=null){
 for(int i=0; i<checked.length; i++){
 System.out.println("checked["+i+"]:   "+checked[i] );
@@ -61,52 +63,31 @@ $(document).ready(function() {
 	}
 	
 	function constructionDel(ConstNum){
-		if(<%=role!="전체관리자"%>){
-			alert('<%=role%>는 권한이없습니다.');
+		if('<%=role%>'==="일반관리자"){
+			alert("<%=role%>는 권한이없습니다.");
 			document.frm.submit();
 			return;
-			}	
-<%-- 		
-		if (confirm("정말 삭제하시겠습니까??") == true){    //확인
-			location.href = "constructionDelOk.jsp?ConstNum=" + ConstNum + "&pageno="+<%=pageno%>
-	    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("1")){%>+"&check="+<%=checked[i]%><%}}}%>
-	    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("2")){%>+"&check="+<%=checked[i]%><%}}}%>
-	    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("3")){%>+"&check="+<%=checked[i]%><%}}}%>
-	    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("4")){%>+"&check="+<%=checked[i]%><%}}}%>
-	    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("5")){%>+"&check="+<%=checked[i]%><%}}}%>
-	    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("6")){%>+"&check="+<%=checked[i]%><%}}}%>
-	    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("7")){%>+"&check="+<%=checked[i]%><%}}}%>
-	    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("8")){%>+"&check="+<%=checked[i]%><%}}}%>
-	    			+"&searchKeyword="+encodeURI(encodeURIComponent("<%=searchKeyword%>"));                                                   
+			}
+		if (confirm("정말 삭제하시겠습니까??")){    //확인
+			location = "constructionDelOk.bbs";                                                   
 		}else{
 			return;
 		}
-	 --%>
 	}
 	
 	function constructionMod(ConstNum){
-		if(<%=role=="일반관리자"%>){
-			alert('<%=role%>는 권한이없습니다.');
+		$('#test').val('constNum',ConstNum);
+		if('<%=role%>'==="일반관리자"){
+			alert("<%=role%>는 권한이없습니다.");
 			document.frm.submit();
 			return;
-			}	
-		else if (confirm("정말 수정하시겠습니까??") == true){    //확인
-			request.setAttribute("constNum",constNum);
-			System.out.println("경로이동");
-			location.href="constructionMod.bbs";
-			<%-- location.href = "constructionMod.jsp?ConstNum=" + ConstNum + "&pageno="+<%=pageno%>
-	    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("1")){%>+"&check="+<%=checked[i]%><%}}}%>
-	    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("2")){%>+"&check="+<%=checked[i]%><%}}}%>
-	    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("3")){%>+"&check="+<%=checked[i]%><%}}}%>
-	    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("4")){%>+"&check="+<%=checked[i]%><%}}}%>
-	    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("5")){%>+"&check="+<%=checked[i]%><%}}}%>
-	    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("6")){%>+"&check="+<%=checked[i]%><%}}}%>
-	    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("7")){%>+"&check="+<%=checked[i]%><%}}}%>
-	    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("8")){%>+"&check="+<%=checked[i]%><%}}}%>
-	    			+"&searchKeyword="+encodeURI(encodeURIComponent("<%=searchKeyword%>")); --%>                                                   
-		//}else{
-			//return;
-		//}
+			}
+		if (confirm("정말 수정하시겠습니까??")){    //확인
+			location = "constructionMod.bbs?constNum="+ConstNum;
+			//location = "constructionMod.bbs?constNum="+ConstNum;
+		}else{
+			return;
+		}
 	}
 	function businessView(ConstNum){
 		location.href = "/business/businessView.jsp?ConstNum=" + ConstNum;
@@ -162,8 +143,8 @@ $(document).ready(function() {
 													<div class="input-group">
 													<span class="input-group-addon">
 													<i class="fa fa-search"></i></span>
-													<input type="text" id="searchKeyword" name="searchKeyword" placeholder="검색어를 입력하세요" class="form-control" value="<%-- <%=searchKeyword%> --%>" tabindex="1"/>
-													<span class="input-group-btn"><button type="button" class="btn btn-default" onclick="javascript:fnc_search()" tabindex="2">검색</button>
+													<input type="text" id="searchKeyword" name="searchKeyword" placeholder="검색어를 입력하세요" class="form-control" value="<%=searchKeyword%>" tabindex="1"/>
+													<span class="input-group-btn"><button type="button" class="btn btn-default" onclick="fnc_search()" tabindex="2">검색</button>
 													</span></div>
 												</div>
 												<div class="col-lg-12">&nbsp;</div>
@@ -217,12 +198,8 @@ $(document).ready(function() {
 													<td onclick="businessView(${dto.getConstNum()});" style="text-align:center;">${dto.getConstPercent()}</td>
 													<td onclick="businessView(${dto.getConstNum()});" style="text-align:center;">${dto.getCrtDate()}</td>
 													<td onclick="businessView(${dto.getConstNum()});" style="text-align:center;">${dto.getUdtDate()}</td>
-<%-- 													 
-													<td <%if("전체관리자".equals(role)){%>onclick="constructionMod(${dto.getConstNum()})"<%}else{%>onclick="alert('<%=role%>는 권한이없습니다')" <%}%>  onclick="event.cancelBubble = true;"><button type="button" class="btn btn-primary" tabindex="12" >수정</button></td>
-
- --%>												<td> <button type="button" class="btn btn-primary" tabindex="11"  onclick="constructionMod(${dto.getConstNum()});return false;">  수정</button></td>
-													 
-													<td> <button type="button" class="btn btn-primary" tabindex="12" onclick="constructionDel(${dto.getConstNum()});return false;">삭제</button></td>
+ 													<td> <button type="button" class="btn btn-primary" tabindex="11"  onclick="constructionMod(${dto.getConstNum()})">  수정</button></td>
+													<td> <button type="button" class="btn btn-primary" tabindex="12" onclick="constructionDel(${dto.getConstNum()})">삭제</button></td>
 																
 																</tr>
 														</c:forEach>

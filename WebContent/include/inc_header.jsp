@@ -2,7 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@page import="util.StringUtil"%>
 <%@page import="util.DateUtil"%>
-<%@ page import="util.CookieBox"%> 
 <%
 String role = (String)session.getAttribute("ROLE");
 System.out.println("role:    "+role);

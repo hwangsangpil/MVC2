@@ -16,11 +16,15 @@ public class ConstructionModCmd implements Cmd{
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
 		// TODO Auto-generated method stub
+		
 		HttpSession session=request.getSession();
+		
+		
 		ConstructionDAO dao = new ConstructionDAO();
 		ConstructionDTO dto = new ConstructionDTO();
 		
-		int constNum = (int)request.getAttribute("constNum");
+		int constNum = Integer.parseInt(StringUtil.nchk(request.getParameter("constNum"), "1"));
+		System.out.println("constNum22:"+constNum);
 		int pageno = Integer.parseInt(StringUtil.nchk(request.getParameter("pageno"), "1"));
 		String[] checked = request.getParameterValues("check");
 		try {
@@ -33,7 +37,6 @@ public class ConstructionModCmd implements Cmd{
 		
 		
 		dto = dao.selectConstructionInfo(constNum);
-		
 		request.setAttribute("selectConstructionInfo", dto);
 		
 		session.setAttribute("checked", checked);
