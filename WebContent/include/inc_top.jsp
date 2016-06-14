@@ -1,22 +1,35 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
 <%@ page import="util.CookieBox"%> 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
 <%
-CookieBox cookieBox = new CookieBox(request);
-boolean login = cookieBox.exists("LOGIN")&& cookieBox.getValue("LOGIN").equals("SUCCESS");
-
-
-
-
-if(!login){
+if(session.getAttribute("MEM_SEQ")==null && session.getAttribute("LOGIN")==null){
+	System.out.println("null MEM_SEQ result3:   "+session.getAttribute("MEM_SEQ"));
+	System.out.println("null LOGIN result3:   "+session.getAttribute("LOGIN"));
 %>
-<script language="javascript">
+	<script>
+	/* $(document).ready(function() {
+		alert("aaa");
+		}); */
+		alert("세션정보가 끊겼습니다. 다시 로그인 해주세요.");
+		location = "logOut.bbs";
+	</script>
+<%
+}else{
+boolean login2 = session.getAttribute("MEM_SEQ").equals(session.getAttribute("MEM_SEQ")) && session.getAttribute("LOGIN").equals("SUCCESS");
+if(!login2){
+%>
+<script>
 	alert("세션정보가 끊겼습니다. 다시 로그인 해주세요.");
-	location = "/index.jsp";
+	location = "logOut.bbs";
 </script>
-<%}%>
-
+<%}
+}%>
+</head>
+<body>
 <!-- <div id="header-topbar-option-demo" class="page-header-topbar">
     <nav id="topbar" role="navigation" style="margin-bottom: 0;" data-step="3" class="navbar navbar-default navbar-static-top">
      <div class="navbar-header"><a id="logo" href="/index.html" class="navbar-brand"><span class="logo-text">OTB CMS</span></a></div>
@@ -27,6 +40,7 @@ if(!login){
   	</nav>
 </div>
  -->
+ 
  <div id="header-topbar-option-demo" class="page-header-topbar">
             <nav id="topbar" role="navigation" style="margin-bottom: 0;" data-step="3" class="navbar navbar-default navbar-static-top">
             <div class="navbar-header">
@@ -36,9 +50,11 @@ if(!login){
             	<a id="menu-toggle" href="#" class="hidden-xs"><i class="fa fa-bars"></i></a>
             	
                 <ul class="nav navbar navbar-top-links navbar-right mbn">
-                    <li id="topbar-chat" class="hidden-xs"><a href="/login/logout.jsp" data-step="4" data-intro="&lt;b&gt;Form chat&lt;/b&gt; keep you connecting with other coworker" data-position="left" class="btn-chat"><i class="fa fa-key"></i>Log Out</a></li>
+                    <li id="topbar-chat" class="hidden-xs"><a href="logOut.bbs" data-step="4" data-intro="&lt;b&gt;Form chat&lt;/b&gt; keep you connecting with other coworker" data-position="left" class="btn-chat"><i class="fa fa-key"></i>Log Out</a></li>
                     
                 </ul>
             </div>
         </nav>
- 
+ </div>
+</body>
+</html>

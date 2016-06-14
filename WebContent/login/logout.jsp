@@ -3,5 +3,5 @@
 <%
 	response.addCookie(CookieBox.createCookie("LOGIN", "", "/", 0));
 	response.addCookie(CookieBox.createCookie("ID", "", "/", 0));
- 	response.sendRedirect("/index.jsp");
+ 	response.sendRedirect("logOut.bbs");
 %>

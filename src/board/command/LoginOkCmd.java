@@ -1,13 +1,11 @@
 package board.command;
 
-import java.io.IOException;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import board.model.AdminDAO;
 import board.model.AdminDTO;
-import util.CookieBox;
 import util.HashUtil;
 
 public class LoginOkCmd implements Cmd{
@@ -15,6 +13,8 @@ public class LoginOkCmd implements Cmd{
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response){
 		// TODO Auto-generated method stub
+
+		HttpSession session=request.getSession();
 		
 		AdminDAO dao = new AdminDAO();
 		AdminDTO dto = new AdminDTO();
@@ -29,21 +29,15 @@ public class LoginOkCmd implements Cmd{
 			e.printStackTrace();
 		}
 		String memseq = String.valueOf(dto.getSeqNo());
-		System.out.println("memseq:   "+memseq);
+		System.out.println("LoginOkCmd memseq:   "+memseq);
 		if( dto.getSeqNo() != 0) {
-					try {
-						response.addCookie(CookieBox.createCookie("LOGIN", "SUCCESS", "/", -1));
-						response.addCookie(CookieBox.createCookie("ID", id, "/", -1));
-						response.addCookie(CookieBox.createCookie("MEM_SEQ", memseq, "/", -1));
-						response.addCookie(CookieBox.createCookie("ROLE", dto.getAdminRole(), "/", -1));
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+			session.setAttribute("LOGIN", "SUCCESS");
+			session.setAttribute("MEM_SEQ", memseq);
+			session.setAttribute("memberNum", memseq);
+			session.setAttribute("ROLE", dto.getAdminRole());
+			session.setMaxInactiveInterval(15);
 		}
 		
-		request.setAttribute("memberNum", memseq);
-		//dao.closeConn();
 	}
 	
 }

@@ -7,21 +7,16 @@ request.setCharacterEncoding("UTF-8");
 <head>
 <title>INFO SYSTEM</title>
 <%
-String memberNum = (String)request.getAttribute("memberNum");
-System.out.println("memberNum result:   "+memberNum);
-
-if("0".equals(memberNum)){
+if("0".equals(session.getAttribute("MEM_SEQ"))){
 %>
-<script language="javascript">
+<script>
 		alert("아이디와 비밀번호를 확인후 다시 로그인해주세요.");
 		history.back();
 </script>
-<% } %>
-
+<%}else{
+System.out.println("일반적 home MEM_SEQ result:   "+session.getAttribute("MEM_SEQ"));
+}%>
 <%@ include file="../include/inc_header.jsp"%>
-<script type="text/javascript">
-
-</script>
 </head>
 <body>
 	<div>
@@ -42,21 +37,20 @@ if("0".equals(memberNum)){
 									<div class="row">
 										<div class="col-lg-12">
 											<div style="text-align: center; height: 100%; vertical-align: middle; font-size: 60px;">
-												</br></br>
+												<br/><br/>
 												<br/>
-												<div style="font-size: 40px;">좌측 메뉴를 선택해 주세요.<div>
-												
+												<div style="font-size: 40px;">좌측 메뉴를 선택해 주세요.</div>
 											</div>
-										</div>
+										</div>	
 									</div>
 								</div>
 							</div>
 						</div>
 				</div>
-				<!--END CONTENT-->
 			</div>
-			<!--END PAGE WRAPPER-->
 		</div>
+				<!--END CONTENT-->
 	</div>
+			<!--END PAGE WRAPPER-->
 </body>
 </html>

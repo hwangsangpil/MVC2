@@ -16,7 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 /**
 <p>
-<code>StringUtil</code>은 String의 handling과 관련된 class이다.
+<code>StringUtil</code>�� String�쓽 handling怨� 愿��젴�맂 class�씠�떎.
 <p>
 */
 
@@ -24,9 +24,9 @@ public class StringUtil
 {
 
    /**
-    * String을 읽어 알파벳과 숫자만 모아 return ('_', '-' 포함)
+    * String�쓣 �씫�뼱 �븣�뙆踰녠낵 �닽�옄留� 紐⑥븘 return ('_', '-' �룷�븿)
     * @param s source String
-    * @return 알파벳을 제외하고 걸려진 String
+    * @return �븣�뙆踰녹쓣 �젣�쇅�븯怨� 嫄몃젮吏� String
     */
     public static String alphaNumOnly(String s)
     {
@@ -45,7 +45,7 @@ public class StringUtil
     }
 
     /**
-     * String을 읽어 알파벳과 숫자만 있는지 check ('_', '-'포함)
+     * String�쓣 �씫�뼱 �븣�뙆踰녠낵 �닽�옄留� �엳�뒗吏� check ('_', '-'�룷�븿)
      * @param s source String
  	 */
     public static boolean isAlphaNumOnly(String s)
@@ -62,7 +62,7 @@ public class StringUtil
     }
 
     /**
-     * String을 읽어 알파벳만 있는지 check
+     * String�쓣 �씫�뼱 �븣�뙆踰노쭔 �엳�뒗吏� check
      * @param s source String
      */
     public static boolean isAlphaOnly(String s)
@@ -81,9 +81,9 @@ public class StringUtil
     }
     
 	/**
-	* Alphabet 문자인지 체크
-	* @param ch 체크할 문자
-	* @return Alphabet 문자이면 true, 그렇지 않으면 false
+	* Alphabet 臾몄옄�씤吏� 泥댄겕
+	* @param ch 泥댄겕�븷 臾몄옄
+	* @return Alphabet 臾몄옄�씠硫� true, 洹몃젃吏� �븡�쑝硫� false
 	*/
 	public static boolean isAlpha(char ch)
 	{
@@ -94,7 +94,7 @@ public class StringUtil
 	}
 
 	/**
-     * String을 읽어 숫자만 있는지 check
+     * String�쓣 �씫�뼱 �닽�옄留� �엳�뒗吏� check
      * @param s source String
  	 */
     public static boolean isNumOnly(String s)
@@ -111,9 +111,9 @@ public class StringUtil
     }
     
 	/**
-	* 숫자 문자인지 체크
-	* @param ch 체크할 문자
-	* @return 숫자 문자이면 true, 그렇지 않으면 false
+	* �닽�옄 臾몄옄�씤吏� 泥댄겕
+	* @param ch 泥댄겕�븷 臾몄옄
+	* @return �닽�옄 臾몄옄�씠硫� true, 洹몃젃吏� �븡�쑝硫� false
 	*/
 	public static boolean isNumeric(char ch)
 	{
@@ -124,7 +124,7 @@ public class StringUtil
 	}
 
 	/**
-     * String s에서 연속되는 space들을 하나로 압축한 String으로 return
+     * String s�뿉�꽌 �뿰�냽�릺�뒗 space�뱾�쓣 �븯�굹濡� �븬異뺥븳 String�쑝濡� return
      * @param s source String
  	 */
     public static String normalizeWhitespace(String s)
@@ -159,9 +159,9 @@ public class StringUtil
     }
 
 	/**
-     * String s에서 character c가 몇 개가 있는지 return
+     * String s�뿉�꽌 character c媛� 紐� 媛쒓� �엳�뒗吏� return
      * @param s source String
-     * @param c 찾을 character
+     * @param c 李얠쓣 character
  	 */
     public static int numOccurrences(String s, char c)
     {
@@ -180,9 +180,9 @@ public class StringUtil
     }
 
 	/**
-     * String s에서 String s1에 포함되는 모든 char를 제거한 String으로 return
+     * String s�뿉�꽌 String s1�뿉 �룷�븿�릺�뒗 紐⑤뱺 char瑜� �젣嫄고븳 String�쑝濡� return
      * @param s source String
-     * @param s1 삭제시킬 sub String
+     * @param s1 �궘�젣�떆�궗 sub String
  	 */
     public static String removeCharacters(String s, String s1)
     {
@@ -199,7 +199,7 @@ public class StringUtil
     }
 
 	/**
-     * String s에서 존재하는 space들을 모두 제거한 String으로 return
+     * String s�뿉�꽌 議댁옱�븯�뒗 space�뱾�쓣 紐⑤몢 �젣嫄고븳 String�쑝濡� return
      * @param s source String
  	 */
     public static String removeWhiteSpace(String s)
@@ -217,10 +217,10 @@ public class StringUtil
     }
 
     /**
-     * String target의 arguments[0],arguments[1]..부분을 replacements[0],replacements[1]..으로 바꾸어 return
+     * String target�쓽 arguments[0],arguments[1]..遺�遺꾩쓣 replacements[0],replacements[1]..�쑝濡� 諛붽씀�뼱 return
      * @param target source String
-     * @param arguments 바뀌어질 대상의 String 배열
-     * @param replacements 대체될 String 배열
+     * @param arguments 諛붾�뚯뼱吏� ���긽�쓽 String 諛곗뿴
+     * @param replacements ��泥대맆 String 諛곗뿴
  	 */
     public static String replace( String target, String[] arguments, String[] replacements )
     {
@@ -235,7 +235,7 @@ public class StringUtil
     }
 
     /**
-     * String target에 포함되어 있는 argument을 replacement로 바꾸어 return
+     * String target�뿉 �룷�븿�릺�뼱 �엳�뒗 argument�쓣 replacement濡� 諛붽씀�뼱 return
      * @param target source String
      * @param argument old String
      * @param replacement new String
@@ -261,10 +261,10 @@ public class StringUtil
     }
 
     /**
-     * String s에 있는 character c를 이용하여 String을 분리한다.
+     * String s�뿉 �엳�뒗 character c瑜� �씠�슜�븯�뿬 String�쓣 遺꾨━�븳�떎.
      * @param s source String
-     * @param c String s를 분리할 character
-     * @return 분리된 String 배열
+     * @param c String s瑜� 遺꾨━�븷 character
+     * @return 遺꾨━�맂 String 諛곗뿴
  	 */
     public static String[] splitStringAtCharacter(String s, char c)
     {
@@ -295,7 +295,7 @@ public class StringUtil
     /**
      * Convert a String to a boolean
 	 * <p>
-	 * 대소문자 상관없이 "true","yes","ok","okay","on","1"인 경우 true를 return한다.
+	 * ���냼臾몄옄 �긽愿��뾾�씠 "true","yes","ok","okay","on","1"�씤 寃쎌슦 true瑜� return�븳�떎.
      * @param data the thing to convert
      * @return the converted data
      */
@@ -332,7 +332,7 @@ public class StringUtil
     }
     
 	/**
-	 * 문자열을 ArrayList로 변환 
+	 * 臾몄옄�뿴�쓣 ArrayList濡� 蹂��솚 
 	 * @param strValue	String
 	 * @return List
 	 */
@@ -361,7 +361,7 @@ public class StringUtil
     /**
      * Convert a String to a Hashtable
 	 * <p>
-	 * "key1=value1 key2=value2 .... " 구조의 string을 Hashtable로 변환
+	 * "key1=value1 key2=value2 .... " 援ъ“�쓽 string�쓣 Hashtable濡� 蹂��솚
      * @param data the thing to convert
      * @return the converted data
      */
@@ -387,7 +387,7 @@ public class StringUtil
     /**
      * Convert a Hashtable to a Sting
 	 * <p>
-	 * "key1=value1 key2=value2 .... " 구조의 string으로 변환
+	 * "key1=value1 key2=value2 .... " 援ъ“�쓽 string�쑝濡� 蹂��솚
      * @param data the thing to convert
      * @return the converted data
      */
@@ -420,7 +420,7 @@ public class StringUtil
     }
 
     /**
-     * String s에 있는 alphabet을 모두 소문자로 바꾸어 return
+     * String s�뿉 �엳�뒗 alphabet�쓣 紐⑤몢 �냼臾몄옄濡� 諛붽씀�뼱 return
      * @param s source String
  	 */
     public static String toLowerCase(String s)
@@ -455,7 +455,7 @@ label0:
     }
 
     /**
-     * String s에 있는 alphabet을 모두 대문자로 바꾸어 return
+     * String s�뿉 �엳�뒗 alphabet�쓣 紐⑤몢 ��臾몄옄濡� 諛붽씀�뼱 return
      * @param s source String
  	 */
     public static String toUpperCase(String s)
@@ -489,10 +489,10 @@ label0:
     }
 
    /**
-    * String s에 있는 sub string s1을 이용하여 String을 분리한다.
+    * String s�뿉 �엳�뒗 sub string s1�쓣 �씠�슜�븯�뿬 String�쓣 遺꾨━�븳�떎.
     * @param s source String
-    * @param s1 String s를 분리할 sub string
-    * @return 분리된 string의 벡터
+    * @param s1 String s瑜� 遺꾨━�븷 sub string
+    * @return 遺꾨━�맂 string�쓽 踰≫꽣
     */
     public static Vector tokenizer(String s, String s1)
     {
@@ -507,7 +507,7 @@ label0:
     }
 
    /**
-    * &, <, >, "를 &amp;amp;, &amp;lt;, &amp;gt;, &amp;quot; 로 대체한 string으로 바꾸어 줌
+    * &, <, >, "瑜� &amp;amp;, &amp;lt;, &amp;gt;, &amp;quot; 濡� ��泥댄븳 string�쑝濡� 諛붽씀�뼱 以�
     * @param s source String
     */
     public static String escapeHtmlString(String s)
@@ -529,7 +529,7 @@ label0:
     }
 
    /**
-    * &amp;amp;, &amp;lt;, &amp;gt;, &amp;quot;를 &, <, >, " 로 대체한 string으로 바꾸어 줌
+    * &amp;amp;, &amp;lt;, &amp;gt;, &amp;quot;瑜� &, <, >, " 濡� ��泥댄븳 string�쑝濡� 諛붽씀�뼱 以�
     * @param s source String
     */
     public static String reEscapeHtmlString(String s)
@@ -543,10 +543,10 @@ label0:
     }
 
     /**
-     * character c로 length만큼 채워진 String을 return
-     * @param c string으로 채워질 character
-     * @param length 원하는 character 갯수
-     * @return charracter c로 length 갯수 만큼 채워진 string
+     * character c濡� length留뚰겮 梨꾩썙吏� String�쓣 return
+     * @param c string�쑝濡� 梨꾩썙吏� character
+     * @param length �썝�븯�뒗 character 媛��닔
+     * @return charracter c濡� length 媛��닔 留뚰겮 梨꾩썙吏� string
      */
     public static String fill( char c, int length )
     {
@@ -562,23 +562,23 @@ label0:
     }
 
    /**
-    * 주어진 length를 유지하기 위해 String s에 character c를 오른쪽으로 덧댄다.
+    * 二쇱뼱吏� length瑜� �쑀吏��븯湲� �쐞�빐 String s�뿉 character c瑜� �삤瑜몄そ�쑝濡� �뜤�똾�떎.
 	* <p>
 	* <pre>
 	* StringUtil.padRight("hahahaha", '.', 14);
 	* StringUtil.padRight("hihihi", '.', 14);
 	* StringUtil.padRight("hohohohoho", '.', 14);
 
-	* 은 다음과 같은 결과를 보여줄 것이다.
+	* �� �떎�쓬怨� 媛숈� 寃곌낵瑜� 蹂댁뿬以� 寃껋씠�떎.
 
 	* hahahaha.....
 	* hihihi.......
 	* hohohohoho...
 	* </pre>
-	* 위와 같이 일정한 사이즈로 문단을 구성하고자 할 때 유용할 것 임
+	* �쐞�� 媛숈씠 �씪�젙�븳 �궗�씠利덈줈 臾몃떒�쓣 援ъ꽦�븯怨좎옄 �븷 �븣 �쑀�슜�븷 寃� �엫
     * @param s source String
-    * @param c String s에 덧대질 character
-    * @param length return될 String의 length
+    * @param c String s�뿉 �뜤��吏� character
+    * @param length return�맆 String�쓽 length
     */
     public static String padRight( String s, char c, int length )
     {
@@ -586,23 +586,23 @@ label0:
     }
 
    /**
-    * 주어진 length를 유지하기 위해 String s에 character c를 왼쪽으로 덧댄다.
+    * 二쇱뼱吏� length瑜� �쑀吏��븯湲� �쐞�빐 String s�뿉 character c瑜� �쇊履쎌쑝濡� �뜤�똾�떎.
 	* <p>
 	* <pre>
 	* StringUtil.padRight("hahahaha", '.', 14);
 	* StringUtil.padRight("hihihi", '.', 14);
 	* StringUtil.padRight("hohohohoho", '.', 14);
 
-	* 은 다음과 같은 결과를 보여줄 것이다.
+	* �� �떎�쓬怨� 媛숈� 寃곌낵瑜� 蹂댁뿬以� 寃껋씠�떎.
 
 	* .....hahahaha
 	* .......hihihi
 	* ...hohohohoho
 	* </pre>
-	* 위와 같이 일정한 사이즈로 문단을 구성하고자 할 때 유용할 것 임
+	* �쐞�� 媛숈씠 �씪�젙�븳 �궗�씠利덈줈 臾몃떒�쓣 援ъ꽦�븯怨좎옄 �븷 �븣 �쑀�슜�븷 寃� �엫
     * @param s source String
-    * @param c String s에 덧대질 character
-    * @param length return될 String의 length
+    * @param c String s�뿉 �뜤��吏� character
+    * @param length return�맆 String�쓽 length
     */
     public static String padLeft( String s, char c, int length )
     {
@@ -613,9 +613,9 @@ label0:
 
 
     /**
-     * comma 구분자를 가지고 Array를 String으로 변환한다.
+     * comma 援щ텇�옄瑜� 媛�吏�怨� Array瑜� String�쑝濡� 蹂��솚�븳�떎.
      * <p>
-	 * 예를들면<br>
+	 * �삁瑜쇰뱾硫�<br>
 	 * {"aaa","bbbb","cc"} ---> "aaa,bbbb,cc"
      */
     public static String toString( Object[] args )
@@ -624,7 +624,7 @@ label0:
     }
 
     /**
-     * separator 구분자를 가지고 Array를 String으로 변환
+     * separator 援щ텇�옄瑜� 媛�吏�怨� Array瑜� String�쑝濡� 蹂��솚
      */
     public static String toString( Object[] args, String separator )
     {
@@ -644,7 +644,7 @@ label0:
     }
 
     /**
-     * separator 구분자를 가지고 List를 String으로 변환
+     * separator 援щ텇�옄瑜� 媛�吏�怨� List瑜� String�쑝濡� 蹂��솚
      */
     public static String toString( List list, String separator )
     {
@@ -658,7 +658,7 @@ label0:
     }
 
     /**
-     * separator 구분자를 가지고 List를 String으로 변환
+     * separator 援щ텇�옄瑜� 媛�吏�怨� List瑜� String�쑝濡� 蹂��솚
      */
     public static String toString( List list, String mapname, String separator )
     {
@@ -674,16 +674,16 @@ label0:
     }
     
     /**
-    * 전달된 문자열을 src_enc 방식에서 dest_enc 방식으로 변환한다.
-    * @author 민선기
+    * �쟾�떖�맂 臾몄옄�뿴�쓣 src_enc 諛⑹떇�뿉�꽌 dest_enc 諛⑹떇�쑝濡� 蹂��솚�븳�떎.
+    * @author 誘쇱꽑湲�
     *
-    * @param String str           변환시킬 문자열
-    * @param String src_enc       원래 문자의 encoding방식
-    * @param String des_enc       변환시킬 encoding방식.
+    * @param String str           蹂��솚�떆�궗 臾몄옄�뿴
+    * @param String src_enc       �썝�옒 臾몄옄�쓽 encoding諛⑹떇
+    * @param String des_enc       蹂��솚�떆�궗 encoding諛⑹떇.
     *
-    * @return String  desc_enc 방식으로 변환된 문자열
+    * @return String  desc_enc 諛⑹떇�쑝濡� 蹂��솚�맂 臾몄옄�뿴
     *
-    * @throws UnsupportedEncodingException :  Encoding이 지원되지 않는 문자열 변환시
+    * @throws UnsupportedEncodingException :  Encoding�씠 吏��썝�릺吏� �븡�뒗 臾몄옄�뿴 蹂��솚�떆
     */
     public static  String toConvert(String str, String src_enc, String dest_enc)  throws java.io.UnsupportedEncodingException
     {
@@ -694,12 +694,12 @@ label0:
     }
 
     /**
-    * Null String을 "" String으로 바꿔준다.
-    * @author 민선기
+    * Null String�쓣 "" String�쑝濡� 諛붽퓭以��떎.
+    * @author 誘쇱꽑湲�
     *
-    * @param str   Null 문자열
+    * @param str   Null 臾몄옄�뿴
     *
-    * @return "" 문자열(null이 아닐 경우는 변환할 문자열이 그대로 리턴)
+    * @return "" 臾몄옄�뿴(null�씠 �븘�땺 寃쎌슦�뒗 蹂��솚�븷 臾몄옄�뿴�씠 洹몃�濡� 由ы꽩)
     */
     static public String NVL(String str)
     {
@@ -709,18 +709,18 @@ label0:
             return str.trim();
     }
 
-    // 문자열이 null인경우 replace_str을 Return한다.
-    // 사용 예) 테이블의 <td>str</td>에서 str이 null인 경우
-    // replate_str이 &nbsp;로 지정한다.
+    // 臾몄옄�뿴�씠 null�씤寃쎌슦 replace_str�쓣 Return�븳�떎.
+    // �궗�슜 �삁) �뀒�씠釉붿쓽 <td>str</td>�뿉�꽌 str�씠 null�씤 寃쎌슦
+    // replate_str�씠 &nbsp;濡� 吏��젙�븳�떎.
     /**
-    * 문자열이 null인경우 replace_str을 Return한다.
-	* 사용 예) 테이블의 <td>str</td>에서 str이 null인 경우
-	* replate_str이 &nbsp;로 지정한다.
-    * @author 민선기
+    * 臾몄옄�뿴�씠 null�씤寃쎌슦 replace_str�쓣 Return�븳�떎.
+	* �궗�슜 �삁) �뀒�씠釉붿쓽 <td>str</td>�뿉�꽌 str�씠 null�씤 寃쎌슦
+	* replate_str�씠 &nbsp;濡� 吏��젙�븳�떎.
+    * @author 誘쇱꽑湲�
     *
-    * @param str Null 문자열
-    * @param replace_str 변환할 문자열
-    * @return 변환할 문자열
+    * @param str Null 臾몄옄�뿴
+    * @param replace_str 蹂��솚�븷 臾몄옄�뿴
+    * @return 蹂��솚�븷 臾몄옄�뿴
     */
     static public String NVL(String str, String replace_str)
     {
@@ -731,12 +731,12 @@ label0:
     	
 
     /**
-     * 숫자 포맷을 ,구분자로 표시 
-     * @author 권연선
+     * �닽�옄 �룷留룹쓣 ,援щ텇�옄濡� �몴�떆 
+     * @author 沅뚯뿰�꽑
      * 
-     * @param str Null 문자열
-     * @param replace_str 변환할 문자열
-     * @return 변환할 문자열
+     * @param str Null 臾몄옄�뿴
+     * @param replace_str 蹂��솚�븷 臾몄옄�뿴
+     * @return 蹂��솚�븷 臾몄옄�뿴
      */
     public static String getToCommaInt(String stText){
     	if(stText == null || stText.trim().equals("")) return "";
@@ -746,12 +746,12 @@ label0:
 	    return stResult;
     }
     /**
-     * CLOB 데이터를 String으로 변 
-     * @author 박진식
+     * CLOB �뜲�씠�꽣瑜� String�쑝濡� 蹂� 
+     * @author 諛뺤쭊�떇
      * 
-     * @param str Null 문자열
-     * @param replace_str 변환할 문자열
-     * @return 변환할 문자열
+     * @param str Null 臾몄옄�뿴
+     * @param replace_str 蹂��솚�븷 臾몄옄�뿴
+     * @return 蹂��솚�븷 臾몄옄�뿴
      */
     public static String clobToString(Clob clob) 
 	{
@@ -787,12 +787,12 @@ label0:
 	}
     
     /**
-     * 사용자가 선택한 길이만큼 문자열을 보여주고 그 이후부분은 사용자가 입력한 스트링으로 대체 
-     * @author 박진식
+     * �궗�슜�옄媛� �꽑�깮�븳 湲몄씠留뚰겮 臾몄옄�뿴�쓣 蹂댁뿬二쇨퀬 洹� �씠�썑遺�遺꾩� �궗�슜�옄媛� �엯�젰�븳 �뒪�듃留곸쑝濡� ��泥� 
+     * @author 諛뺤쭊�떇
      * 
-     * @param str Null 문자열
-     * @param replace_str 변환할 문자열
-     * @return 변환할 문자열
+     * @param str Null 臾몄옄�뿴
+     * @param replace_str 蹂��솚�븷 臾몄옄�뿴
+     * @return 蹂��솚�븷 臾몄옄�뿴
      */
     static public String cutString(String src, int str_length, String att_str)
 	{
@@ -805,11 +805,11 @@ label0:
 			return ret_str;
 		}
 
-		// 현재 환경의 Character length를 구한다.
-		String tempMulLanChar = new String("가");
+		// �쁽�옱 �솚寃쎌쓽 Character length瑜� 援ы븳�떎.
+		String tempMulLanChar = new String("媛�");
 		int lanCharLength = tempMulLanChar.length();
         
-		// Character가 중간에 잘리지 않게 하기위해 넣은 변수
+		// Character媛� 以묎컙�뿉 �옒由ъ� �븡寃� �븯湲곗쐞�빐 �꽔�� 蹂��닔
 		int multiLanCharIndex = 0;
 
 		for (int i=0; i<src.length(); i++)
@@ -835,12 +835,12 @@ label0:
 		return ret_str;
 	}
     /**
-     * NULL 값을 ""로 변경  
-     * @author 박진식
+     * NULL 媛믪쓣 ""濡� 蹂�寃�  
+     * @author 諛뺤쭊�떇
      * 
-     * @param str Null 문자열
-     * @param replace_str 변환할 문자열
-     * @return 변환할 문자열
+     * @param str Null 臾몄옄�뿴
+     * @param replace_str 蹂��솚�븷 臾몄옄�뿴
+     * @return 蹂��솚�븷 臾몄옄�뿴
      */
     
     static public String nchk(String str)
@@ -852,12 +852,12 @@ label0:
 	}
     
     /**
-     * NULL 값을 ""로 변경  
-     * @author 박진식
+     * NULL 媛믪쓣 ""濡� 蹂�寃�  
+     * @author 諛뺤쭊�떇
      * 
      * @param obj Object
-     * @param replace_str 변환할 문자열
-     * @return 변환할 문자열
+     * @param replace_str 蹂��솚�븷 臾몄옄�뿴
+     * @return 蹂��솚�븷 臾몄옄�뿴
      */
     
     static public String nchk(Object obj)
@@ -868,12 +868,12 @@ label0:
 			return obj.toString();
 	}    
     /**
-     * NULL 값을 ""로 변경  
-     * @author 박진식
+     * NULL 媛믪쓣 ""濡� 蹂�寃�  
+     * @author 諛뺤쭊�떇
      * 
-     * @param str Null 문자열
-     * @param replace_str 변환할 문자열
-     * @return 변환할 문자열
+     * @param str Null 臾몄옄�뿴
+     * @param replace_str 蹂��솚�븷 臾몄옄�뿴
+     * @return 蹂��솚�븷 臾몄옄�뿴
      */
     
     static public String nchk(String str, String dstr)
@@ -890,12 +890,12 @@ label0:
 	}
     
     /**
-     * NULL 값을 ""로 변경  
-     * @author 박진식
+     * NULL 媛믪쓣 ""濡� 蹂�寃�  
+     * @author 諛뺤쭊�떇
      * 
      * @param str Object
-     * @param replace_str 변환할 문자열
-     * @return 변환할 문자열
+     * @param replace_str 蹂��솚�븷 臾몄옄�뿴
+     * @return 蹂��솚�븷 臾몄옄�뿴
      */
     
     static public String nchk(Object obj, String dstr)
@@ -912,12 +912,12 @@ label0:
 	/**
 	 * right
 	 *
-	 * 주어진 값을 오른쪽에서 부터 len만큼 짤라서 반환
+	 * 二쇱뼱吏� 媛믪쓣 �삤瑜몄そ�뿉�꽌 遺��꽣 len留뚰겮 吏ㅻ씪�꽌 諛섑솚
 	 *
-	 * @param s 소스 스트링
-	 * @param len 자를 길이
+	 * @param s �냼�뒪 �뒪�듃留�
+	 * @param len �옄瑜� 湲몄씠
 	 *
-	 * @return 주어진 스트링을 len만큼 오른쪽에서 자른 값
+	 * @return 二쇱뼱吏� �뒪�듃留곸쓣 len留뚰겮 �삤瑜몄そ�뿉�꽌 �옄瑜� 媛�
 	 */
 	public static String right(String s, int len) {
 	  if (s == null)
@@ -931,12 +931,12 @@ label0:
 	/**
 	 * right
 	 *
-	 * 주어진 값을 왼쪽에서 부터 len만큼 짤라서 반환
+	 * 二쇱뼱吏� 媛믪쓣 �쇊履쎌뿉�꽌 遺��꽣 len留뚰겮 吏ㅻ씪�꽌 諛섑솚
 	 *
-	 * @param s 소스 스트링
-	 * @param len 자를 길이
+	 * @param s �냼�뒪 �뒪�듃留�
+	 * @param len �옄瑜� 湲몄씠
 	 *
-	 * @return 주어진 스트링을 len만큼 왼쪽에서 자른 값
+	 * @return 二쇱뼱吏� �뒪�듃留곸쓣 len留뚰겮 �쇊履쎌뿉�꽌 �옄瑜� 媛�
 	 */
 	public static String left(String s, int len) {
 	  if (s == null)
@@ -950,12 +950,12 @@ label0:
 	/**
 	 * right
 	 *
-	 * 주어진 값을 왼쪽에서 부터 len만큼 짤라서 반환
+	 * 二쇱뼱吏� 媛믪쓣 �쇊履쎌뿉�꽌 遺��꽣 len留뚰겮 吏ㅻ씪�꽌 諛섑솚
 	 *
-	 * @param s 소스 스트링
-	 * @param len 자를 길이
+	 * @param s �냼�뒪 �뒪�듃留�
+	 * @param len �옄瑜� 湲몄씠
 	 *
-	 * @return 주어진 스트링을 len만큼 왼쪽에서 자른 값
+	 * @return 二쇱뼱吏� �뒪�듃留곸쓣 len留뚰겮 �쇊履쎌뿉�꽌 �옄瑜� 媛�
 	 */
 	static public String cutLeft(String s, int len, String replace_str) {
 	  if (s == null){
@@ -968,14 +968,14 @@ label0:
 	}	
 	
 	/**
-	 * 영문 or 한글 or 숫자로 된 문자열인지  체크(정규표현식)
+	 * �쁺臾� or �븳湲� or �닽�옄濡� �맂 臾몄옄�뿴�씤吏�  泥댄겕(�젙洹쒗몴�쁽�떇)
 	 * 
-	 * @param s	소스 스트링
-	 * @return	정규표현식을 만족하면 true, 만족하지 않으면 false
+	 * @param s	�냼�뒪 �뒪�듃留�
+	 * @return	�젙洹쒗몴�쁽�떇�쓣 留뚯”�븯硫� true, 留뚯”�븯吏� �븡�쑝硫� false
 	 */
 	public static boolean isAlphaHangulNumOnly(String s) {
 		
-		Pattern pattern = Pattern.compile("^[a-zA-Zㄱ-힣0-9]+");
+		Pattern pattern = Pattern.compile("^[a-zA-Z�꽦-�옡0-9]+");
 		Matcher match = pattern.matcher(s);
 		
 		if(match.find()){	
@@ -986,14 +986,14 @@ label0:
 	}
 	
 	/**
-	 * 한글로만 된 문자열인지 체크(정규표현식)
+	 * �븳湲�濡쒕쭔 �맂 臾몄옄�뿴�씤吏� 泥댄겕(�젙洹쒗몴�쁽�떇)
 	 * 
-	 * @param s	소스 스트링
-	 * @return	정규표현식을 만족하면 true, 만족하지 않으면 false
+	 * @param s	�냼�뒪 �뒪�듃留�
+	 * @return	�젙洹쒗몴�쁽�떇�쓣 留뚯”�븯硫� true, 留뚯”�븯吏� �븡�쑝硫� false
 	 */
 	public static boolean isHangulOnly(String s) {
 		
-		Pattern pattern = Pattern.compile("^[ㄱ-힣]+");
+		Pattern pattern = Pattern.compile("^[�꽦-�옡]+");
 		Matcher match = pattern.matcher(s);
 		
 		if(match.find()){	
@@ -1005,9 +1005,9 @@ label0:
 	}
 	
 	/**
-	 * 이메일 형식 체크 (정규표현식)
-	 * @param s	소스 스트링
-	 * @return	정규표현식을 만족하면 true, 만족하지 않으면 false
+	 * �씠硫붿씪 �삎�떇 泥댄겕 (�젙洹쒗몴�쁽�떇)
+	 * @param s	�냼�뒪 �뒪�듃留�
+	 * @return	�젙洹쒗몴�쁽�떇�쓣 留뚯”�븯硫� true, 留뚯”�븯吏� �븡�쑝硫� false
 	 */
 	public static boolean isEmail(String s) {
 		
@@ -1017,13 +1017,13 @@ label0:
 	}
 	
 	/**
-	 * isAcceptedAlpha (정규표현식 - 한글을 제외한 영문, 특수문자 허용, 공백 불허)
-	 * @param s 소스 스트링
-	 * @return 정규표현식을 만족하면 true, 만족하지 않으면 false
+	 * isAcceptedAlpha (�젙洹쒗몴�쁽�떇 - �븳湲��쓣 �젣�쇅�븳 �쁺臾�, �듅�닔臾몄옄 �뿀�슜, 怨듬갚 遺덊뿀)
+	 * @param s �냼�뒪 �뒪�듃留�
+	 * @return �젙洹쒗몴�쁽�떇�쓣 留뚯”�븯硫� true, 留뚯”�븯吏� �븡�쑝硫� false
 	 */
 	public static boolean isAcceptedAlpha(String s) {
 		
-		Pattern pattern = Pattern.compile("[^가-힣\\s]");
+		Pattern pattern = Pattern.compile("[^媛�-�옡\\s]");
 	    Matcher match = pattern.matcher(s);
 	    
 		if(match.find()){	

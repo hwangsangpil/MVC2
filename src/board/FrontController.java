@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import board.command.Cmd;
 import board.command.ConstructionListCmd;
+import board.command.ConstructionModCmd;
+import board.command.LogOutCmd;
 import board.command.LoginOkCmd;
 
 /**
@@ -59,11 +61,27 @@ public class FrontController extends HttpServlet {
 			//viewPage="/test.jsp";
 		}
 		
+		if(cmdURI.equals("/logOut.bbs")){
+			cmd = new LogOutCmd();
+			cmd.execute(request, response);
+			viewPage = "/index.jsp";
+		}
+		
 		if(cmdURI.equals("/constructionList.bbs")){
 			cmd = new ConstructionListCmd();
 			cmd.execute(request, response);
 			viewPage = "/construction/constructionList.jsp";
 			//viewPage="/test.jsp";
+		}
+		
+		if(cmdURI.equals("/constructionMod.bbs")){
+			cmd = new ConstructionModCmd();
+			cmd.execute(request, response);
+			viewPage = "/construction/constructionMod.jsp";
+		}
+		
+		if(cmdURI.equals("/constructionModOk.bbs")){
+			viewPage = "/construction/constructionList.jsp";
 		}
 		
 		RequestDispatcher dis = request.getRequestDispatcher(viewPage);

@@ -8,34 +8,28 @@
 <%@page import="board.model.ConstructionDAO"%>
 <%@page import="java.net.URLEncoder"%>
 <%@page import="java.net.URLDecoder"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
-
-int ConstNum = Integer.parseInt(StringUtil.nchk(request.getParameter("ConstNum"), "1"));
-int pageno = Integer.parseInt(StringUtil.nchk(request.getParameter("pageno"), "1"));
-
-String searchKeyword = URLDecoder.decode(StringUtil.nchk(request.getParameter("searchKeyword"),""),"UTF-8");
-String[] checked=request.getParameterValues("check");
-
 request.setCharacterEncoding("UTF-8");
+
+String pageno = (String)session.getAttribute("pageno");
+String[] checked=(String[])session.getAttribute("checked");
+
 ConstructionDAO dao = new ConstructionDAO();
-
-//ArrayList<ConstructionDTO> list = new ArrayList<ConstructionDTO>();
-//list = dao.selectConstructionInfo(ConstNum);
-
-ConstructionDTO dto=dao.selectConstructionInfo(ConstNum);
 
 %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <title>공고수정</title>
+<c:forEach items="${selectConstructionInfo}" var="dto"></c:forEach>
 <%@ include file="/include/inc_header.jsp"%>
-<%if("일반관리자".equals(role)){ %>
+<%-- <%if("일반관리자".equals(role)){ %>
 <script type="text/javascript">
 		alert("<%=role%>는 권한이없습니다.");
 		history.back();
 <%}%>
-</script>
+</script> --%>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
 <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 <script type="text/javascript">
@@ -114,7 +108,7 @@ $(document).ready(function() {
 
 function fnc_list(){
 	location.href = "/construction/constructionList.jsp?pageno="+<%=pageno%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("1")){%>+"&check="+<%=checked[i]%><%}}}%>
+	<%-- <%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("1")){%>+"&check="+<%=checked[i]%><%}}}%>
 	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("2")){%>+"&check="+<%=checked[i]%><%}}}%>
 	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("3")){%>+"&check="+<%=checked[i]%><%}}}%>
 	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("4")){%>+"&check="+<%=checked[i]%><%}}}%>
@@ -122,7 +116,7 @@ function fnc_list(){
 	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("6")){%>+"&check="+<%=checked[i]%><%}}}%>
 	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("7")){%>+"&check="+<%=checked[i]%><%}}}%>
 	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("8")){%>+"&check="+<%=checked[i]%><%}}}%>
-			+"&searchKeyword="+encodeURI(encodeURIComponent("<%=searchKeyword%>"));                                                   
+			+"&searchKeyword="+encodeURI(encodeURIComponent("<%=searchKeyword%>"));     --%>                                               
 }
 
 function checkForm() {
@@ -148,16 +142,6 @@ function checkForm() {
 		return;
 	}
 	 */
-	registForm.action="constructionModOk.jsp?ConstNum="+<%=ConstNum%>+"&pageno="+<%=pageno%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("1")){%>+"&check="+<%=checked[i]%><%}}}%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("2")){%>+"&check="+<%=checked[i]%><%}}}%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("3")){%>+"&check="+<%=checked[i]%><%}}}%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("4")){%>+"&check="+<%=checked[i]%><%}}}%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("5")){%>+"&check="+<%=checked[i]%><%}}}%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("6")){%>+"&check="+<%=checked[i]%><%}}}%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("7")){%>+"&check="+<%=checked[i]%><%}}}%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("8")){%>+"&check="+<%=checked[i]%><%}}}%>
-			+"&searchKeyword="+encodeURI(encodeURIComponent("<%=searchKeyword%>"));                                                   
 	registForm.submit();
 }
 
@@ -211,57 +195,57 @@ function hitEnterKey(e){
 								<div class="panel panel-green">
 	                                <div class="panel-heading">공고수정</div>
 	                                <div class="panel-body pan">
-	                                    <form id="registForm" name="frm" method="post">
+	                                    <form id="registForm" name="frm" method="post" action="constructionModOk.bbs">
 	                                    	
 	                                    	<div class="form-body pal">
 													<div class="form-group">
 														<div class="input-icon right">
 															<i class="fa fa-pencil"></i> <input id="constName"
 																name="constName" type="text" onclick="notMod();"
-																class="form-control" tabindex="1" onKeypress="hitEnterKey(event)" value="<%=dto.getConstName()%>" onMouseOver="javascript: this.value='공고명';" onmouseout="javascript: this.value='<%=dto.getConstName()%>';" readonly/>
+																class="form-control" tabindex="1" onKeypress="hitEnterKey(event)" value="${dto.getConstName()}" onMouseOver="javascript: this.value='공고명';" onmouseout="javascript: this.value='${dto.getConstName()}';" readonly/>
 														</div>
 													</div>
 													<div class="form-group">
 														<div class="input-icon right">
 															<i class="fa fa-balance-scale"></i> <input id="constWay"
-																name="constWay" type="text" placeholder="계약방법" onMouseOver="javascript: this.value='계약방법';" onmouseout="javascript: this.value='<%=dto.getConstWay()%>';" onclick="javascript: this.value='<%=dto.getConstWay()%>';"
-																class="form-control" tabindex="2" onKeypress="hitEnterKey(event)" value="<%=dto.getConstWay()%>"/>
+																name="constWay" type="text" placeholder="계약방법" onMouseOver="javascript: this.value='계약방법';" onmouseout="javascript: this.value='${dto.getConstWay()}';" onclick="javascript: this.value='${dto.getConstWay()}';"
+																class="form-control" tabindex="2" onKeypress="hitEnterKey(event)" value="${dto.getConstWay()}"/>
 														</div>
 													</div>
 													<div class="form-group">
 														<div class="input-icon right">
-															<i class="fa fa-map-marker"></i> <input id="constArea" name="constArea" onMouseOver="javascript: this.value='지역제한';" onmouseout="javascript: this.value='<%=dto.getConstArea()%>';" onclick="javascript: this.value='<%=dto.getConstArea()%>';"
-															type="text" placeholder="지역제한" class="form-control" tabindex="3" onKeypress="hitEnterKey(event)" value="<%=dto.getConstArea()%>"/>
+															<i class="fa fa-map-marker"></i> <input id="constArea" name="constArea" onMouseOver="javascript: this.value='지역제한';" onmouseout="javascript: this.value='${dto.getConstArea()}';" onclick="javascript: this.value='${dto.getConstArea()}';"
+															type="text" placeholder="지역제한" class="form-control" tabindex="3" onKeypress="hitEnterKey(event)" value="${dto.getConstArea()}"/>
 														</div>
 													</div>
 													<div class="form-group">
 														<div class="input-icon right">
-															<i class="fa fa-bar-chart"></i> <input id="constPrice" name="constPrice" onMouseOver="javascript: this.value='예가변동폭';" onmouseout="javascript: this.value='<%=dto.getConstPrice()%>';" onclick="javascript: this.value='<%=dto.getConstPrice()%>';"
-															type="text" placeholder="예가변동폭" class="form-control" tabindex="4" onKeypress="hitEnterKey(event)" value="<%=dto.getConstPrice()%>"/>
+															<i class="fa fa-bar-chart"></i> <input id="constPrice" name="constPrice" onMouseOver="javascript: this.value='예가변동폭';" onmouseout="javascript: this.value='${dto.getConstPrice()}';" onclick="javascript: this.value='${dto.getConstPrice()}';"
+															type="text" placeholder="예가변동폭" class="form-control" tabindex="4" onKeypress="hitEnterKey(event)" value="${dto.getConstPrice()}"/>
 														</div>
 													</div>
 													<div class="form-group">
 														<div class="input-icon right">
-															<i class="fa fa-line-chart"></i> <input id="constLower" name="constLower" onMouseOver="javascript: this.value='투찰하한율';" onmouseout="javascript: this.value='<%=dto.getConstLower()%>';" onclick="javascript: this.value='<%=dto.getConstLower()%>';"
-															type="text" placeholder="투찰하한율" class="form-control" tabindex="5" onKeypress="hitEnterKey(event)" value="<%=dto.getConstLower()%>"/>
+															<i class="fa fa-line-chart"></i> <input id="constLower" name="constLower" onMouseOver="javascript: this.value='투찰하한율';" onmouseout="javascript: this.value='${dto.getConstLower()}';" onclick="javascript: this.value='${dto.getConstLower()}';"
+															type="text" placeholder="투찰하한율" class="form-control" tabindex="5" onKeypress="hitEnterKey(event)" value="${dto.getConstLower()}"/>
 														</div>
 													</div>
 													<div class="form-group">
 														<div class="input-icon right">
-															<i class="fa fa-calendar"></i> <input id="constOpening" name="constOpening" onMouseOver="javascript: this.value='개찰일';" onmouseout="javascript: this.value='<%=dto.getConstOpening()%>';" onclick="javascript: this.value='<%=dto.getConstOpening()%>';"
-															type="text" placeholder="개찰일" class="form-control" tabindex="6" onKeypress="hitEnterKey(event)" value="<%=dto.getConstOpening()%>"/>
+															<i class="fa fa-calendar"></i> <input id="constOpening" name="constOpening" onMouseOver="javascript: this.value='개찰일';" onmouseout="javascript: this.value='${dto.getConstOpening()}';" onclick="javascript: this.value='${dto.getConstOpening()}';"
+															type="text" placeholder="개찰일" class="form-control" tabindex="6" onKeypress="hitEnterKey(event)" value="${dto.getConstOpening()}"/>
 														</div>
 													</div>
 													<div class="form-group">
 														<div class="input-icon right">
-															<i class="fa fa-university"></i> <input id="constInstitution" name="constInstitution" onMouseOver="javascript: this.value='공고기관';" onmouseout="javascript: this.value='<%=dto.getConstInstitution()%>';" onclick="javascript: this.value='<%=dto.getConstInstitution()%>';"
-															type="text" placeholder="공고기관" class="form-control" tabindex="7" onKeypress="hitEnterKey(event)" value="<%=dto.getConstInstitution()%>"/>
+															<i class="fa fa-university"></i> <input id="constInstitution" name="constInstitution" onMouseOver="javascript: this.value='공고기관';" onmouseout="javascript: this.value='${dto.getConstInstitution()}';" onclick="javascript: this.value='${dto.getConstInstitution()}';"
+															type="text" placeholder="공고기관" class="form-control" tabindex="7" onKeypress="hitEnterKey(event)" value="${dto.getConstInstitution()}"/>
 														</div>
 													</div>
 													<div class="form-group">
 														<div class="input-icon right">
-															<i class="fa fa-percent"></i> <input id="constPercent" name="constPercent" onMouseOver="javascript: this.value='사정률';" onmouseout="javascript: this.value='<%=dto.getConstPercent()%>';" onclick="javascript: this.value='<%=dto.getConstPercent()%>';"
-															type="text" placeholder="사정률" class="form-control" tabindex="8" onKeypress="hitEnterKey(event)" value="<%=dto.getConstPercent()%>"/>
+															<i class="fa fa-percent"></i> <input id="constPercent" name="constPercent" onMouseOver="javascript: this.value='사정률';" onmouseout="javascript: this.value='${dto.getConstPercent()}';" onclick="javascript: this.value='${dto.getConstPercent()}';"
+															type="text" placeholder="사정률" class="form-control" tabindex="8" onKeypress="hitEnterKey(event)" value="${dto.getConstPercent()}"/>
 														</div>
 													</div>
 													

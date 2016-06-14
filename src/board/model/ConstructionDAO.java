@@ -28,7 +28,7 @@ public class ConstructionDAO {
 	}
 	
 	/*
-	 * 占쏙옙占� 占쏙옙占쏙옙트 占쌀뤄옙占쏙옙占쏙옙 占쌨소듸옙
+	 * �뜝�룞�삕�뜝占� �뜝�룞�삕�뜝�룞�삕�듃 �뜝��琉꾩삕�뜝�룞�삕�뜝�룞�삕 �뜝�뙣�냼�벝�삕
 	 */
 	public int cntTotalMember(String searchKeyword, String[] checked){
 		ResultSet rs = null;
@@ -38,6 +38,9 @@ public class ConstructionDAO {
 		int result = 0;
 		int cnt=0;
 		
+		String[] query={"CONSTRUCTION_NAME","CONSTRUCTION_WAY","CONSTRUCTION_AREA",
+				"CONSTRUCTION_PRICE", "CONSTRUCTION_LOWER", "CONSTRUCTION_OPENING",
+				"CONSTRUCTION_INSTITUTION", "CONSTRUCTION_PERCENT"};
 		
 		try {
 		conn = ds.getConnection();
@@ -47,29 +50,8 @@ public class ConstructionDAO {
 		sql.append("WHERE DEL_YN <> 'Y' 														\n");
 		if(checked != null){
 			for(int i=0; i<checked.length; i++){
-				if(checked[i].equals("1")){
-					sql.append("AND CONSTRUCTION_NAME LIKE CONCAT('%',?,'%')			\n");
-				}
-				if(checked[i].equals("2")){
-					sql.append("AND CONSTRUCTION_WAY LIKE CONCAT('%',?,'%')			\n");
-				}
-				if(checked[i].equals("3")){
-					sql.append("AND CONSTRUCTION_AREA LIKE CONCAT('%',?,'%')			\n");
-				}
-				if(checked[i].equals("4")){
-					sql.append("AND CONSTRUCTION_PRICE LIKE CONCAT('%',?,'%')			\n");
-				}
-				if(checked[i].equals("5")){
-					sql.append("AND CONSTRUCTION_LOWER LIKE CONCAT('%',?,'%')			\n");
-				}
-				if(checked[i].equals("6")){
-					sql.append("AND CONSTRUCTION_OPENING LIKE CONCAT('%',?,'%')			\n");
-				}
-				if(checked[i].equals("7")){
-					sql.append("AND CONSTRUCTION_INSTITUTION LIKE CONCAT('%',?,'%')			\n");
-				}
-				if(checked[i].equals("8")){
-					sql.append("AND CONSTRUCTION_PERCENT LIKE CONCAT('%',?,'%')			\n");
+				if(checked[i].equals(i)){
+					sql.append("AND " + query[i] + " LIKE CONCAT('%',?,'%')			\n");
 				}
 			}	
 		}else if(searchKeyword.length() > 0){
@@ -80,30 +62,10 @@ public class ConstructionDAO {
 			pstmt = conn.prepareStatement(sql.toString());
 			if(checked != null){
 				for(int i=0; i<checked.length; i++){
-					if(checked[i].equals("1")){
+					if(checked[i].equals("i")){
 						pstmt.setString(++cnt, searchKeyword);
 					}
-					if(checked[i].equals("2")){
-						pstmt.setString(++cnt, searchKeyword);
-					}
-					if(checked[i].equals("3")){
-						pstmt.setString(++cnt, searchKeyword);
-					}
-					if(checked[i].equals("4")){
-						pstmt.setString(++cnt, searchKeyword);
-					}
-					if(checked[i].equals("5")){
-						pstmt.setString(++cnt, searchKeyword);
-					}
-					if(checked[i].equals("6")){
-						pstmt.setString(++cnt, searchKeyword);
-					}
-					if(checked[i].equals("7")){
-						pstmt.setString(++cnt, searchKeyword);
-					}
-					if(checked[i].equals("8")){
-						pstmt.setString(++cnt, searchKeyword);
-					}
+					
 				}	
 		}else if(searchKeyword.length() > 0){
 				pstmt.setString(++cnt, searchKeyword);
@@ -245,7 +207,7 @@ public class ConstructionDAO {
 	
 	
 	/*
-	 * 占쏙옙占� 占쏙옙占쏙옙트 占쏙옙占쏙옙 占쌀뤄옙占쏙옙占쏙옙
+	 * �뜝�룞�삕�뜝占� �뜝�룞�삕�뜝�룞�삕�듃 �뜝�룞�삕�뜝�룞�삕 �뜝��琉꾩삕�뜝�룞�삕�뜝�룞�삕
 	 */
 	public ArrayList<ConstructionDTO> selectConstructionList(String searchKeyword, int pageno, int totalcnt, String[] checked){
 		ArrayList<ConstructionDTO> list = new ArrayList<ConstructionDTO>();
@@ -274,7 +236,10 @@ public class ConstructionDAO {
 			System.out.println("checked[]:    "+checked[i]);
 			}
 		}*/
-
+		String[] query={"CONSTRUCTION_NAME","CONSTRUCTION_WAY","CONSTRUCTION_AREA",
+				"CONSTRUCTION_PRICE", "CONSTRUCTION_LOWER", "CONSTRUCTION_OPENING",
+				"CONSTRUCTION_INSTITUTION", "CONSTRUCTION_PERCENT"};
+		
 		try {
 		conn = ds.getConnection();
 		StringBuffer sql = new StringBuffer();
@@ -285,29 +250,8 @@ public class ConstructionDAO {
 		sql.append("WHERE DEL_YN <> 'Y' 														\n");
 		if(checked != null){
 			for(int i=0; i<checked.length; i++){
-				if(checked[i].equals("1")){
-					sql.append("AND CONSTRUCTION_NAME LIKE CONCAT('%',?,'%')			\n");
-				}
-				if(checked[i].equals("2")){
-					sql.append("AND CONSTRUCTION_WAY LIKE CONCAT('%',?,'%')			\n");
-				}
-				if(checked[i].equals("3")){
-					sql.append("AND CONSTRUCTION_AREA LIKE CONCAT('%',?,'%')			\n");
-				}
-				if(checked[i].equals("4")){
-					sql.append("AND CONSTRUCTION_PRICE LIKE CONCAT('%',?,'%')			\n");
-				}
-				if(checked[i].equals("5")){
-					sql.append("AND CONSTRUCTION_LOWER LIKE CONCAT('%',?,'%')			\n");
-				}
-				if(checked[i].equals("6")){
-					sql.append("AND CONSTRUCTION_OPENING LIKE CONCAT('%',?,'%')			\n");
-				}
-				if(checked[i].equals("7")){
-					sql.append("AND CONSTRUCTION_INSTITUTION LIKE CONCAT('%',?,'%')			\n");
-				}
-				if(checked[i].equals("8")){
-					sql.append("AND CONSTRUCTION_PERCENT LIKE CONCAT('%',?,'%')			\n");
+				if(checked[i].equals("i")){
+					sql.append("AND " + query[i] + " LIKE CONCAT('%',?,'%')			\n");
 				}
 			}	
 		}else if(searchKeyword.length() > 0){
@@ -326,28 +270,7 @@ public class ConstructionDAO {
 			pstmt = conn.prepareStatement(sql.toString());
 			if(checked != null){
 				for(int i=0; i<checked.length; i++){
-					if(checked[i].equals("1")){
-						pstmt.setString(nCnt++, searchKeyword);
-					}
-					if(checked[i].equals("2")){
-						pstmt.setString(nCnt++, searchKeyword);
-					}
-					if(checked[i].equals("3")){
-						pstmt.setString(nCnt++, searchKeyword);
-					}
-					if(checked[i].equals("4")){
-						pstmt.setString(nCnt++, searchKeyword);
-					}
-					if(checked[i].equals("5")){
-						pstmt.setString(nCnt++, searchKeyword);
-					}
-					if(checked[i].equals("6")){
-						pstmt.setString(nCnt++, searchKeyword);
-					}
-					if(checked[i].equals("7")){
-						pstmt.setString(nCnt++, searchKeyword);
-					}
-					if(checked[i].equals("8")){
+					if(checked[i].equals("i")){
 						pstmt.setString(nCnt++, searchKeyword);
 					}
 				}	
@@ -549,7 +472,7 @@ public class ConstructionDAO {
 
 	
 	/*
-	 * 공사 리스트 가져오기
+	 * 怨듭궗 由ъ뒪�듃 媛��졇�삤湲�
 	 */
 	
 	public ArrayList<ConstructionDTO> selectConstructionList()throws SQLException{
@@ -685,7 +608,7 @@ public class ConstructionDAO {
 	}
 	
 	/*
-	 * 공고 삭제
+	 * 怨듦퀬 �궘�젣
 	 */
 	public int deleteConstruction(int ConstNum){
 		ResultSet rs = null;
@@ -752,7 +675,7 @@ public class ConstructionDAO {
 	}
 	
 	/*
-	 * 공고 영구 삭제
+	 * 怨듦퀬 �쁺援� �궘�젣
 	 */
 	public int deleteConstruction2(int ConstNum){
 		ResultSet rs = null;
@@ -764,7 +687,7 @@ public class ConstructionDAO {
 		try {
 			conn = ds.getConnection();
 		StringBuffer sql = new StringBuffer();
-		/*	두개 이상 삭제 할 때
+		/*	�몢媛� �씠�긽 �궘�젣 �븷 �븣
 		sql.append("DELETE TB_CONSTRUCTION, TB_BUSINESS FROM													\n");
 		sql.append("TB_CONSTRUCTION	JOIN TB_BUSINESS								\n");
 		sql.append("ON TB_CONSTRUCTION.DEL_YN = TB_BUSINESS.DEL_YN 												\n");

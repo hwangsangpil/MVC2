@@ -5,7 +5,12 @@
 <head>
     <title>Login</title>
     <%@ include file="/include/inc_header.jsp"%>
-	<script language="JavaScript">
+<%
+if(session!=null){
+	session.invalidate();
+}
+%>    
+    	<script>
 	
 		$(document).ready(function() {
 			$("#id").focus();
@@ -39,7 +44,7 @@
     <div class="page-form">
         <div class="panel panel-blue">
             <div class="panel-body pan">
-                <form action="loginOk.bbs" id="loginForm" method="post" class="form-horizontal">
+                <form action="/login/loginOk.jsp" id="loginForm" method="post" class="form-horizontal">
 				<input type="hidden" name="returnUrl" value="L2FkbWluL21haW4vbWFpbi5kbw"/>
 				<br/><br/>
                 <div class="form-body pal" style="margin-top: -135px;">
