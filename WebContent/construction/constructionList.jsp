@@ -93,7 +93,7 @@ $(document).ready(function() {
 		else if (confirm("정말 수정하시겠습니까??") == true){    //확인
 			request.setAttribute("constNum",constNum);
 			System.out.println("경로이동");
-			location.href("constructionMod.bbs");
+			location.href="constructionMod.bbs";
 			<%-- location.href = "constructionMod.jsp?ConstNum=" + ConstNum + "&pageno="+<%=pageno%>
 	    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("1")){%>+"&check="+<%=checked[i]%><%}}}%>
 	    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("2")){%>+"&check="+<%=checked[i]%><%}}}%>
@@ -220,9 +220,9 @@ $(document).ready(function() {
 <%-- 													 
 													<td <%if("전체관리자".equals(role)){%>onclick="constructionMod(${dto.getConstNum()})"<%}else{%>onclick="alert('<%=role%>는 권한이없습니다')" <%}%>  onclick="event.cancelBubble = true;"><button type="button" class="btn btn-primary" tabindex="12" >수정</button></td>
 
- --%>												<td> <button type="button" class="btn btn-primary" tabindex="11" onclick="event.cancelBubble = true;" onclick="javascript:constructionMod(${dto.getConstNum()});">  수정</button></td>
+ --%>												<td> <button type="button" class="btn btn-primary" tabindex="11"  onclick="constructionMod(${dto.getConstNum()});return false;">  수정</button></td>
 													 
-													<td> <button type="button" class="btn btn-primary" tabindex="12" onclick="constructionDel(${dto.getConstNum()})">삭제</button></td>
+													<td> <button type="button" class="btn btn-primary" tabindex="12" onclick="constructionDel(${dto.getConstNum()});return false;">삭제</button></td>
 																
 																</tr>
 														</c:forEach>
