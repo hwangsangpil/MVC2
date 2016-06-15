@@ -11,7 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import board.command.Cmd;
 import board.command.ConstructionListCmd;
+import board.command.ConstructionListFirstCmd;
 import board.command.ConstructionModCmd;
+import board.command.ConstructionModListCmd;
+import board.command.ConstructionModOkCmd;
 import board.command.LogOutCmd;
 import board.command.LoginOkCmd;
 
@@ -47,6 +50,7 @@ public class FrontController extends HttpServlet {
 		//doGet(request, response);
 		
 		request.setCharacterEncoding("UTF-8");
+		
 		String requestURI = request.getRequestURI();
 		String contextPath = request.getContextPath();
 		String cmdURI = requestURI.substring(contextPath.length());
@@ -58,13 +62,18 @@ public class FrontController extends HttpServlet {
 			cmd = new LoginOkCmd();
 			cmd.execute(request, response);
 			viewPage = "/home/home.jsp";
-			//viewPage="/test.jsp";
 		}
 		
 		if(cmdURI.equals("/logOut.bbs")){
 			cmd = new LogOutCmd();
 			cmd.execute(request, response);
 			viewPage = "/index.jsp";
+		}
+		
+		if(cmdURI.equals("/constructionListFirst.bbs")){
+			cmd = new ConstructionListFirstCmd();
+			cmd.execute(request, response);
+			viewPage = "/construction/constructionList.jsp";
 		}
 		
 		if(cmdURI.equals("/constructionList.bbs")){
@@ -82,8 +91,18 @@ public class FrontController extends HttpServlet {
 		}
 		
 		if(cmdURI.equals("/constructionModOk.bbs")){
-			viewPage = "/construction/constructionList.jsp";
+			cmd = new ConstructionModOkCmd();
+			cmd.execute(request,response);
+			viewPage = "constructionList.bbs";
 		}
+		
+		if(cmdURI.equals("/constructionModList.bbs")){
+			cmd = new ConstructionModListCmd();
+			cmd.execute(request,response);
+			viewPage = "constructionList.bbs";
+		}
+		
+		
 		
 		RequestDispatcher dis = request.getRequestDispatcher(viewPage);
 		dis.forward(request, response);

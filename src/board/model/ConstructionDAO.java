@@ -27,10 +27,8 @@ public class ConstructionDAO {
 		}
 	}
 	
-	/*
-	 * �뜝�룞�삕�뜝占� �뜝�룞�삕�뜝�룞�삕�듃 �뜝��琉꾩삕�뜝�룞�삕�뜝�룞�삕 �뜝�뙣�냼�벝�삕
-	 */
-	public int cntTotalMember(String searchKeyword, String[] checked){
+	//공고관리 목록 갯수 구하기
+	public int constructionListTotalCnt(String searchKeyword, String[] checked){
 		ResultSet rs = null;
 		PreparedStatement pstmt = null;
 		Connection conn = null;
@@ -48,25 +46,52 @@ public class ConstructionDAO {
 		sql.append("SELECT COUNT(*)	cnt										\n");
 		sql.append("FROM TB_CONSTRUCTION 											\n");
 		sql.append("WHERE DEL_YN <> 'Y' 														\n");
+		
+		//체크박스 체크여부 확인
 		if(checked != null){
+			sql.append("AND ( ");
+			//쿼리가 2개 이상이라면 OR 를 붙여주기 위함
+			int count=0;
+			//체크박스의 길이만큼
 			for(int i=0; i<checked.length; i++){
-				if(checked[i].equals(i)){
-					sql.append("AND " + query[i] + " LIKE CONCAT('%',?,'%')			\n");
+				//쿼리의 갯수만큼 체크박스의 값이 맞는지 비교하기 위함
+				for(int j=0; j<query.length; j++){
+					//체크박스의 값이 맞으면 쿼리 추가
+					if(checked[i].equals(String.valueOf(j))){
+						++count;
+						//체크박스의 길이가 2개이상 이라면
+						//쿼리추가전에 OR 추가
+						if(2<=checked.length && 2<=count){
+							sql.append(" OR ");
+						}
+						sql.append(""+ query[j] + " LIKE CONCAT('%',?,'%') \n");
+					}
 				}
-			}	
+			}
+			//"AND (" 괄호 닫음 
+			sql.append(")");
+		//체크박스가 체크되어있지 않고 검색되었을때	
 		}else if(searchKeyword.length() > 0){
-			sql.append("AND ( CONSTRUCTION_NAME LIKE CONCAT('%',?,'%')  OR CONSTRUCTION_WAY LIKE CONCAT('%',?,'%')	\n");
-			sql.append("OR CONSTRUCTION_AREA LIKE CONCAT('%',?,'%')  OR CONSTRUCTION_PRICE LIKE CONCAT('%',?,'%')  OR CONSTRUCTION_LOWER LIKE CONCAT('%',?,'%')	\n");
-			sql.append("OR CONSTRUCTION_OPENING LIKE CONCAT('%',?,'%')  OR CONSTRUCTION_INSTITUTION LIKE CONCAT('%',?,'%')  OR CONSTRUCTION_PERCENT LIKE CONCAT('%',?,'%'))	\n");
+			sql.append("AND ( CONSTRUCTION_NAME LIKE CONCAT('%',?,'%')				\n");
+			sql.append("OR CONSTRUCTION_WAY LIKE CONCAT('%',?,'%')					\n");
+			sql.append("OR CONSTRUCTION_AREA LIKE CONCAT('%',?,'%')					\n");
+			sql.append("OR CONSTRUCTION_PRICE LIKE CONCAT('%',?,'%')					\n");
+			sql.append("OR CONSTRUCTION_LOWER LIKE CONCAT('%',?,'%')					\n");
+			sql.append("OR CONSTRUCTION_OPENING LIKE CONCAT('%',?,'%')					\n");
+			sql.append("OR CONSTRUCTION_INSTITUTION LIKE CONCAT('%',?,'%')					\n");
+			sql.append("OR CONSTRUCTION_PERCENT LIKE CONCAT('%',?,'%'))					\n");
 		}
 			pstmt = conn.prepareStatement(sql.toString());
+			//위에서 추가된 쿼리 ? 에 값을 대입
 			if(checked != null){
 				for(int i=0; i<checked.length; i++){
-					if(checked[i].equals("i")){
-						pstmt.setString(++cnt, searchKeyword);
+					for(int j=0; j<query.length; j++){
+						if(checked[i].equals(String.valueOf(j))){
+							pstmt.setString(++cnt, searchKeyword);
+						}
 					}
-					
-				}	
+				}
+		//체크박스가 체크되어있지 않고 검색되었을때		
 		}else if(searchKeyword.length() > 0){
 				pstmt.setString(++cnt, searchKeyword);
 				pstmt.setString(++cnt, searchKeyword);
@@ -205,11 +230,8 @@ public class ConstructionDAO {
 		return result;
 	}
 	
-	
-	/*
-	 * �뜝�룞�삕�뜝占� �뜝�룞�삕�뜝�룞�삕�듃 �뜝�룞�삕�뜝�룞�삕 �뜝��琉꾩삕�뜝�룞�삕�뜝�룞�삕
-	 */
-	public ArrayList<ConstructionDTO> selectConstructionList(String searchKeyword, int pageno, int totalcnt, String[] checked){
+	//공고관리 리스트 조회
+	public ArrayList<ConstructionDTO> constructionList(String searchKeyword, int pageno, int totalcnt, String[] checked){
 		ArrayList<ConstructionDTO> list = new ArrayList<ConstructionDTO>();
 		
 		ResultSet rs = null;
@@ -236,6 +258,7 @@ public class ConstructionDAO {
 			System.out.println("checked[]:    "+checked[i]);
 			}
 		}*/
+		
 		String[] query={"CONSTRUCTION_NAME","CONSTRUCTION_WAY","CONSTRUCTION_AREA",
 				"CONSTRUCTION_PRICE", "CONSTRUCTION_LOWER", "CONSTRUCTION_OPENING",
 				"CONSTRUCTION_INSTITUTION", "CONSTRUCTION_PERCENT"};
@@ -248,12 +271,30 @@ public class ConstructionDAO {
 		sql.append("FROM 														\n");
 		sql.append("TB_CONSTRUCTION 														\n");
 		sql.append("WHERE DEL_YN <> 'Y' 														\n");
+		//체크박스 체크여부 확인
 		if(checked != null){
+			sql.append("AND ( ");
+			//쿼리가 2개 이상이라면 OR 를 붙여주기 위함
+			int count=0;
+			//체크박스의 길이만큼
 			for(int i=0; i<checked.length; i++){
-				if(checked[i].equals("i")){
-					sql.append("AND " + query[i] + " LIKE CONCAT('%',?,'%')			\n");
+				//쿼리의 갯수만큼 체크박스의 값이 맞는지 비교하기 위함
+				for(int j=0; j<query.length; j++){
+					//체크박스의 값이 맞으면 쿼리 추가
+					if(checked[i].equals(String.valueOf(j))){
+						++count;
+						//체크박스의 길이가 2개이상 이라면
+						//쿼리추가전에 OR 추가
+						if(2<=checked.length && 2<=count){
+							sql.append(" OR ");
+						}
+						sql.append(""+ query[j] + " LIKE CONCAT('%',?,'%') \n");
+					}
 				}
-			}	
+			}
+			//"AND (" 괄호 닫음 
+			sql.append(")");
+		//체크박스가 체크되어있지 않고 검색되었을때	
 		}else if(searchKeyword.length() > 0){
 			sql.append("AND ( CONSTRUCTION_NAME LIKE CONCAT('%',?,'%')				\n");
 			sql.append("OR CONSTRUCTION_WAY LIKE CONCAT('%',?,'%')					\n");
@@ -268,14 +309,17 @@ public class ConstructionDAO {
 		sql.append("LIMIT ?, ?															\n");
 		
 			pstmt = conn.prepareStatement(sql.toString());
+			//위에서 추가된 쿼리 ? 에 값을 대입
 			if(checked != null){
 				for(int i=0; i<checked.length; i++){
-					if(checked[i].equals("i")){
-						pstmt.setString(nCnt++, searchKeyword);
+					for(int j=0; j<query.length; j++){
+						if(checked[i].equals(String.valueOf(j))){
+							pstmt.setString(nCnt++, searchKeyword);
+						}
 					}
-				}	
+				}
+		//체크박스가 체크되어있지 않고 검색되었을때
 		}else if(searchKeyword.length() > 0){
-				
 				pstmt.setString(nCnt++, searchKeyword);
 				pstmt.setString(nCnt++, searchKeyword);
 				pstmt.setString(nCnt++, searchKeyword);
@@ -970,7 +1014,7 @@ public class ConstructionDAO {
 			pstmt.setString(6, constInstitution);
 			pstmt.setString(7, constPercent);
 			pstmt.setInt(8, ConstNum);
-
+			System.out.println("Con Update:   "+pstmt.toString());
 			result = pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();

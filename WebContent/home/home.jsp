@@ -13,9 +13,7 @@ if("0".equals(session.getAttribute("MEM_SEQ"))){
 		alert("아이디와 비밀번호를 확인후 다시 로그인해주세요.");
 		history.back();
 </script>
-<%}else{
-System.out.println("일반적 home MEM_SEQ result:   "+session.getAttribute("MEM_SEQ"));
-}%>
+<%}%>
 <%@ include file="../include/inc_header.jsp"%>
 </head>
 <body>

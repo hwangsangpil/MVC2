@@ -11,13 +11,8 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 request.setCharacterEncoding("UTF-8");
-
-String pageno = (String)session.getAttribute("pageno");
-String[] checked=(String[])session.getAttribute("checked");
-
-//ConstructionDAO dao = new ConstructionDAO();
-
 %>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -32,7 +27,8 @@ if('<%=role%>'==="일반관리자"){
 </script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
 <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
-<script type="text/javascript">
+
+<script>
 $(document).ready(function() {
 	$("#constWay").focus();
 });
@@ -107,16 +103,7 @@ $(document).ready(function() {
 });
 
 function fnc_list(){
-	location.href = "/construction/constructionList.jsp?pageno="+<%=pageno%>
-	<%-- <%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("1")){%>+"&check="+<%=checked[i]%><%}}}%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("2")){%>+"&check="+<%=checked[i]%><%}}}%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("3")){%>+"&check="+<%=checked[i]%><%}}}%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("4")){%>+"&check="+<%=checked[i]%><%}}}%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("5")){%>+"&check="+<%=checked[i]%><%}}}%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("6")){%>+"&check="+<%=checked[i]%><%}}}%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("7")){%>+"&check="+<%=checked[i]%><%}}}%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("8")){%>+"&check="+<%=checked[i]%><%}}}%>
-			+"&searchKeyword="+encodeURI(encodeURIComponent("<%=searchKeyword%>"));     --%>                                               
+	location = "constructionModList.bbs";
 }
 
 function checkForm() {

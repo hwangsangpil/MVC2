@@ -10,11 +10,12 @@ if(session!=null){
 	session.invalidate();
 }
 %>     
-	<script language="JavaScript">
+	<script>
 	
 		$(document).ready(function() {
 			$("#id").focus();
 		});
+		
 	 
 		function signInForm() {
 			

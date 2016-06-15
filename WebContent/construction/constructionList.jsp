@@ -11,9 +11,19 @@
 <%
 request.setCharacterEncoding("UTF-8");
 
-String[] checked=(String[])session.getAttribute("checked");
-String pageno=(String)session.getAttribute("pageno");
-String searchKeyword = (String)session.getAttribute("searchKeyword");
+String totalCast = (String)request.getAttribute("totalcnt");
+int totalcnt = Integer.parseInt(totalCast);
+
+String[] checked=(String[])request.getAttribute("checked");
+String pageCast=(String)request.getAttribute("pageno");
+int pageno = Integer.parseInt(pageCast);
+String searchKeyword = (String)request.getAttribute("searchKeyword");
+request.setAttribute("checked", checked);
+request.setAttribute("searchKeyword", searchKeyword);
+request.setAttribute("pageno", String.valueOf(pageno));
+session.setAttribute("checked", checked);
+session.setAttribute("searchKeyword", searchKeyword);
+session.setAttribute("pageno", String.valueOf(pageno));
 
 if(checked!=null){
 for(int i=0; i<checked.length; i++){
@@ -54,11 +64,6 @@ $(document).ready(function() {
 	
 	function fnc_search(){
 		var searchKeyword = document.getElementById("searchKeyword").value;
-		/* if( searchKeyword.length == 0 ) {
-			alert("검색어를 입력해주세요.");
-			document.getElementById("searchKeyword").focus();
-			return;
-		} */
 		document.frm.submit();
 	}
 	
@@ -69,14 +74,13 @@ $(document).ready(function() {
 			return;
 			}
 		if (confirm("정말 삭제하시겠습니까??")){    //확인
-			location = "constructionDelOk.bbs";                                                   
+			location = "constructionDelOk.bbs?constNum="+ConstNum;                                                   
 		}else{
 			return;
 		}
 	}
 	
 	function constructionMod(ConstNum){
-		$('#test').val('constNum',ConstNum);
 		if('<%=role%>'==="일반관리자"){
 			alert("<%=role%>는 권한이없습니다.");
 			document.frm.submit();
@@ -84,13 +88,12 @@ $(document).ready(function() {
 			}
 		if (confirm("정말 수정하시겠습니까??")){    //확인
 			location = "constructionMod.bbs?constNum="+ConstNum;
-			//location = "constructionMod.bbs?constNum="+ConstNum;
 		}else{
 			return;
 		}
 	}
 	function businessView(ConstNum){
-		location.href = "/business/businessView.jsp?ConstNum=" + ConstNum;
+		location = "businessView.bbs?constNum="+ConstNum;
 	}
 	
 	
@@ -143,7 +146,7 @@ $(document).ready(function() {
 													<div class="input-group">
 													<span class="input-group-addon">
 													<i class="fa fa-search"></i></span>
-													<input type="text" id="searchKeyword" name="searchKeyword" placeholder="검색어를 입력하세요" class="form-control" value="<%=searchKeyword%>" tabindex="1"/>
+													<input type="text" id="searchKeyword" name="searchKeyword" placeholder="검색어를 입력하세요" value="<%=searchKeyword%>" class="form-control"  tabindex="1"/>
 													<span class="input-group-btn"><button type="button" class="btn btn-default" onclick="fnc_search()" tabindex="2">검색</button>
 													</span></div>
 												</div>
@@ -177,13 +180,9 @@ $(document).ready(function() {
 															</tr>
 														</thead>
 														<tbody>
-														<%--
 														<%
-															if (list.size() > 0) {
-																for (int i=0; i<list.size(); i++) {
-																	ConstructionDTO dto = list.get(i);
+															if (totalcnt > 0) {
 														%>
-														--%>
 														<c:forEach items="${constructionList}" var="dto">
 														
 																<tr  style="cursor: pointer;">
@@ -200,22 +199,19 @@ $(document).ready(function() {
 													<td onclick="businessView(${dto.getConstNum()});" style="text-align:center;">${dto.getUdtDate()}</td>
  													<td> <button type="button" class="btn btn-primary" tabindex="11"  onclick="constructionMod(${dto.getConstNum()})">  수정</button></td>
 													<td> <button type="button" class="btn btn-primary" tabindex="12" onclick="constructionDel(${dto.getConstNum()})">삭제</button></td>
-																
 																</tr>
 														</c:forEach>
-																<%-- 
 																<%
-																}
 															}else{
 																out.println("<tr><td align='center' colspan='9'>조회 결과가 없습니다.</td></tr>");
 															}
-															%> --%>
+															%>
 															
 														</tbody>
 													</table>
 												</div>
 												<jsp:include page="../include/inc_paging.jsp">
-													<jsp:param name="totalRecord" value="10"/>
+													<jsp:param name="totalRecord" value="<%=totalcnt%>"/>
 													<jsp:param name="pageNo" value="<%=pageno%>"/>
 													<jsp:param name="rowCount" value="10"/> 
 													<jsp:param name="pageGroup" value="10"/>

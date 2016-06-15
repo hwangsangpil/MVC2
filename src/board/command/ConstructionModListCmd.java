@@ -8,7 +8,7 @@ import board.model.ConstructionDAO;
 import board.model.ConstructionDTO;
 import util.StringUtil;
 
-public class ConstructionModCmd implements Cmd{
+public class ConstructionModListCmd implements Cmd{
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
@@ -16,14 +16,13 @@ public class ConstructionModCmd implements Cmd{
 		
 		HttpSession session=request.getSession();
 		
-		ConstructionDAO dao = new ConstructionDAO();
-		ConstructionDTO dto = new ConstructionDTO();
-		
-		int constNum = Integer.parseInt(StringUtil.nchk(request.getParameter("constNum"), "1"));
-		
-		dto = dao.selectConstructionInfo(constNum);
-		request.setAttribute("selectConstructionInfo", dto);
-		session.setAttribute("constNum", String.valueOf(constNum));
+		String[] checked=(String[])session.getAttribute("checked");
+		String pageCast=(String)session.getAttribute("pageno");
+		int pageno = Integer.parseInt(pageCast);
+		String searchKeyword = (String)session.getAttribute("searchKeyword");
+		request.setAttribute("checked", checked);
+		request.setAttribute("searchKeyword", searchKeyword);
+		request.setAttribute("pageno", String.valueOf(pageno));
 	}
 
 }

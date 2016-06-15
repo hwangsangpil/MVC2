@@ -4,8 +4,18 @@
 <%@page import="util.DateUtil"%>
 <%
 String role = (String)session.getAttribute("ROLE");
-System.out.println("role:    "+role);
+String result = (String)request.getAttribute("result");
 %>
+<script>
+if('<%=result%>' != "null"){
+if('<%=result%>' === "0"){
+	alert("수정실패");
+	history.back();
+}else{
+	alert("수정성공");
+	}
+}	
+</script>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">

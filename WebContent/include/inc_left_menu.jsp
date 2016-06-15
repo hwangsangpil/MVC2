@@ -17,7 +17,7 @@
 
 			<!-- 메뉴카테고리 관리 -->
 			<!-- 1차메뉴 -->
-			<li id="menu_member"><a href="constructionList.bbs"><i
+			<li id="menu_member"><a href="constructionListFirst.bbs"><i
 					class="fa fa-list-ul">
 				</i><span class="menu-title">공고관리</span></a></li>
 				

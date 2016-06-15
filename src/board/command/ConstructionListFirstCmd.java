@@ -12,25 +12,20 @@ import board.model.ConstructionDAO;
 import board.model.ConstructionDTO;
 import util.StringUtil;
 
-public class ConstructionListCmd implements Cmd {
+public class ConstructionListFirstCmd implements Cmd {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
 		// TODO Auto-generated method stub
-		
+
 		HttpSession session=request.getSession();
 		
-		int pageno = Integer.parseInt(StringUtil.nchk(request.getParameter("pageno"), request.getAttribute("pageno"),"1"));
+		int pageno = Integer.parseInt(StringUtil.nchk(request.getParameter("pageno"), "1"));
 		String[] checked=request.getParameterValues("check");
-		if(checked==null){
-			checked = (String[])request.getAttribute("checked");
-		}
 		
 		try {
-			String searchKeyword = URLDecoder.decode(StringUtil.nchk(request.getParameter("searchKeyword"), request.getAttribute("searchKeyword") , ""),"UTF-8");
-			
+			String searchKeyword = URLDecoder.decode(StringUtil.nchk(request.getParameter("searchKeyword"),""),"UTF-8");
 			ConstructionDAO dao = new ConstructionDAO();
-			
 			int totalcnt = dao.constructionListTotalCnt(searchKeyword, checked);
 			ArrayList<ConstructionDTO> list = dao.constructionList(searchKeyword, pageno, totalcnt, checked);
 			

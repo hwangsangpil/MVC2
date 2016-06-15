@@ -908,7 +908,24 @@ label0:
 		else
 			return obj.toString();
 	}
-		
+    
+    static public String nchk(String str, Object obj, String dstr)
+	{
+		if (str == null || str.equals("")) {
+			if(obj == null){
+				if (dstr == null || dstr.equals("")) {
+					return "";
+				}else {
+					return dstr;
+				}
+			}else{
+				String fstr = (String)obj;
+				return fstr;
+			}
+		} else {
+			return str;
+		}
+	}
 	/**
 	 * right
 	 *

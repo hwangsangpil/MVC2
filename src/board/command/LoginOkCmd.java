@@ -35,9 +35,7 @@ public class LoginOkCmd implements Cmd{
 			session.setAttribute("MEM_SEQ", memseq);
 			session.setAttribute("memberNum", memseq);
 			session.setAttribute("ROLE", dto.getAdminRole());
-			session.setMaxInactiveInterval(15);
+			session.setMaxInactiveInterval(1000);
 		}
-		
 	}
-	
 }
