@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
 encoding//src/board/model/AdminDAO.java=UTF-8
+encoding//src/board/model/BusinessDAO.java=UTF-8
 encoding//src/board/model/ConstructionDAO.java=UTF-8
 encoding//src/util/StringUtil.java=UTF-8

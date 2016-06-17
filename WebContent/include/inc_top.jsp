@@ -45,7 +45,7 @@ if(!login2){
             <nav id="topbar" role="navigation" style="margin-bottom: 0;" data-step="3" class="navbar navbar-default navbar-static-top">
             <div class="navbar-header">
                 <button type="button" data-toggle="collapse" data-target=".sidebar-collapse" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
-                <a id="logo" href="/home/home.jsp" class="navbar-brand"><span class="fa fa-rocket"></span><span class="logo-text">INFO SYSTEM</span><span style="display: none" class="logo-text-icon"></span></a></div>
+                <a id="logo" href="home.bbs" class="navbar-brand"><span class="fa fa-rocket"></span><span class="logo-text">INFO SYSTEM</span><span style="display: none" class="logo-text-icon"></span></a></div>
             <div class="topbar-main">
             	<a id="menu-toggle" href="#" class="hidden-xs"><i class="fa fa-bars"></i></a>
             	

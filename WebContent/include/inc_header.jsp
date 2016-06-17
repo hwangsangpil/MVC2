@@ -4,18 +4,49 @@
 <%@page import="util.DateUtil"%>
 <%
 String role = (String)session.getAttribute("ROLE");
-String result = (String)request.getAttribute("result");
+String constructionModResult = (String)request.getAttribute("constructionModResult");
+String constructionDelResult = (String)request.getAttribute("constructionDelResult");
+String constructionAddResult = (String)request.getAttribute("constructionAddResult");
+String businessAddResult = (String)request.getAttribute("businessAddResult");
 %>
 <script>
-if('<%=result%>' != "null"){
-if('<%=result%>' === "0"){
-	alert("수정실패");
-	history.back();
-}else{
-	alert("수정성공");
+if('<%=constructionModResult%>' != "null"){
+	if('<%=constructionModResult%>' === "0"){
+		alert("수정실패");
+		history.back();
+	}else{
+		alert("수정성공");
 	}
-}	
+}
+
+if('<%=constructionDelResult%>' != "null"){
+	if('<%=constructionDelResult%>' === "0"){
+		alert("삭제실패");
+		history.back();
+	}else{
+		alert("삭제성공");
+	}
+}
+
+if('<%=constructionAddResult%>' != "null"){
+	if('<%=constructionAddResult%>' === "0"){
+		alert("공고 등록 실패");
+	}else{
+		alert("공고 등록 성공");
+	}
+}
+
+if('<%=businessAddResult%>' != "null"){
+	if('<%=businessAddResult%>' === "0"){
+		alert("업제 등록 실패");
+		history.back();
+	}else{
+		alert("업체 등록 성공");
+	}
+}
+
 </script>
+
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">

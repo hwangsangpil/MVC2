@@ -16,9 +16,9 @@ String searchKeyword = URLDecoder.decode(StringUtil.nchk(request.getParameter("s
 ConstructionDAO dao = new ConstructionDAO();
 
 
-int totalcnt = dao.cntTotalDelConstruction(searchKeyword, checked);
+//int totalcnt = dao.cntTotalDelConstruction(searchKeyword, checked);
 
-ArrayList<ConstructionDTO> list = dao.selectConstructionDelList(searchKeyword, pageno, totalcnt, checked);
+//ArrayList<ConstructionDTO> list = dao.selectConstructionDelList(searchKeyword, pageno, totalcnt, checked);
 //dao.closeConn();
 %>
 <!DOCTYPE html>
@@ -172,11 +172,12 @@ $(document).ready(function() {
 															</tr>
 														</thead>
 														<tbody>
-															<%
+															<%-- <%
 															if (list.size() > 0) {
 																for (int i=0; i<list.size(); i++) {
 																	ConstructionDTO dto = list.get(i);
-																	%>
+																	%> --%>
+																<%-- 
 																<tr style="cursor: pointer;">
 																	<td style="text-align:center;"><%=dto.getConstNum() %></td>
 																	<td style="text-align:center;"><%=dto.getConstName()%></td>
@@ -192,19 +193,19 @@ $(document).ready(function() {
 																	<td onclick="event.cancelBubble = true;"><button type="button" class="btn btn-primary" <%if("전체관리자".equals(role)){%>onclick="constructionDel(<%=dto.getConstNum()%>)"<%}else{%>onclick="alert('<%=role%>는 권한이없습니다')"<%}%> tabindex="11">삭제</button></td>
 																	<td onclick="event.cancelBubble = true;"><button type="button" class="btn btn-primary" <%if("전체관리자".equals(role)){%>onclick="constructionRes(<%=dto.getConstNum()%>)"<%}else{%>onclick="alert('<%=role%>는 권한이없습니다')"<%}%> tabindex="12">복구</button></td>
 																</tr>
-																
-																<%
+																 --%>
+																<%-- <%
 																}
 															}else{
 																out.println("<tr><td align='center' colspan='9'>조회 결과가 없습니다.</td></tr>");
 															}
-															%>
+															%> --%>
 														</tbody>
 													</table>
 												</div>
 												<jsp:include page="../include/inc_paging.jsp">
-													<jsp:param name="totalRecord" value="<%=totalcnt%>"/>
-													<jsp:param name="pageNo" value="<%=pageno%>"/>
+													<%-- <jsp:param name="totalRecord" value="<%=totalcnt%>"/>
+													<jsp:param name="pageNo" value="<%=pageno%>"/> --%>
 													<jsp:param name="rowCount" value="10"/> 
 													<jsp:param name="pageGroup" value="10"/>
 												</jsp:include>

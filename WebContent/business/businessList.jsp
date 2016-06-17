@@ -7,17 +7,21 @@
 <%@page import="util.DateUtil"%>
 <%@page import="java.net.URLEncoder"%>
 <%@page import="java.net.URLDecoder"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 request.setCharacterEncoding("UTF-8");
+/* HttpSession session1 = request.getSession(); */
 
-int pageno = Integer.parseInt(StringUtil.nchk(request.getParameter("pageno"), "1"));
-String searchKeyword = URLDecoder.decode(StringUtil.nchk(request.getParameter("searchKeyword"),""),"UTF-8");
-String[] checked=request.getParameterValues("check");
+String totalCast = (String)request.getAttribute("totalcnt");
+int totalcnt = Integer.parseInt(totalCast);
 
-BusinessDAO dao = new BusinessDAO();
-int totalcnt = dao.cntTotalMember(searchKeyword, checked);
-ArrayList<BusinessDTO> list = dao.selectBusinessList(searchKeyword, pageno, totalcnt, checked);
-dao.closeConn();
+String searchKeyword = (String)request.getAttribute("searchKeyword");
+String[] checked=(String[])request.getAttribute("checked");
+String pageCast = (String)request.getAttribute("pageno");
+int pageno = Integer.parseInt(pageCast);
+session.setAttribute("pageno", String.valueOf(pageno));
+session.setAttribute("searchKeyword", searchKeyword);
+session.setAttribute("checked", checked);
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -57,33 +61,16 @@ $(document).ready(function() {
 	}
 	
 	function businessDel(BusiNum){
-		if (confirm("정말 삭제하시겠습니까??") == true){    //확인
-			location.href = "busunessDelOk.jsp?BusiNum=" + BusiNum + "&pageno="+<%=pageno%>
-	    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("1")){%>+"&check="+<%=checked[i]%><%}}}%>
-	    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("2")){%>+"&check="+<%=checked[i]%><%}}}%>
-	    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("3")){%>+"&check="+<%=checked[i]%><%}}}%>
-	    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("4")){%>+"&check="+<%=checked[i]%><%}}}%>
-	    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("5")){%>+"&check="+<%=checked[i]%><%}}}%>
-	    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("6")){%>+"&check="+<%=checked[i]%><%}}}%>
-	    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("7")){%>+"&check="+<%=checked[i]%><%}}}%>
-	    			+"&searchKeyword="+encodeURI(encodeURIComponent("<%=searchKeyword%>"));	
+		if (confirm("정말 삭제하시겠습니까??")){    //확인
+			location = "businessDel.bbs"
 		}else{
 			return;
 		}
 	}
 	
 	function businessMod(BusiNum){
-		if (confirm("정말 수정하시겠습니까??") == true){    //확인
-			location.href = "businessMod.jsp?BusiNum=" + BusiNum + "&pageno="+<%=pageno%>
-		    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("1")){%>+"&check="+<%=checked[i]%><%}}}%>
-		    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("2")){%>+"&check="+<%=checked[i]%><%}}}%>
-		    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("3")){%>+"&check="+<%=checked[i]%><%}}}%>
-		    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("4")){%>+"&check="+<%=checked[i]%><%}}}%>
-		    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("5")){%>+"&check="+<%=checked[i]%><%}}}%>
-		    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("6")){%>+"&check="+<%=checked[i]%><%}}}%>
-		    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("7")){%>+"&check="+<%=checked[i]%><%}}}%>
-		    			+"&searchKeyword="+encodeURI(encodeURIComponent("<%=searchKeyword%>"));	
-		
+		if (confirm("정말 수정하시겠습니까??")){    //확인
+			location.href = "businessMod.bbs";
 		}else{
 			return;
 		}
@@ -108,7 +95,7 @@ $(document).ready(function() {
 						<div class="page-title">업체관리</div>
 					</div>
 					<ol class="breadcrumb page-breadcrumb pull-right">
-						<li><i class="fa fa-home"></i>&nbsp;<a href="/home/home.jsp">Home</a>&nbsp;&nbsp;<i
+						<li><i class="fa fa-home"></i>&nbsp;<a href="home.bbs">Home</a>&nbsp;&nbsp;<i
 							class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
 						<li class="active"><a href="#">업체</a>&nbsp;&nbsp;<i
 							class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
@@ -119,7 +106,7 @@ $(document).ready(function() {
 				<!--END TITLE & BREADCRUMB PAGE-->
 				<!--BEGIN CONTENT-->
 				<div class="page-content">
-					<form name="frm" action="/business/businessList.jsp" method="post">
+					<form name="frm" action="businessList.bbs" method="post">
 						<input type="hidden" name="pageno" value="<%=pageno%>"/>
 						<div id="tab-general">
 							<div class="row mbl">
@@ -145,20 +132,20 @@ $(document).ready(function() {
 														<thead>
 															<tr>
 																<th style="text-align:center; width: 50px;">NO</th>
-																<th style="text-align:center; width: 200px;">공고명<input type="checkbox" tabindex="3" id="check" name="check" value="1" tabindex="1"
+																<th style="text-align:center; width: 200px;">업체명<input type="checkbox" tabindex="3" id="check" name="check" value="0" tabindex="1"
+																<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("0")){ %>checked<%}}}%> /></th>
+																<th style="text-align:center; width: 200px;">공고명<input type="checkbox" tabindex="4" id="check" name="check" value="1" tabindex="2"
 																<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("1")){ %>checked<%}}}%> /></th>
-																<th style="text-align:center; width: 200px;">업체명<input type="checkbox" tabindex="4" id="check" name="check" value="2" tabindex="2"
+																<th style="text-align:center; width: 150px;">개찰일<input type="checkbox" tabindex="5" id="check" name="check" value="2" tabindex="3"
 																<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("2")){ %>checked<%}}}%> /></th>
-																<th style="text-align:center; width: 150px;">개찰일<input type="checkbox" tabindex="5" id="check" name="check" value="3" tabindex="3"
+																<th style="text-align:center; width: 200px;">사정률<input type="checkbox" tabindex="6" id="check" name="check" value="3" tabindex="5"
 																<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("3")){ %>checked<%}}}%> /></th>
-																<th style="text-align:center; width: 200px;">사정률<input type="checkbox" tabindex="6" id="check" name="check" value="5" tabindex="5"
-																<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("5")){ %>checked<%}}}%> /></th>
 																<th style="text-align:center; width: 200px;">예가변동폭<input type="checkbox" tabindex="7" id="check" name="check" value="4" tabindex="4"
 																<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("4")){ %>checked<%}}}%> /></th>
-																<th style="text-align:center; width: 150px;">계약방법<input type="checkbox" tabindex="8" id="check" name="check" value="6" tabindex="6"
+																<th style="text-align:center; width: 150px;">계약방법<input type="checkbox" tabindex="8" id="check" name="check" value="5" tabindex="6"
+																<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("5")){ %>checked<%}}}%> /></th>
+																<th style="text-align:center; width: 150px;">지역제한<input type="checkbox" tabindex="9" id="check" name="check" value="6" tabindex="7"
 																<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("6")){ %>checked<%}}}%> /></th>
-																<th style="text-align:center; width: 150px;">지역제한<input type="checkbox" tabindex="9" id="check" name="check" value="7" tabindex="7"
-																<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("7")){ %>checked<%}}}%> /></th>
 																<th style="text-align:center; width: 100px;">입력날짜</th>
 																<th style="text-align:center; width: 100px;">수정날짜</th>
 																<th style="text-align:center; ">수정</th>
@@ -167,27 +154,25 @@ $(document).ready(function() {
 														</thead>
 														<tbody>
 															<%
-															if (list.size() > 0) {
-																for (int i=0; i<list.size(); i++) {
-																	BusinessDTO dto = list.get(i);
-																	%>
+															if (totalcnt > 0) {
+															%>
+															<c:forEach items="${businessList}" var="dto">		
 																<tr style="cursor: pointer;">
-																	<td style="text-align:center;"><%=dto.getBusiNum()%></td>
-																	<td style="text-align:center;"><%=dto.getConstName()%></td>
-																	<td style="text-align:center;"><%=dto.getBusiName()%></td>
-																	<td style="text-align:center;"><%=dto.getBusiOpening()%></td>
-																	<td style="text-align:center;"><%=dto.getBusiPercent()%></td>
-																	<td style="text-align:center;"><%=dto.getBusiPrice()%></td>
-																	<td style="text-align:center;"><%=dto.getBusiWay()%></td>
-																	<td style="text-align:center;"><%=dto.getBusiArea()%></td>
-																	<td style="text-align:center;"><%=dto.getCrtDate()%></td>
-																	<td style="text-align:center;"><%=dto.getUdtDate()%></td>
-																	<td onclick="event.cancelBubble = true;"><button type="button" tabindex="10" class="btn btn-primary" <%if("전체관리자".equals(role)){%>onclick="businessMod(<%=dto.getBusiNum()%>)"<%}else{%>onclick="alert('<%=role%>는 권한이없습니다')"<%}%> >수정</button></td>
-																	<td onclick="event.cancelBubble = true;"><button type="button" tabindex="11" class="btn btn-primary" <%if("전체관리자".equals(role)){%>onclick="businessDel(<%=dto.getBusiNum()%>)"<%}else{%>onclick="alert('<%=role%>는 권한이없습니다')"<%}%> >삭제</button></td>
+																	<td style="text-align:center;">${dto.getBusiNum()}</td>
+																	<td style="text-align:center;">${dto.getBusiName()}</td>
+																	<td style="text-align:center;">${dto.getConstName()}</td>
+																	<td style="text-align:center;">${dto.getBusiOpening()}</td>
+																	<td style="text-align:center;">${dto.getBusiPercent()}</td>
+																	<td style="text-align:center;">${dto.getBusiPrice()}</td>
+																	<td style="text-align:center;">${dto.getBusiWay()}</td>
+																	<td style="text-align:center;">${dto.getBusiArea()}</td>
+																	<td style="text-align:center;">${dto.getCrtDate()}</td>
+																	<td style="text-align:center;">${dto.getUdtDate()}</td>
+																	<td onclick="event.cancelBubble = true;"><button type="button" tabindex="10" class="btn btn-primary" onclick="businessMod(${dto.getBusiNum()})">수정</button></td>
+																	<td onclick="event.cancelBubble = true;"><button type="button" tabindex="11" class="btn btn-primary" onclick="businessDel(${dto.getBusiNum()})">삭제</button></td>
 																</tr>
-																
+																</c:forEach>
 																<%
-																}
 															}else{
 																out.println("<tr><td align='center' colspan='9'>조회 결과가 없습니다.</td></tr>");
 															}

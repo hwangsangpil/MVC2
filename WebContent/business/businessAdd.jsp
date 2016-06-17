@@ -6,14 +6,9 @@
 <%@page import="util.Constant"%>
 <%@page import="board.model.ConstructionDTO"%>
 <%@page import="board.model.ConstructionDAO"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
-
 request.setCharacterEncoding("UTF-8");
-ConstructionDAO dao = new ConstructionDAO();
-ArrayList<ConstructionDTO> list = new ArrayList<ConstructionDTO>();
-
-list = dao.selectConstructionList();
-
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -69,7 +64,7 @@ function hitEnterKey(e){
 						<div class="page-title">업체등록</div>
 					</div>
 					<ol class="breadcrumb page-breadcrumb pull-right">
-						<li><i class="fa fa-home"></i>&nbsp;<a href="/home/home.jsp">Home</a>&nbsp;&nbsp;<i
+						<li><i class="fa fa-home"></i>&nbsp;<a href="home.bbs">Home</a>&nbsp;&nbsp;<i
 							class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
 						<li class="active"><a href="#">업체</a>&nbsp;&nbsp;<i
 							class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
@@ -87,19 +82,14 @@ function hitEnterKey(e){
 								<div class="panel panel-green">
 	                                <div class="panel-heading">업체등록</div>
 	                                <div class="panel-body pan">
-	                                    <form action="/business/businessAddOk.jsp" id="registForm" name="frm" method="post" enctype="multipart/form-data">
+	                                    <form action="businessAddOk.bbs" id="registForm" name="frm" method="post">
 	                                    	<div class="form-body pal">
 												<div class="form-group">
 													<select name="constNum" id="constNum" class="form-control" tabindex="1" onKeypress="hitEnterKey(event)">
 														<option value="-1">공고 선택</option>
-														<%
-															for(int i = 0; i<list.size(); i++){
-																ConstructionDTO dto = new ConstructionDTO();
-																dto = list.get(i);
-															
-														%>
-														<option value="<%=dto.getConstNum()%>"><%=dto.getConstName() %></option>
-														<%} %>
+														<c:forEach items="${businessAdd}" var="list">
+														<option value="${list.getConstNum()}">${list.getConstName()}</option>
+														</c:forEach>
 													</select>
 												</div>
 													<div class="form-group">

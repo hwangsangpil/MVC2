@@ -21,23 +21,23 @@
 					class="fa fa-list-ul">
 				</i><span class="menu-title">공고관리</span></a></li>
 				
-			<li id="menu_member"><a href="/construction/constructionAdd.jsp"><i
+			<li id="menu_member"><a href="constructionAdd.bbs"><i
 					class="fa fa-pencil-square-o">
 				</i><span class="menu-title">공고등록</span></a></li>
 			
-			<li id="menu_member"><a href="/business/businessList.jsp"><i
+			<li id="menu_member"><a href="businessListFirst.bbs"><i
 					class="fa fa-list-ul">
 				</i><span class="menu-title">업체관리</span></a></li>	
 				
-			<li id="menu_member"><a href="/business/businessAdd.jsp"><i
+			<li id="menu_member"><a href="businessAdd.bbs"><i
 					class="fa fa-pencil-square-o">
 				</i><span class="menu-title">업체등록</span></a></li>	
 				
-			<li id="menu_member"><a href="/admin/adminList.jsp"><i
+			<li id="menu_member"><a href="adminListFirst.bbs"><i
 					class="fa fa-list-ul">
 				</i><span class="menu-title">관리자관리</span></a></li>
 			
-			<li id="menu_member"  ><a href="/totalInsert/totalInsert.jsp" ><i
+			<li id="menu_member"  ><a href="totalInsert.bbs" ><i
 					class="fa fa-list-ul">
 				</i><span class="menu-title">전체등록</span></a></li>
 				
@@ -47,11 +47,11 @@
 					class="fa fa-sitemap fa-fw">
 				</i><span class="menu-title">휴지통</span></a></li>		
 				<!-- 2차메뉴 -->
-			<li id="menu_trashcan_sub1" style="display: none;"><a href="/trashcan/constructionDelList.jsp"><i>
+			<li id="menu_trashcan_sub1" style="display: none;"><a href="constructionDelList.bbs"><i>
 				</i><span class="menu-title">&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;공고관리</span></a></li>
-			<li id="menu_trashcan_sub2" style="display: none;"><a href="/trashcan/businessDelList.jsp"><i>
+			<li id="menu_trashcan_sub2" style="display: none;"><a href="businessDelList.bbs"><i>
 				</i><span class="menu-title">&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;업체관리</span></a></li>
-			<li id="menu_trashcan_sub3" style="display: none;"><a href="/trashcan/adminDelList.jsp"><i>
+			<li id="menu_trashcan_sub3" style="display: none;"><a href="adminDelList.bbs"><i>
 				</i><span class="menu-title">&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;관리자 관리</span></a></li>
 					
 		</ul>

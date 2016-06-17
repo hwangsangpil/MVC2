@@ -164,7 +164,7 @@ function hitEnterKey(e){
 						<div class="page-title">공고수정</div>
 					</div>
 					<ol class="breadcrumb page-breadcrumb pull-right">
-						<li><i class="fa fa-home"></i>&nbsp;<a href="/home/home.jsp">Home</a>&nbsp;&nbsp;<i
+						<li><i class="fa fa-home"></i>&nbsp;<a href="home.bbs">Home</a>&nbsp;&nbsp;<i
 							class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
 						<li class="active"><a href="#">공고</a>&nbsp;&nbsp;<i
 							class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
@@ -188,50 +188,50 @@ function hitEnterKey(e){
 														<div class="input-icon right">
 															<i class="fa fa-pencil"></i> <input id="constName"
 																name="constName" type="text" onclick="notMod();"
-																class="form-control" tabindex="1" onKeypress="hitEnterKey(event)" value="${selectConstructionInfo.getConstNum()}" onMouseOver="javascript: this.value='공고명';" onmouseout="javascript: this.value='${selectConstructionInfo.getConstName()}';" readonly/>
+																class="form-control" tabindex="1" onKeypress="hitEnterKey(event)" value="${constructionMod.getConstNum()}" onMouseOver="javascript: this.value='공고명';" onmouseout="javascript: this.value='${constructionMod.getConstName()}';" readonly/>
 														</div>
 													</div>
 													<div class="form-group">
 														<div class="input-icon right">
 															<i class="fa fa-balance-scale"></i> <input id="constWay"
-																name="constWay" type="text" placeholder="계약방법" onMouseOver="javascript: this.value='계약방법';" onmouseout="javascript: this.value='${selectConstructionInfo.getConstWay()}';" onclick="javascript: this.value='${selectConstructionInfo.getConstWay()}';"
-																class="form-control" tabindex="2" onKeypress="hitEnterKey(event)" value="${selectConstructionInfo.getConstWay()}"/>
+																name="constWay" type="text" placeholder="계약방법" onMouseOver="javascript: this.value='계약방법';" onmouseout="javascript: this.value='${constructionMod.getConstWay()}';" onclick="javascript: this.value='${constructionMod.getConstWay()}';"
+																class="form-control" tabindex="2" onKeypress="hitEnterKey(event)" value="${constructionMod.getConstWay()}"/>
 														</div>
 													</div>
 													<div class="form-group">
 														<div class="input-icon right">
-															<i class="fa fa-map-marker"></i> <input id="constArea" name="constArea" onMouseOver="javascript: this.value='지역제한';" onmouseout="javascript: this.value='${selectConstructionInfo.getConstArea()}';" onclick="javascript: this.value='${selectConstructionInfo.getConstArea()}';"
-															type="text" placeholder="지역제한" class="form-control" tabindex="3" onKeypress="hitEnterKey(event)" value="${selectConstructionInfo.getConstArea()}"/>
+															<i class="fa fa-map-marker"></i> <input id="constArea" name="constArea" onMouseOver="javascript: this.value='지역제한';" onmouseout="javascript: this.value='${constructionMod.getConstArea()}';" onclick="javascript: this.value='${constructionMod.getConstArea()}';"
+															type="text" placeholder="지역제한" class="form-control" tabindex="3" onKeypress="hitEnterKey(event)" value="${constructionMod.getConstArea()}"/>
 														</div>
 													</div>
 													<div class="form-group">
 														<div class="input-icon right">
-															<i class="fa fa-bar-chart"></i> <input id="constPrice" name="constPrice" onMouseOver="javascript: this.value='예가변동폭';" onmouseout="javascript: this.value='${selectConstructionInfo.getConstPrice()}';" onclick="javascript: this.value='${selectConstructionInfo.getConstPrice()}';"
-															type="text" placeholder="예가변동폭" class="form-control" tabindex="4" onKeypress="hitEnterKey(event)" value="${selectConstructionInfo.getConstPrice()}"/>
+															<i class="fa fa-bar-chart"></i> <input id="constPrice" name="constPrice" onMouseOver="javascript: this.value='예가변동폭';" onmouseout="javascript: this.value='${constructionMod.getConstPrice()}';" onclick="javascript: this.value='${constructionMod.getConstPrice()}';"
+															type="text" placeholder="예가변동폭" class="form-control" tabindex="4" onKeypress="hitEnterKey(event)" value="${constructionMod.getConstPrice()}"/>
 														</div>
 													</div>
 													<div class="form-group">
 														<div class="input-icon right">
-															<i class="fa fa-line-chart"></i> <input id="constLower" name="constLower" onMouseOver="javascript: this.value='투찰하한율';" onmouseout="javascript: this.value='${selectConstructionInfo.getConstLower()}';" onclick="javascript: this.value='${selectConstructionInfo.getConstLower()}';"
-															type="text" placeholder="투찰하한율" class="form-control" tabindex="5" onKeypress="hitEnterKey(event)" value="${selectConstructionInfo.getConstLower()}"/>
+															<i class="fa fa-line-chart"></i> <input id="constLower" name="constLower" onMouseOver="javascript: this.value='투찰하한율';" onmouseout="javascript: this.value='${constructionMod.getConstLower()}';" onclick="javascript: this.value='${constructionMod.getConstLower()}';"
+															type="text" placeholder="투찰하한율" class="form-control" tabindex="5" onKeypress="hitEnterKey(event)" value="${constructionMod.getConstLower()}"/>
 														</div>
 													</div>
 													<div class="form-group">
 														<div class="input-icon right">
-															<i class="fa fa-calendar"></i> <input id="constOpening" name="constOpening" onMouseOver="javascript: this.value='개찰일';" onmouseout="javascript: this.value='${selectConstructionInfo.getConstOpening()}';" onclick="javascript: this.value='${selectConstructionInfo.getConstOpening()}';"
-															type="text" placeholder="개찰일" class="form-control" tabindex="6" onKeypress="hitEnterKey(event)" value="${selectConstructionInfo.getConstOpening()}"/>
+															<i class="fa fa-calendar"></i> <input id="constOpening" name="constOpening" onMouseOver="javascript: this.value='개찰일';" onmouseout="javascript: this.value='${constructionMod.getConstOpening()}';" onclick="javascript: this.value='${constructionMod.getConstOpening()}';"
+															type="text" placeholder="개찰일" class="form-control" tabindex="6" onKeypress="hitEnterKey(event)" value="${constructionMod.getConstOpening()}"/>
 														</div>
 													</div>
 													<div class="form-group">
 														<div class="input-icon right">
-															<i class="fa fa-university"></i> <input id="constInstitution" name="constInstitution" onMouseOver="javascript: this.value='공고기관';" onmouseout="javascript: this.value='${selectConstructionInfo.getConstInstitution()}';" onclick="javascript: this.value='${selectConstructionInfo.getConstInstitution()}';"
-															type="text" placeholder="공고기관" class="form-control" tabindex="7" onKeypress="hitEnterKey(event)" value="${selectConstructionInfo.getConstInstitution()}"/>
+															<i class="fa fa-university"></i> <input id="constInstitution" name="constInstitution" onMouseOver="javascript: this.value='공고기관';" onmouseout="javascript: this.value='${constructionMod.getConstInstitution()}';" onclick="javascript: this.value='${constructionMod.getConstInstitution()}';"
+															type="text" placeholder="공고기관" class="form-control" tabindex="7" onKeypress="hitEnterKey(event)" value="${constructionMod.getConstInstitution()}"/>
 														</div>
 													</div>
 													<div class="form-group">
 														<div class="input-icon right">
-															<i class="fa fa-percent"></i> <input id="constPercent" name="constPercent" onMouseOver="javascript: this.value='사정률';" onmouseout="javascript: this.value='${selectConstructionInfo.getConstPercent()}';" onclick="javascript: this.value='${selectConstructionInfo.getConstPercent()}';"
-															type="text" placeholder="사정률" class="form-control" tabindex="8" onKeypress="hitEnterKey(event)" value="${selectConstructionInfo.getConstPercent()}"/>
+															<i class="fa fa-percent"></i> <input id="constPercent" name="constPercent" onMouseOver="javascript: this.value='사정률';" onmouseout="javascript: this.value='${constructionMod.getConstPercent()}';" onclick="javascript: this.value='${constructionMod.getConstPercent()}';"
+															type="text" placeholder="사정률" class="form-control" tabindex="8" onKeypress="hitEnterKey(event)" value="${constructionMod.getConstPercent()}"/>
 														</div>
 													</div>
 											</div>
