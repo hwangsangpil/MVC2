@@ -8,6 +8,8 @@ String constructionModResult = (String)request.getAttribute("constructionModResu
 String constructionDelResult = (String)request.getAttribute("constructionDelResult");
 String constructionAddResult = (String)request.getAttribute("constructionAddResult");
 String businessAddResult = (String)request.getAttribute("businessAddResult");
+String businessModResult = (String)request.getAttribute("businessModResult");
+String businessDelResult = (String)request.getAttribute("businessDelResult");
 %>
 <script>
 if('<%=constructionModResult%>' != "null"){
@@ -45,6 +47,23 @@ if('<%=businessAddResult%>' != "null"){
 	}
 }
 
+if('<%=businessModResult%>' != "null"){
+	if('<%=businessModResult%>' === "0"){
+		alert("업제 수정 실패");
+		history.back();
+	}else{
+		alert("업체 수정 성공");
+	}
+}
+
+if('<%=businessDelResult%>' != "null"){
+	if('<%=businessDelResult%>' === "0"){
+		alert("업제 삭제 실패");
+		history.back();
+	}else{
+		alert("업체 삭제 성공");
+	}
+}
 </script>
 
 <meta charset="utf-8">

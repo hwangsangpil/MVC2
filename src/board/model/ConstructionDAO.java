@@ -532,8 +532,6 @@ public class ConstructionDAO {
 				ConstructionDTO dto = new ConstructionDTO();
 				dto.setConstNum(rs.getInt("CONSTRUCTION_NUM"));
 				dto.setConstName(rs.getString("CONSTRUCTION_NAME"));
-			System.out.println("getConstNum:"+dto.getConstNum());
-			System.out.println("getConstName:"+dto.getConstName());
 				list.add(dto);
 			}
 		} catch (Exception e) {

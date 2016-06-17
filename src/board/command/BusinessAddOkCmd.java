@@ -24,7 +24,7 @@ public class BusinessAddOkCmd implements Cmd {
 		
 		int result=0;
 		result = dao.businessAddOk(constNum, busiName, busiOpening, busiPrice, busiPercent, busiWay, busiArea);
-		request.setAttribute("businessAddResult",result);
+		request.setAttribute("businessAddResult",String.valueOf(result));
 	}
 
 }

@@ -60,22 +60,27 @@ $(document).ready(function() {
 		document.frm.submit();
 	}
 	
-	function businessDel(BusiNum){
-		if (confirm("정말 삭제하시겠습니까??")){    //확인
-			location = "businessDel.bbs"
+	function businessDel(busiNum){
+		if('<%=role%>'==="일반관리자"){
+			alert("<%=role%>는 권한이 없습니다.");
+			return;
+		}else if (confirm("정말 삭제하시겠습니까?")){    //확인
+			location = "businessDelOk.bbs?busiNum="+busiNum;
 		}else{
 			return;
 		}
 	}
 	
-	function businessMod(BusiNum){
-		if (confirm("정말 수정하시겠습니까??")){    //확인
-			location.href = "businessMod.bbs";
+	function businessMod(busiNum){
+		if('<%=role%>'==="일반관리자"){
+			alert("<%=role%>는 권한이 없습니다.");
+			return;
+		}else if (confirm("정말 수정하시겠습니까?")){    //확인
+			location = "businessMod.bbs?busiNum="+busiNum;
 		}else{
 			return;
 		}
 	}
-	
 	
 </script>
 </head>
@@ -172,11 +177,9 @@ $(document).ready(function() {
 																	<td onclick="event.cancelBubble = true;"><button type="button" tabindex="11" class="btn btn-primary" onclick="businessDel(${dto.getBusiNum()})">삭제</button></td>
 																</tr>
 																</c:forEach>
-																<%
-															}else{
+															<%}else{
 																out.println("<tr><td align='center' colspan='9'>조회 결과가 없습니다.</td></tr>");
-															}
-															%>
+															}%>
 														</tbody>
 													</table>
 												</div>

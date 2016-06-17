@@ -72,16 +72,16 @@ public class BusinessDAO {
 				}
 			}
 			//"AND (" 괄호 닫음 
-			sql.append(")");
+			sql.append(" ) ");
 		//체크박스가 체크되어있지 않고 검색되었을때	
 		}else if(searchKeyword.length() > 0){
-			sql.append("AND (BUSINESS_NAME LIKE CONCAT('%',?,'%')		\n");
-			sql.append("OR CONSTRUCTION_NAME LIKE CONCAT('%',?,'%'))	\n");
+			sql.append("AND ( BUSINESS_NAME LIKE CONCAT('%',?,'%')		\n");
+			sql.append("OR CONSTRUCTION_NAME LIKE CONCAT('%',?,'%')		\n");
 			sql.append("OR BUSINESS_OPENING LIKE CONCAT('%',?,'%')		\n");
 			sql.append("OR BUSINESS_PERCENT LIKE CONCAT('%',?,'%')		\n");
 			sql.append("OR BUSINESS_PRICE LIKE CONCAT('%',?,'%')		\n");
 			sql.append("OR BUSINESS_WAY LIKE CONCAT('%',?,'%')			\n");
-			sql.append("OR BUSINESS_AREA LIKE CONCAT('%',?,'%'))		\n");
+			sql.append("OR BUSINESS_AREA LIKE CONCAT('%',?,'%') )		\n");
 		}
 			pstmt = conn.prepareStatement(sql.toString());
 			//위에서 추가된 쿼리 ? 에 값을 대입
@@ -103,13 +103,13 @@ public class BusinessDAO {
 				pstmt.setString(++cnt, searchKeyword);
 				pstmt.setString(++cnt, searchKeyword);
 			}
-			System.out.println("Busi Cnt selectpstmt:   "+pstmt.toString());
+			//System.out.println("Busi Cnt selectpstmt:   "+pstmt.toString());
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
 				result = rs.getInt("cnt");
 			}
-			System.out.println("Busi result:  "+result);
+			//System.out.println("Busi result:  "+result);
 		}catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -146,12 +146,7 @@ public class BusinessDAO {
 			}
 		}
 		int endRow = 10;
-			
-		/*if(checked != null){
-			for(int i=0; i<checked.length;i++){
-			System.out.println("checked[]:    "+checked[i]);
-			}
-		}*/
+
 		String[] query = {"BUSINESS_NAME", "CONSTRUCTION_NAME", 
 							"BUSINESS_OPENING", "BUSINESS_PERCENT", 
 								"BUSINESS_PRICE", "BUSINESS_WAY",
@@ -190,21 +185,21 @@ public class BusinessDAO {
 							if(2<=checked.length && 2<=count){
 								sql.append(" OR ");
 							}
-							sql.append(""+ query[j] + " LIKE CONCAT('%',?,'%') \n");
+							sql.append("" + query[j] + " LIKE CONCAT('%',?,'%') \n");
 						}
 					}
 				}
 				//"AND (" 괄호 닫음 
-				sql.append(")");
+				sql.append(" ) ");
 			//체크박스가 체크되어있지 않고 검색되었을때
 			}else if(searchKeyword.length() > 0){
-				sql.append("AND (BUSINESS_NAME LIKE CONCAT('%',?,'%')	\n");
+				sql.append("AND ( BUSINESS_NAME LIKE CONCAT('%',?,'%')	\n");
 				sql.append("OR CONSTRUCTION_NAME LIKE CONCAT('%',?,'%')	\n");
 				sql.append("OR BUSINESS_OPENING LIKE CONCAT('%',?,'%')	\n");
-				sql.append("OR BUSINESS_PRICE LIKE CONCAT('%',?,'%')	\n");
 				sql.append("OR BUSINESS_PERCENT LIKE CONCAT('%',?,'%')	\n");
+				sql.append("OR BUSINESS_PRICE LIKE CONCAT('%',?,'%')	\n");
 				sql.append("OR BUSINESS_WAY LIKE CONCAT('%',?,'%')		\n");
-				sql.append("OR BUSINESS_AREA LIKE CONCAT('%',?,'%'))	\n");
+				sql.append("OR BUSINESS_AREA LIKE CONCAT('%',?,'%') )	\n");
 			}
 			sql.append("ORDER BY BUSINESS_NUM DESC						\n");
 			sql.append("LIMIT ?, ?										\n");
@@ -231,7 +226,7 @@ public class BusinessDAO {
 			}
 			pstmt.setInt(nCnt++, startRow);
 			pstmt.setInt(nCnt++, endRow);
-			System.out.println("Busi selectpstmt:\n"+pstmt.toString());
+			//System.out.println("Busi selectpstmt:\n"+pstmt.toString());
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -263,6 +258,141 @@ public class BusinessDAO {
 		return list;
 	}
 	
+	//업체관리 수정 페이지 이동
+		public BusinessDTO businessMod(int busiNum){
+			ResultSet rs = null;
+			PreparedStatement pstmt = null;
+			Connection conn = null;
+
+			BusinessDTO dto = new BusinessDTO();
+
+			try {
+			conn = ds.getConnection();
+			
+			StringBuffer sql = new StringBuffer();
+			
+			sql.append("SELECT							 						\n");
+			sql.append("BUSINESS_NUM, BUSINESS_NAME,					 		\n");
+			sql.append("CONSTRUCTION_NAME, BUSINESS_OPENING,    				\n");
+			sql.append("BUSINESS_PERCENT, BUSINESS_PRICE,  						\n");
+			sql.append("BUSINESS_WAY, BUSINESS_AREA,							\n");
+			sql.append("date_format(BUSINESS.CRT_DATE, '%Y.%m.%d') as CRT_DATE,	\n");
+			sql.append("date_format(BUSINESS.UDT_DATE, '%Y.%m.%d') as UDT_DATE			\n");
+			sql.append("FROM 													\n");
+			sql.append("TB_CONSTRUCTION CONSTRUCTION JOIN TB_BUSINESS BUSINESS	\n");
+			sql.append("WHERE BUSINESS.DEL_YN <> 'Y'  							\n");
+			sql.append("AND CONSTRUCTION.CONSTRUCTION_NUM = 					\n");
+			sql.append("BUSINESS.CONSTRUCTION_NUM 								\n");
+			sql.append("AND BUSINESS_NUM=?										\n");
+			
+				pstmt = conn.prepareStatement(sql.toString());
+				pstmt.setInt(1, busiNum);
+				
+				rs = pstmt.executeQuery();
+				if (rs.next()) {
+					dto.setBusiNum(rs.getInt("BUSINESS_NUM"));
+					dto.setBusiName(rs.getString("BUSINESS_NAME"));
+					dto.setConstName(rs.getString("CONSTRUCTION_NAME"));
+					dto.setBusiOpening(rs.getString("BUSINESS_OPENING"));
+					dto.setBusiPercent(rs.getString("BUSINESS_PERCENT"));
+					dto.setBusiPrice(rs.getString("BUSINESS_PRICE"));
+					dto.setBusiWay(rs.getString("BUSINESS_WAY"));
+					dto.setBusiArea(rs.getString("BUSINESS_AREA"));
+					dto.setCrtDate(rs.getString("CRT_DATE"));
+					dto.setUdtDate(rs.getString("UDT_DATE"));
+
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try{
+					if(rs != null) rs.close();
+					if(pstmt != null) pstmt.close();
+					if(conn != null) conn.close();
+				}catch(SQLException e){
+					e.printStackTrace();
+				}
+			}
+
+			return dto;
+		}
+	
+		//업체관리 수정완료
+		public int businessModOk(int busiNum, String busiOpening, String busiPercent, String busiPrice, String busiWay, String busiArea){
+			ResultSet rs = null;
+			PreparedStatement pstmt = null;
+			Connection conn = null;
+
+			int result = 0;
+
+			try {
+			conn = ds.getConnection();
+			System.out.println("dao busiNum:"+busiNum);
+			StringBuffer sql = new StringBuffer();
+			sql.append("UPDATE TB_BUSINESS								\n");
+			sql.append("SET BUSINESS_OPENING = ?, BUSINESS_PERCENT = ?,	\n");
+			sql.append("BUSINESS_PRICE = ?, BUSINESS_WAY = ?, 		  	\n");
+			sql.append("BUSINESS_AREA = ?, UDT_DATE = now()		  		\n");
+			sql.append("WHERE BUSINESS_NUM = ?							\n");
+
+				pstmt = conn.prepareStatement(sql.toString());
+				pstmt.setString(1, busiOpening);
+				pstmt.setString(2, busiPercent);
+				pstmt.setString(3, busiPrice);
+				pstmt.setString(4, busiWay);
+				pstmt.setString(5, busiArea);
+				pstmt.setInt(6, busiNum);
+				result = pstmt.executeUpdate();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try{
+					if(rs != null) rs.close();
+					if(pstmt != null) pstmt.close();
+					if(conn != null) conn.close();
+				}catch(SQLException e){
+					e.printStackTrace();
+				}
+			}
+
+			return result;
+		}
+		
+		//업체관리 삭제여부 변경
+		public int businessDelOk(int busiNum){
+			ResultSet rs = null;
+			PreparedStatement pstmt = null;
+			Connection conn = null;
+
+			int result = 0;
+
+			try {
+			conn = ds.getConnection();
+			
+			StringBuffer sql = new StringBuffer();
+			sql.append("UPDATE TB_BUSINESS							\n");
+			sql.append("SET 										\n");
+			sql.append("DEL_YN = 'Y' 								\n");
+			sql.append("WHERE BUSINESS_NUM = ?						\n");
+				pstmt = conn.prepareStatement(sql.toString());
+				pstmt.setInt(1, busiNum);
+
+				result = pstmt.executeUpdate();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try{
+					if(rs != null) rs.close();
+					if(pstmt != null) pstmt.close();
+					if(conn != null) conn.close();
+				}catch(SQLException e){
+					e.printStackTrace();
+				}
+			}
+			return result;
+		}	
+	
+		
 	//*
 	public int viewCntTotalMember(String searchKeyword, int ConstNum, String[] checked){
 		ResultSet rs = null;
@@ -899,18 +1029,13 @@ public class BusinessDAO {
 			pstmt.setInt(8, constNum);
 			pstmt.setString(9, busiName);
 			
-			System.out.println("pstmt:"+pstmt);
 			result = pstmt.executeUpdate();
-			System.out.println("pstmt result:"+result);
 			if (result > 0) {
 				result = -1;
 				try {
 					rs = pstmt.getGeneratedKeys();
 					if (rs.next()){
-						System.out.println("rs result:"+result);
 						result = rs.getInt(1);
-						System.out.println("getint result:"+result);
-
 					}
 				} catch (SQLException e) {
 					result = -1;
@@ -931,41 +1056,7 @@ public class BusinessDAO {
 		return result;
 	}
 	
-	/*
-	 * 鍮꾩��땲�뒪 �궘�젣
-	 */
-	public int deleteBusiness(int BusiNum){
-		ResultSet rs = null;
-		PreparedStatement pstmt = null;
-		Connection conn = null;
 
-		int result = 0;
-
-		try {
-		conn = ds.getConnection();
-		
-		StringBuffer sql = new StringBuffer();
-		sql.append("UPDATE TB_BUSINESS														\n");
-		sql.append("SET 														\n");
-		sql.append("DEL_YN = 'Y' 												\n");
-		sql.append("WHERE BUSINESS_NUM = ?													\n");
-			pstmt = conn.prepareStatement(sql.toString());
-			pstmt.setInt(1, BusiNum);
-
-			result = pstmt.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try{
-				if(rs != null) rs.close();
-				if(pstmt != null) pstmt.close();
-				if(conn != null) conn.close();
-			}catch(SQLException e){
-				e.printStackTrace();
-			}
-		}
-		return result;
-	}
 	
 	
 	public int deleteBusiness2(int BusiNum){
@@ -1324,98 +1415,8 @@ public class BusinessDAO {
 		return list;
 	}
 	
-	public BusinessDTO selectBusinessInfo(int BusiNum){
-		ResultSet rs = null;
-		PreparedStatement pstmt = null;
-		Connection conn = null;
-
-		BusinessDTO dto = new BusinessDTO();
-
-		try {
-		conn = ds.getConnection();
-		
-		StringBuffer sql = new StringBuffer();
-		
-		sql.append("SELECT 					\n");
-		sql.append("TB_BUSINESS.BUSINESS_NUM,TB_BUSINESS.CONSTRUCTION_NUM , TB_CONSTRUCTION.CONSTRUCTION_NAME, TB_BUSINESS.BUSINESS_NAME,			\n");
-		sql.append("TB_BUSINESS.BUSINESS_OPENING, TB_BUSINESS.BUSINESS_PRICE, TB_BUSINESS.BUSINESS_PERCENT, TB_BUSINESS.BUSINESS_WAY, TB_BUSINESS.BUSINESS_AREA, date_format(TB_BUSINESS.CRT_DATE, '%Y.%m.%d') as CRT_DATE, date_format(TB_BUSINESS.UDT_DATE, '%Y.%m.%d') as UDT_DATE	\n");
-		sql.append("FROM 														\n");
-		sql.append("TB_CONSTRUCTION JOIN TB_BUSINESS														\n");
-		sql.append("WHERE TB_CONSTRUCTION.CONSTRUCTION_NUM=TB_BUSINESS.CONSTRUCTION_NUM AND TB_BUSINESS.BUSINESS_NUM=?										\n");
-		
-			pstmt = conn.prepareStatement(sql.toString());
-			pstmt.setInt(1, BusiNum);
-
-			rs = pstmt.executeQuery();
-			if (rs.next()) {
-				dto.setBusiNum(rs.getInt("BUSINESS_NUM"));
-				dto.setConstNum(rs.getInt("CONSTRUCTION_NUM"));
-				dto.setConstName(rs.getString("TB_CONSTRUCTION.CONSTRUCTION_NAME"));
-				dto.setBusiName(rs.getString("BUSINESS_NAME"));
-				dto.setBusiOpening(rs.getString("BUSINESS_OPENING"));
-				dto.setBusiPrice(rs.getString("BUSINESS_PRICE"));
-				dto.setBusiPercent(rs.getString("BUSINESS_PERCENT"));
-				dto.setBusiWay(rs.getString("BUSINESS_WAY"));
-				dto.setBusiArea(rs.getString("BUSINESS_AREA"));
-				dto.setCrtDate(rs.getString("CRT_DATE"));
-				dto.setUdtDate(rs.getString("UDT_DATE"));
-
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try{
-				if(rs != null) rs.close();
-				if(pstmt != null) pstmt.close();
-				if(conn != null) conn.close();
-			}catch(SQLException e){
-				e.printStackTrace();
-			}
-		}
-
-		return dto;
-	}
 	
-	public int updateBusiness(int BusiNum, String busiName, String busiOpening, String busiPrice, String busiPercent, String busiWay, String busiArea){
-		ResultSet rs = null;
-		PreparedStatement pstmt = null;
-		Connection conn = null;
 
-		int result = 0;
-
-		try {
-		conn = ds.getConnection();
-		
-		StringBuffer sql = new StringBuffer();
-		sql.append("UPDATE TB_BUSINESS															  \n");
-		sql.append("SET BUSINESS_OPENING = ?, BUSINESS_PRICE = ?,			  \n");
-		sql.append("BUSINESS_PERCENT = ?, BUSINESS_WAY = ?, BUSINESS_AREA = ?, 		  \n");
-		sql.append("UDT_DATE = now()		  \n");
-		sql.append("WHERE BUSINESS_NUM = ?												  	      \n");
-
-			pstmt = conn.prepareStatement(sql.toString());
-			pstmt.setString(1, busiOpening);
-			pstmt.setString(2, busiPrice);
-			pstmt.setString(3, busiPercent);
-			pstmt.setString(4, busiWay);
-			pstmt.setString(5, busiArea);
-			pstmt.setInt(6, BusiNum);
-
-			result = pstmt.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try{
-				if(rs != null) rs.close();
-				if(pstmt != null) pstmt.close();
-				if(conn != null) conn.close();
-			}catch(SQLException e){
-				e.printStackTrace();
-			}
-		}
-
-		return result;
-	}
 	
 	public BusinessDTO selectBusinessViewInfo(int BusiNum, int ConstNum){
 		BusinessDTO dto = new BusinessDTO();

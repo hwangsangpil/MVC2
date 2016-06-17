@@ -10,22 +10,14 @@
 <%@page import="board.model.BusinessDAO"%>
 <%@page import="java.net.URLEncoder"%>
 <%@page import="java.net.URLDecoder"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
-
-int BusiNum = Integer.parseInt(StringUtil.nchk(request.getParameter("BusiNum"), "1"));
-int pageno = Integer.parseInt(StringUtil.nchk(request.getParameter("pageno"), "1"));
-String[] checked=request.getParameterValues("check");
-String searchKeyword = URLDecoder.decode(StringUtil.nchk(request.getParameter("searchKeyword"),""),"UTF-8");
-
-
 request.setCharacterEncoding("UTF-8");
-BusinessDAO dao = new BusinessDAO();
-BusinessDTO dto=dao.selectBusinessInfo(BusiNum);
-/* 
-ConstructionDAO conDao = new ConstructionDAO();
-ArrayList<ConstructionDTO> list = new ArrayList<ConstructionDTO>();
-list = conDao.selectConstructionList();
- */
+
+String busiCast = (String)request.getAttribute("busiNum");
+int busiNum = Integer.parseInt(busiCast);
+System.out.println("jsp busiNum:"+busiNum);
+session.setAttribute("busiNum", String.valueOf(busiNum));
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -115,15 +107,7 @@ $(document).ready(function() {
 });
 
 function fnc_list(){
-	location.href = "/business/businessList.jsp?pageno="+<%=pageno%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("1")){%>+"&check="+<%=checked[i]%><%}}}%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("2")){%>+"&check="+<%=checked[i]%><%}}}%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("3")){%>+"&check="+<%=checked[i]%><%}}}%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("4")){%>+"&check="+<%=checked[i]%><%}}}%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("5")){%>+"&check="+<%=checked[i]%><%}}}%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("6")){%>+"&check="+<%=checked[i]%><%}}}%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("7")){%>+"&check="+<%=checked[i]%><%}}}%>
-			+"&searchKeyword="+encodeURI(encodeURIComponent("<%=searchKeyword%>"));
+	location = "businessModList.bbs";
 }
 
 function checkForm() {
@@ -149,15 +133,6 @@ function checkForm() {
 		return;
 	}
 	 */
-	registForm.action="businessModOk.jsp?BusiNum="+<%=BusiNum%>+"&pageno="+<%=pageno%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("1")){%>+"&check="+<%=checked[i]%><%}}}%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("2")){%>+"&check="+<%=checked[i]%><%}}}%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("3")){%>+"&check="+<%=checked[i]%><%}}}%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("4")){%>+"&check="+<%=checked[i]%><%}}}%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("5")){%>+"&check="+<%=checked[i]%><%}}}%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("6")){%>+"&check="+<%=checked[i]%><%}}}%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("7")){%>+"&check="+<%=checked[i]%><%}}}%>
-			+"&searchKeyword="+encodeURI(encodeURIComponent("<%=searchKeyword%>"));
 	registForm.submit();
 }
 
@@ -216,14 +191,14 @@ function hitEnterKey(e){
 								<div class="panel panel-green">
 	                                <div class="panel-heading">업체수정</div>
 	                                <div class="panel-body pan">
-	                                    <form id="registForm" name="frm" method="post">
+	                                    <form id="registForm" name="frm" action="businessModOk.bbs" method="post">
 	                                    	<div class="form-body pal">
 												<div class="form-group">
 													<div class="input-icon right">
 															<i class="fa fa-pencil"></i> <input id="constNum"
 																name="constNum" type="text" placeholder="공고명"
 																class="form-control" tabindex="1" onKeypress="hitEnterKey(event)"
-																value="<%=dto.getConstName()%>" onMouseOver="javascript: this.value='공고명';" onmouseout="javascript: this.value='<%=dto.getConstName()%>';" onclick="notModConName();"  readonly/>
+																value="${businessMod.getConstName()}" onMouseOver="javascript: this.value='공고명';" onmouseout="javascript: this.value='${businessMod.getConstName()}';" onclick="notModConName();"  readonly/>
 													</div>
 												</div>
 													<div class="form-group">
@@ -231,42 +206,42 @@ function hitEnterKey(e){
 															<i class="fa fa-pencil"></i> <input id="busiName"
 																name="busiName" type="text" placeholder="업체명"
 																class="form-control" tabindex="2" onKeypress="hitEnterKey(event)"
-																onclick="notModBusiName();" value="<%=dto.getBusiName()%>" onMouseOver="javascript: this.value='업체명';" onmouseout="javascript: this.value='<%=dto.getBusiName()%>';" readonly/>
+																onclick="notModBusiName();" value="${businessMod.getBusiName()}" onMouseOver="javascript: this.value='업체명';" onmouseout="javascript: this.value='${businessMod.getBusiName()}';" readonly/>
 														</div>
 													</div>
 													<div class="form-group">
 														<div class="input-icon right">
 															<i class="fa fa-calendar"></i> <input id="bisiOpening" name="bisiOpening"
 															type="text" placeholder="개찰일" class="form-control" tabindex="3" onKeypress="hitEnterKey(event)"
-															value="<%=dto.getBusiOpening()%>" onMouseOver="javascript: this.value='개찰일';" onmouseout="javascript: this.value='<%=dto.getBusiOpening()%>';" onclick="javascript: this.value='<%=dto.getBusiOpening()%>';"/>
+															value="${businessMod.getBusiOpening()}" onMouseOver="javascript: this.value='개찰일';" onmouseout="javascript: this.value='${businessMod.getBusiOpening()}';" onclick="javascript: this.value='${businessMod.getBusiOpening()}';"/>
 														</div>
 													</div>
 													<div class="form-group">
 														<div class="input-icon right">
 															<i class="fa fa-percent"></i> <input id="busiPercent" name="busiPercent"
 															type="text" placeholder="업체사정률" class="form-control" tabindex="4" onKeypress="hitEnterKey(event)"
-															value="<%=dto.getBusiPercent()%>" onMouseOver="javascript: this.value='업체사정률';" onmouseout="javascript: this.value='<%=dto.getBusiPercent()%>';" onclick="javascript: this.value='<%=dto.getBusiPercent()%>';"/>
+															value="${businessMod.getBusiPercent()}" onMouseOver="javascript: this.value='업체사정률';" onmouseout="javascript: this.value='${businessMod.getBusiPercent()}';" onclick="javascript: this.value='${businessMod.getBusiPercent()}';"/>
 														</div>
 													</div>
 													<div class="form-group">
 														<div class="input-icon right">
 															<i class="fa fa-bar-chart"></i> <input id="busiPrice" name="busiPrice"
 															type="text" placeholder="예가변동폭" class="form-control" tabindex="5" onKeypress="hitEnterKey(event)"
-															value="<%=dto.getBusiPrice()%>" onMouseOver="javascript: this.value='예가변동폭';" onmouseout="javascript: this.value='<%=dto.getBusiPrice()%>';" onclick="javascript: this.value='<%=dto.getBusiPrice()%>';"/>
+															value="${businessMod.getBusiPrice()}" onMouseOver="javascript: this.value='예가변동폭';" onmouseout="javascript: this.value='${businessMod.getBusiPrice()}';" onclick="javascript: this.value='${businessMod.getBusiPrice()}';"/>
 														</div>
 													</div>
 													<div class="form-group">
 														<div class="input-icon right">
 															<i class="fa fa-balance-scale"></i> <input id="busiWay" name="busiWay"
 															type="text" placeholder="계약방법" class="form-control" tabindex="6" onKeypress="hitEnterKey(event)"
-															value="<%=dto.getBusiWay()%>" onMouseOver="javascript: this.value='계약방법';" onmouseout="javascript: this.value='<%=dto.getBusiWay()%>';" onclick="javascript: this.value='<%=dto.getBusiWay()%>';"/>
+															value="${businessMod.getBusiWay()}" onMouseOver="javascript: this.value='계약방법';" onmouseout="javascript: this.value='${businessMod.getBusiWay()}';" onclick="javascript: this.value='${businessMod.getBusiWay()}';"/>
 														</div>
 													</div>
 													<div class="form-group">
 														<div class="input-icon right">
 															<i class="fa fa-map-marker"></i> <input id="busiArea" name="busiArea"
 															type="text" placeholder="지역제한" class="form-control" tabindex="7" onKeypress="hitEnterKey(event)"
-															value="<%=dto.getBusiArea()%>" onMouseOver="javascript: this.value='지역제한';" onmouseout="javascript: this.value='<%=dto.getBusiArea()%>';" onclick="javascript: this.value='<%=dto.getBusiArea()%>';"/>
+															value="${businessMod.getBusiArea()}" onMouseOver="javascript: this.value='지역제한';" onmouseout="javascript: this.value='${businessMod.getBusiArea()}';" onclick="javascript: this.value='${businessMod.getBusiArea()}';"/>
 														</div>
 													</div>
 												

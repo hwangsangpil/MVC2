@@ -11,8 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import board.command.BusinessAddCmd;
 import board.command.BusinessAddOkCmd;
+import board.command.BusinessDelOkCmd;
 import board.command.BusinessListCmd;
 import board.command.BusinessListFirstCmd;
+import board.command.BusinessModCmd;
+import board.command.BusinessModListCmd;
+import board.command.BusinessModOkCmd;
 import board.command.Cmd;
 import board.command.ConstructionAddOkCmd;
 import board.command.ConstructionDelOkCmd;
@@ -151,6 +155,34 @@ public class FrontController extends HttpServlet {
 			viewPage = "/business/businessList.jsp";
 		}
 		
+		//업체관리 수정 페이지 이동
+		if(cmdURI.equals("/businessMod.bbs")){
+			cmd = new BusinessModCmd();
+			cmd.execute(request, response);
+			viewPage = "/business/businessMod.jsp";
+		}
+		
+		//업체관리 수정완료
+		if(cmdURI.equals("/businessModOk.bbs")){
+			cmd = new BusinessModOkCmd();
+			cmd.execute(request, response);
+			viewPage = "businessList.bbs";
+		}
+		
+		//업체관리 수정화면에서 목록이동
+		if(cmdURI.equals("/businessModList.bbs")){
+			cmd = new BusinessModListCmd();
+			cmd.execute(request, response);
+			viewPage = "businessList.bbs";
+		}
+		
+		//업체관리 삭제완료
+		if(cmdURI.equals("/businessDelOk.bbs")){
+			cmd = new BusinessDelOkCmd();
+			cmd.execute(request, response);
+			viewPage = "businessList.bbs";
+		}
+		
 		//업체등록 페이지
 		if(cmdURI.equals("/businessAdd.bbs")){
 			cmd = new BusinessAddCmd();
@@ -162,7 +194,7 @@ public class FrontController extends HttpServlet {
 		if(cmdURI.equals("/businessAddOk.bbs")){
 			cmd = new BusinessAddOkCmd();
 			cmd.execute(request, response);
-			viewPage = "test.jsp";
+			viewPage = "businessList.bbs";
 		}
 		
 		
