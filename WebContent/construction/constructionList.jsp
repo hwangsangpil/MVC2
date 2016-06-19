@@ -92,8 +92,8 @@ $(document).ready(function() {
 			return;
 		}
 	}
-	function businessView(ConstNum){
-		location = "businessView.bbs?constNum="+ConstNum;
+	function businessView(constNum){
+		location = "businessView.bbs?constNum="+constNum;
 	}
 	
 	

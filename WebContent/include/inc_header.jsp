@@ -40,7 +40,7 @@ if('<%=constructionAddResult%>' != "null"){
 
 if('<%=businessAddResult%>' != "null"){
 	if('<%=businessAddResult%>' === "0"){
-		alert("업제 등록 실패");
+		alert("업제 등록을 실패했습니다.\n이미 해당공고에 참여한 업체가 있습니다.");
 		history.back();
 	}else{
 		alert("업체 등록 성공");

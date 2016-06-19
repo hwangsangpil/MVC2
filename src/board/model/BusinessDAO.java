@@ -393,84 +393,76 @@ public class BusinessDAO {
 		}	
 	
 		
-	//*
-	public int viewCntTotalMember(String searchKeyword, int ConstNum, String[] checked){
+	//공고 상세보기 갯수 구하기
+	public int businessViewTotalCnt(String searchKeyword, int constNum, String[] checked){
 		ResultSet rs = null;
 		PreparedStatement pstmt = null;
 		Connection conn = null;
 
 		int result = 0;
 		int cnt = 0;
-
+		
+		String[] query = {"CONSTRUCTION_NAME", "BUSINESS_NAME",
+							"BUSINESS_OPENING", "BUSINESS_PERCENT",
+								"BUSINESS_PRICE", "BUSINESS_WAY",
+									"BUSINESS_AREA"	};
+		
 		try {
 		conn = ds.getConnection();
 		
 		StringBuffer sql = new StringBuffer();
-		sql.append("SELECT COUNT(*)	cnt														\n");
-		sql.append("FROM																	\n");
-		sql.append("TB_CONSTRUCTION JOIN TB_BUSINESS										\n");
-		sql.append("WHERE																	\n");
-		sql.append("TB_CONSTRUCTION.CONSTRUCTION_NUM = TB_BUSINESS.CONSTRUCTION_NUM			\n");
-		sql.append("AND TB_BUSINESS.DEL_YN <> 'Y' 											\n");
-		sql.append("AND TB_BUSINESS.CONSTRUCTION_NUM=?										\n");
+		sql.append("SELECT COUNT(*)	cnt								\n");
+		sql.append("FROM											\n");
+		sql.append("TB_CONSTRUCTION CONSTRUCTION JOIN 				\n");
+		sql.append("TB_BUSINESS BUSINESS							\n");
+		sql.append("WHERE											\n");
+		sql.append("CONSTRUCTION.CONSTRUCTION_NUM = 				\n");
+		sql.append("BUSINESS.CONSTRUCTION_NUM						\n");
+		sql.append("AND BUSINESS.DEL_YN <> 'Y'						\n");
+		sql.append("AND CONSTRUCTION.DEL_YN <> 'Y'					\n");
+		sql.append("AND BUSINESS.CONSTRUCTION_NUM=?					\n");
 		
 		if(checked != null){
+			sql.append("AND ( ");
+			//쿼리가 2개 이상이라면 OR 를 붙여주기 위함
+			int count=0;
+			//체크박스의 길이만큼
 			for(int i=0; i<checked.length; i++){
-				if(checked[i].equals("1")){
-					sql.append("AND TB_CONSTRUCTION.CONSTRUCTION_NAME LIKE CONCAT('%',?,'%')			\n");
+				//쿼리의 갯수만큼 체크박스의 값이 맞는지 비교하기 위함
+				for(int j=0; j<query.length; j++){
+					//체크박스의 값이 맞으면 쿼리 추가
+					if(checked[i].equals(String.valueOf(j))){
+						++count;
+						//체크박스의 길이가 2개이상 이라면
+						//쿼리추가전에 OR 추가
+						if(2<=checked.length && 2<=count){
+							sql.append(" OR ");
+						}
+						sql.append("" + query[j] + " LIKE CONCAT('%',?,'%') \n");
+					}
 				}
-				if(checked[i].equals("2")){
-					sql.append("AND TB_BUSINESS.BUSINESS_NAME LIKE CONCAT('%',?,'%')			\n");
-				}
-				if(checked[i].equals("3")){
-					sql.append("AND TB_BUSINESS.BUSINESS_OPENING LIKE CONCAT('%',?,'%')			\n");
-				}
-				if(checked[i].equals("4")){
-					sql.append("AND TB_BUSINESS.BUSINESS_PRICE LIKE CONCAT('%',?,'%')			\n");
-				}
-				if(checked[i].equals("5")){
-					sql.append("AND TB_BUSINESS.BUSINESS_PERCENT LIKE CONCAT('%',?,'%')			\n");
-				}
-				if(checked[i].equals("6")){
-					sql.append("AND TB_BUSINESS.BUSINESS_WAY LIKE CONCAT('%',?,'%')			\n");
-				}
-				if(checked[i].equals("7")){
-					sql.append("AND TB_BUSINESS.BUSINESS_AREA LIKE CONCAT('%',?,'%')			\n");
-				}
-			}	
+			}
+			//"AND (" 괄호 닫음 
+			sql.append(" ) ");
+		//체크박스가 체크되어있지 않고 검색되었을때	
 		}else if(searchKeyword.length() > 0){
-			sql.append("AND (TB_CONSTRUCTION.CONSTRUCTION_NAME LIKE CONCAT('%',?,'%')		\n");
-			sql.append("OR TB_BUSINESS.BUSINESS_NAME LIKE CONCAT('%',?,'%')					\n");
-			sql.append("OR TB_BUSINESS.BUSINESS_OPENING LIKE CONCAT('%',?,'%')				\n");
-			sql.append("OR TB_BUSINESS.BUSINESS_PRICE LIKE CONCAT('%',?,'%')				\n");
-			sql.append("OR TB_BUSINESS.BUSINESS_PERCENT LIKE CONCAT('%',?,'%')				\n");
-			sql.append("OR TB_BUSINESS.BUSINESS_WAY LIKE CONCAT('%',?,'%')					\n");
-			sql.append("OR TB_BUSINESS.BUSINESS_AREA LIKE CONCAT('%',?,'%'))				\n");
+			sql.append("AND ( CONSTRUCTION_NAME LIKE CONCAT('%',?,'%')	\n");
+			sql.append("OR BUSINESS_NAME LIKE CONCAT('%',?,'%')			\n");
+			sql.append("OR BUSINESS_OPENING LIKE CONCAT('%',?,'%')		\n");
+			sql.append("OR BUSINESS_PRICE LIKE CONCAT('%',?,'%')		\n");
+			sql.append("OR BUSINESS_PERCENT LIKE CONCAT('%',?,'%')		\n");
+			sql.append("OR BUSINESS_WAY LIKE CONCAT('%',?,'%')			\n");
+			sql.append("OR BUSINESS_AREA LIKE CONCAT('%',?,'%') )		\n");
 		}
 			pstmt = conn.prepareStatement(sql.toString());
-			pstmt.setInt(++cnt, ConstNum);
+			pstmt.setInt(++cnt, constNum);
+			
 			if(checked != null){
 				for(int i=0; i<checked.length; i++){
-					if(checked[i].equals("1")){
-						pstmt.setString(++cnt, searchKeyword);
-					}
-					if(checked[i].equals("2")){
-						pstmt.setString(++cnt, searchKeyword);
-					}
-					if(checked[i].equals("3")){
-						pstmt.setString(++cnt, searchKeyword);
-					}
-					if(checked[i].equals("4")){
-						pstmt.setString(++cnt, searchKeyword);
-					}
-					if(checked[i].equals("5")){
-						pstmt.setString(++cnt, searchKeyword);
-					}
-					if(checked[i].equals("6")){
-						pstmt.setString(++cnt, searchKeyword);
-					}
-					if(checked[i].equals("7")){
-						pstmt.setString(++cnt, searchKeyword);
+					for(int j=0; j<query.length; j++){
+						if(checked[i].equals(String.valueOf(j))){
+							pstmt.setString(++cnt, searchKeyword);
+						}
 					}
 				}	
 		}else if(searchKeyword.length() > 0){
@@ -482,7 +474,7 @@ public class BusinessDAO {
 				pstmt.setString(++cnt, searchKeyword);
 				pstmt.setString(++cnt, searchKeyword);
 			}
-			//System.out.println("View Cnt selectpstmt:   "+pstmt.toString());
+			System.out.println("View Cnt selectpstmt:   "+pstmt.toString());
 			
 			rs = pstmt.executeQuery();
 
@@ -503,6 +495,154 @@ public class BusinessDAO {
 		}
 		return result;
 	}
+	
+	//공고상세보기
+	public ArrayList<BusinessDTO> businessView(int constNum, int pageno, String searchKeyword, int totalcnt, String[] checked){
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+		Connection conn = null;
+		ArrayList<BusinessDTO> list = new ArrayList<BusinessDTO>();
+		
+		int nCnt = 1;
+		int startRow =0;
+		
+		String[] query = {"CONSTRUCTION_NAME", "BUSINESS_NAME",
+							"BUSINESS_OPENING", "BUSINESS_PERCENT",
+								"BUSINESS_PRICE", "BUSINESS_WAY",
+									"BUSINESS_AREA"	};
+		
+		/*
+		if(Math.ceil(totalcnt/10)<=pageno && (pageno-1)!=0)
+		{
+			--pageno;
+		}
+		*/
+		if(searchKeyword.length() <= 0){
+			startRow = (pageno - 1) * 10;
+		}
+		if(searchKeyword.length() > 0 && totalcnt>10){
+			if(((pageno -1) * 10) >= totalcnt){
+				startRow = 0;
+			}else{
+				startRow = (pageno - 1) * 10;
+			}
+		}
+		int endRow = 10;
+		/*
+		if(checked != null){
+			for(int i=0; i<checked.length;i++){
+			System.out.println("checked[]:    "+checked[i]);
+			}
+		}*/
+		try {
+			conn = ds.getConnection();
+			
+			StringBuffer sql = new StringBuffer();
+			sql.append("SELECT					 								\n");
+			sql.append("BUSINESS_NUM, CONSTRUCTION_NAME, 						\n");
+			sql.append("BUSINESS_NAME, BUSINESS_OPENING,    					\n");
+			sql.append("BUSINESS_PRICE, BUSINESS_PERCENT, 						\n");
+			sql.append("BUSINESS_WAY, BUSINESS_AREA,							\n");
+			sql.append("date_format(BUSINESS.CRT_DATE, '%Y.%m.%d') as CRT_DATE,	\n");
+			sql.append("date_format(BUSINESS.UDT_DATE, '%Y.%m.%d') as UDT_DATE	\n");
+			sql.append("FROM													\n");
+			sql.append("TB_CONSTRUCTION CONSTRUCTION JOIN TB_BUSINESS BUSINESS	\n");
+			sql.append("WHERE    												\n");
+			sql.append("CONSTRUCTION.CONSTRUCTION_NUM =							\n");
+			sql.append("BUSINESS.CONSTRUCTION_NUM								\n");
+			sql.append("AND BUSINESS.DEL_YN <> 'Y'								\n");
+			sql.append("AND CONSTRUCTION.DEL_YN <> 'Y'							\n");
+			sql.append("AND BUSINESS.CONSTRUCTION_NUM=?						\n");
+			if(checked != null){
+				sql.append("AND ( ");
+				//쿼리가 2개 이상이라면 OR 를 붙여주기 위함
+				int count=0;
+				//체크박스의 길이만큼
+				for(int i=0; i<checked.length; i++){
+					//쿼리의 갯수만큼 체크박스의 값이 맞는지 비교하기 위함
+					for(int j=0; j<query.length; j++){
+						//체크박스의 값이 맞으면 쿼리 추가
+						if(checked[i].equals(String.valueOf(j))){
+							++count;
+							//체크박스의 길이가 2개이상 이라면
+							//쿼리추가전에 OR 추가
+							if(2<=checked.length && 2<=count){
+								sql.append(" OR ");
+							}
+							sql.append("" + query[j] + " LIKE CONCAT('%',?,'%') \n");
+						}
+					}
+				}
+				//"AND (" 괄호 닫음 
+				sql.append(" ) ");
+			//체크박스가 체크되어있지 않고 검색되었을때	
+			}else if(searchKeyword.length() > 0){
+				sql.append("AND ( CONSTRUCTION_NAME LIKE CONCAT('%',?,'%')	\n");
+				sql.append("OR BUSINESS_NAME LIKE CONCAT('%',?,'%')			\n");
+				sql.append("OR BUSINESS_OPENING LIKE CONCAT('%',?,'%')		\n");
+				sql.append("OR BUSINESS_PRICE LIKE CONCAT('%',?,'%')		\n");
+				sql.append("OR BUSINESS_PERCENT LIKE CONCAT('%',?,'%')		\n");
+				sql.append("OR BUSINESS_WAY LIKE CONCAT('%',?,'%')			\n");
+				sql.append("OR BUSINESS_AREA LIKE CONCAT('%',?,'%') )		\n");
+			}
+			sql.append("ORDER BY BUSINESS.BUSINESS_NUM DESC				\n");
+			sql.append("LIMIT ?, ?											\n");
+			
+				pstmt = conn.prepareStatement(sql.toString());
+				pstmt.setInt(nCnt++, constNum);
+				
+				if(checked != null){
+					for(int i=0; i<checked.length; i++){
+						for(int j=0; j<query.length; j++){
+							if(checked[i].equals(String.valueOf(j))){
+								pstmt.setString(nCnt++, searchKeyword);
+							}
+						}
+					}	
+			}else if(searchKeyword.length() > 0){
+					pstmt.setString(nCnt++, searchKeyword);
+					pstmt.setString(nCnt++, searchKeyword);
+					pstmt.setString(nCnt++, searchKeyword);
+					pstmt.setString(nCnt++, searchKeyword);
+					pstmt.setString(nCnt++, searchKeyword);
+					pstmt.setString(nCnt++, searchKeyword);
+					pstmt.setString(nCnt++, searchKeyword);
+				}
+				pstmt.setInt(nCnt++, startRow);
+				pstmt.setInt(nCnt++, endRow);
+				
+				System.out.println("View selectpstmt:   "+pstmt.toString());
+				
+				rs = pstmt.executeQuery();
+
+				while (rs.next()) {
+					BusinessDTO dto = new BusinessDTO();
+					dto.setBusiNum(rs.getInt("BUSINESS_NUM"));
+					dto.setConstName(rs.getString("CONSTRUCTION_NAME"));
+					dto.setBusiName(rs.getString("BUSINESS_NAME"));
+					dto.setBusiOpening(rs.getString("BUSINESS_OPENING"));
+					dto.setBusiPrice(rs.getString("BUSINESS_PRICE"));
+					dto.setBusiPercent(rs.getString("BUSINESS_PERCENT"));
+					dto.setBusiWay(rs.getString("BUSINESS_WAY"));
+					dto.setBusiArea(rs.getString("BUSINESS_AREA"));
+					dto.setCrtDate(rs.getString("CRT_DATE"));
+					dto.setUdtDate(rs.getString("UDT_DATE"));
+
+					list.add(dto);
+				}
+			}catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try{
+					if(rs != null) rs.close();
+					if(pstmt != null) pstmt.close();
+					if(conn != null) conn.close();
+				}catch(SQLException e){
+					e.printStackTrace();
+				}
+			}
+			return list;
+		}
 	
 	/*
 	 * 
@@ -662,157 +802,6 @@ public class BusinessDAO {
 	
 	
 	
-	public ArrayList<BusinessDTO> businessView(int ConstNum, int pageno, String searchKeyword, int totalcnt, String[] checked){
-		ResultSet rs = null;
-		PreparedStatement pstmt = null;
-		Connection conn = null;
-
-		ArrayList<BusinessDTO> list = new ArrayList<BusinessDTO>();
-		
-		int nCnt = 1;
-		int startRow =0;
-		/*
-		if(Math.ceil(totalcnt/10)<=pageno && (pageno-1)!=0)
-		{
-			--pageno;
-		}
-		*/
-		if(searchKeyword.length() <= 0){
-			startRow = (pageno - 1) * 10;
-		}
-		if(searchKeyword.length() > 0 && totalcnt>10){
-			if(((pageno -1) * 10) >= totalcnt){
-				startRow = 0;
-			}else{
-				startRow = (pageno - 1) * 10;
-			}
-		}
-		int endRow = 10;
-		/*
-		if(checked != null){
-			for(int i=0; i<checked.length;i++){
-			System.out.println("checked[]:    "+checked[i]);
-			}
-		}*/
-
-		try {
-		conn = ds.getConnection();
-		
-		StringBuffer sql = new StringBuffer();
-		sql.append("SELECT 					\n");
-		sql.append("TB_BUSINESS.BUSINESS_NUM,TB_BUSINESS.CONSTRUCTION_NUM , TB_CONSTRUCTION.CONSTRUCTION_NAME, TB_BUSINESS.BUSINESS_NAME,			\n");
-		sql.append("TB_BUSINESS.BUSINESS_OPENING, TB_BUSINESS.BUSINESS_PRICE, TB_BUSINESS.BUSINESS_PERCENT, TB_BUSINESS.BUSINESS_WAY, TB_BUSINESS.BUSINESS_AREA, date_format(TB_BUSINESS.CRT_DATE, '%Y.%m.%d') as CRT_DATE, date_format(TB_BUSINESS.UDT_DATE, '%Y.%m.%d') as UDT_DATE	\n");
-		sql.append("FROM 														\n");
-		sql.append("TB_CONSTRUCTION JOIN TB_BUSINESS														\n");
-		sql.append("WHERE TB_CONSTRUCTION.CONSTRUCTION_NUM=TB_BUSINESS.CONSTRUCTION_NUM AND TB_BUSINESS.DEL_YN <> 'Y' AND TB_BUSINESS.CONSTRUCTION_NUM=?										\n");
-		
-		if(checked != null){
-			for(int i=0; i<checked.length; i++){
-				if(checked[i].equals("1")){
-					sql.append("AND TB_CONSTRUCTION.CONSTRUCTION_NAME LIKE CONCAT('%',?,'%')			\n");
-				}
-				if(checked[i].equals("2")){
-					sql.append("AND TB_BUSINESS.BUSINESS_NAME LIKE CONCAT('%',?,'%')			\n");
-				}
-				if(checked[i].equals("3")){
-					sql.append("AND TB_BUSINESS.BUSINESS_OPENING LIKE CONCAT('%',?,'%')			\n");
-				}
-				if(checked[i].equals("4")){
-					sql.append("AND TB_BUSINESS.BUSINESS_PRICE LIKE CONCAT('%',?,'%')			\n");
-				}
-				if(checked[i].equals("5")){
-					sql.append("AND TB_BUSINESS.BUSINESS_PERCENT LIKE CONCAT('%',?,'%')			\n");
-				}
-				if(checked[i].equals("6")){
-					sql.append("AND TB_BUSINESS.BUSINESS_WAY LIKE CONCAT('%',?,'%')			\n");
-				}
-				if(checked[i].equals("7")){
-					sql.append("AND TB_BUSINESS.BUSINESS_AREA LIKE CONCAT('%',?,'%')			\n");
-				}
-			}	
-		}else if(searchKeyword.length() > 0){
-			sql.append("AND (TB_CONSTRUCTION.CONSTRUCTION_NAME LIKE CONCAT('%',?,'%')		\n");
-			sql.append("OR TB_BUSINESS.BUSINESS_NAME LIKE CONCAT('%',?,'%')					\n");
-			sql.append("OR TB_BUSINESS.BUSINESS_OPENING LIKE CONCAT('%',?,'%')				\n");
-			sql.append("OR TB_BUSINESS.BUSINESS_PRICE LIKE CONCAT('%',?,'%')				\n");
-			sql.append("OR TB_BUSINESS.BUSINESS_PERCENT LIKE CONCAT('%',?,'%')				\n");
-			sql.append("OR TB_BUSINESS.BUSINESS_WAY LIKE CONCAT('%',?,'%')					\n");
-			sql.append("OR TB_BUSINESS.BUSINESS_AREA LIKE CONCAT('%',?,'%'))				\n");
-		}
-		sql.append("ORDER BY TB_BUSINESS.BUSINESS_NUM DESC												\n");
-		sql.append("LIMIT ?, ?															\n");
-		
-			pstmt = conn.prepareStatement(sql.toString());
-			pstmt.setInt(nCnt++, ConstNum);
-			if(checked != null){
-				for(int i=0; i<checked.length; i++){
-					if(checked[i].equals("1")){
-						pstmt.setString(nCnt++, searchKeyword);
-					}
-					if(checked[i].equals("2")){
-						pstmt.setString(nCnt++, searchKeyword);
-					}
-					if(checked[i].equals("3")){
-						pstmt.setString(nCnt++, searchKeyword);
-					}
-					if(checked[i].equals("4")){
-						pstmt.setString(nCnt++, searchKeyword);
-					}
-					if(checked[i].equals("5")){
-						pstmt.setString(nCnt++, searchKeyword);
-					}
-					if(checked[i].equals("6")){
-						pstmt.setString(nCnt++, searchKeyword);
-					}
-					if(checked[i].equals("7")){
-						pstmt.setString(nCnt++, searchKeyword);
-					}
-				}	
-		}else if(searchKeyword.length() > 0){
-				pstmt.setString(nCnt++, searchKeyword);
-				pstmt.setString(nCnt++, searchKeyword);
-				pstmt.setString(nCnt++, searchKeyword);
-				pstmt.setString(nCnt++, searchKeyword);
-				pstmt.setString(nCnt++, searchKeyword);
-				pstmt.setString(nCnt++, searchKeyword);
-				pstmt.setString(nCnt++, searchKeyword);
-			}
-			pstmt.setInt(nCnt++, startRow);
-			pstmt.setInt(nCnt++, endRow);
-			
-			//System.out.println("View selectpstmt:   "+pstmt.toString());
-			
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				BusinessDTO dto = new BusinessDTO();
-				dto.setBusiNum(rs.getInt("BUSINESS_NUM"));
-				dto.setConstNum(rs.getInt("CONSTRUCTION_NUM"));
-				dto.setConstName(rs.getString("TB_CONSTRUCTION.CONSTRUCTION_NAME"));
-				dto.setBusiName(rs.getString("BUSINESS_NAME"));
-				dto.setBusiOpening(rs.getString("BUSINESS_OPENING"));
-				dto.setBusiPrice(rs.getString("BUSINESS_PRICE"));
-				dto.setBusiPercent(rs.getString("BUSINESS_PERCENT"));
-				dto.setBusiWay(rs.getString("BUSINESS_WAY"));
-				dto.setBusiArea(rs.getString("BUSINESS_AREA"));
-				dto.setCrtDate(rs.getString("CRT_DATE"));
-				dto.setUdtDate(rs.getString("UDT_DATE"));
-
-				list.add(dto);
-			}
-		}catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try{
-				if(rs != null) rs.close();
-				if(pstmt != null) pstmt.close();
-				if(conn != null) conn.close();
-			}catch(SQLException e){
-				e.printStackTrace();
-			}
-		}
-		return list;
-	}
 	
 	public ArrayList<BusinessDTO> selectBusinessDelList(String searchKeyword, int pageno, int totalcnt, String[] checked){
 		ResultSet rs = null;

@@ -17,6 +17,8 @@ import board.command.BusinessListFirstCmd;
 import board.command.BusinessModCmd;
 import board.command.BusinessModListCmd;
 import board.command.BusinessModOkCmd;
+import board.command.BusinessViewCmd;
+import board.command.BusinessViewFirstCmd;
 import board.command.Cmd;
 import board.command.ConstructionAddOkCmd;
 import board.command.ConstructionDelOkCmd;
@@ -129,6 +131,20 @@ public class FrontController extends HttpServlet {
 			viewPage = "constructionList.bbs";
 		}
 		
+		//공고 상세보기
+		if(cmdURI.equals("/businessViewFirst.bbs")){
+			cmd = new BusinessViewFirstCmd();
+			cmd.execute(request, response);
+			viewPage = "/business/businessView.jsp";
+		}
+		
+		//공고 상세보기
+		if(cmdURI.equals("/businessView.bbs")){
+			cmd = new BusinessViewCmd();
+			cmd.execute(request, response);
+			viewPage = "/business/businessView.jsp";
+		}
+		
 		//공고등록 페이지
 		if(cmdURI.equals("/constructionAdd.bbs")){
 			viewPage = "/construction/constructionAdd.jsp";
@@ -193,7 +209,11 @@ public class FrontController extends HttpServlet {
 		//업체등록 완료
 		if(cmdURI.equals("/businessAddOk.bbs")){
 			cmd = new BusinessAddOkCmd();
-			cmd.execute(request, response);
+			try{
+				cmd.execute(request, response);
+			}catch(NullPointerException e){
+				e.printStackTrace();
+			}
 			viewPage = "businessList.bbs";
 		}
 		

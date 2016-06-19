@@ -8,21 +8,23 @@
 <%@page import="util.DateUtil"%>
 <%@page import="java.net.URLEncoder"%>
 <%@page import="java.net.URLDecoder"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 request.setCharacterEncoding("UTF-8");
 
-int ConstNum = Integer.parseInt(StringUtil.nchk(request.getParameter("ConstNum"), "1"));
-int pageno = Integer.parseInt(StringUtil.nchk(request.getParameter("pageno"), "1"));
+String totalCast = (String)request.getAttribute("totalcnt");
+int totalcnt = Integer.parseInt(totalCast);
+String constCast = (String)request.getAttribute("constNum");
+int constNum = Integer.parseInt(constCast);
 
-BusinessDAO dao = new BusinessDAO();
-
-String[] checked=request.getParameterValues("check");
-String searchKeyword = URLDecoder.decode(StringUtil.nchk(request.getParameter("searchKeyword"),""),"UTF-8");
-
-int totalcnt = dao.viewCntTotalMember(searchKeyword, ConstNum, checked);
-
-ArrayList<BusinessDTO> list = dao.businessView(ConstNum, pageno, searchKeyword, totalcnt, checked);
-dao.closeConn();
+String pageCast = (String)request.getAttribute("pageno");
+int pageno = Integer.parseInt(pageCast);
+String[] checked = (String[])request.getAttribute("checked");
+String searchKeyword = (String)request.getAttribute("searchKeyword");
+session.setAttribute("pageno", String.valueOf(pageno));
+session.setAttribute("checked", checked);
+session.setAttribute("searchKeyword", searchKeyword);
+request.setAttribute("constNum", String.valueOf(constNum));
 %>
 
 <!DOCTYPE html>
@@ -36,6 +38,7 @@ $(document).ready(function() {
 });
 
 function down(){
+<%-- 
 	location.href = "exportToExcelView.jsp?title=businessViewList.xls&pageno="+<%=pageno%>+"&ConstNum="+<%=ConstNum%>
     	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("1")){%>+"&check="+<%=checked[i]%><%}}}%>
     	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("2")){%>+"&check="+<%=checked[i]%><%}}}%>
@@ -45,7 +48,8 @@ function down(){
     	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("6")){%>+"&check="+<%=checked[i]%><%}}}%>
     	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("7")){%>+"&check="+<%=checked[i]%><%}}}%>
 			+"&searchKeyword="+encodeURI(encodeURIComponent("<%=searchKeyword%>"));
-}
+ --%>
+ }
 
 function pageLink(arg) {
 	document.frm.pageno.value = arg;
@@ -64,9 +68,9 @@ function fnc_search(){
 	document.frm.submit();
 }
 
-function businessDel(BusiNum){
+function businessDel(busiNum){
 	if (confirm("정말 삭제하시겠습니까??") == true){    //확인
-		location.href = "busunessViewDelOk.jsp?BusiNum=" + BusiNum + "&pageno="+<%=pageno%>+"&ConstNum="+<%=ConstNum%>
+		location.href = "busunessViewDelOk.jsp?BusiNum=" + BusiNum + "&pageno="+<%=pageno%>+"&constNum="+<%=constNum%>
 		<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("1")){%>+"&check="+<%=checked[i]%><%}}}%>
 		<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("2")){%>+"&check="+<%=checked[i]%><%}}}%>
 		<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("3")){%>+"&check="+<%=checked[i]%><%}}}%>
@@ -80,9 +84,9 @@ function businessDel(BusiNum){
 	}
 }
 
-function businessMod(BusiNum){
+function businessMod(busiNum){
 	if (confirm("정말 수정하시겠습니까??") == true){    //확인
-		location.href = "businessViewMod.jsp?BusiNum=" + BusiNum + "&pageno="+<%=pageno%>+"&ConstNum="+<%=ConstNum%>
+		location.href = "businessViewMod.jsp?BusiNum=" + BusiNum + "&pageno="+<%=pageno%>+"&ConstNum="+<%=constNum%>
 		<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("1")){%>+"&check="+<%=checked[i]%><%}}}%>
 		<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("2")){%>+"&check="+<%=checked[i]%><%}}}%>
 		<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("3")){%>+"&check="+<%=checked[i]%><%}}}%>
@@ -127,8 +131,8 @@ function businessMod(BusiNum){
 				<!--END TITLE & BREADCRUMB PAGE-->
 				<!--BEGIN CONTENT-->
 				<div class="page-content">
-					<form name="frm" action="/business/businessView.jsp"+<%=pageno%>; method="post">
-						<input type="hidden" name="ConstNum" value="<%=ConstNum%>">
+					<form name="frm" action="businessView.bbs" method="post">
+						<input type="hidden" name="ConstNum" value="<%=constNum%>">
 						<input type="hidden" name="pageno" value="<%=pageno%>">
 						<div id="tab-general">
 							<div class="row mbl">
@@ -176,31 +180,28 @@ function businessMod(BusiNum){
 														</thead>
 														<tbody>
 															<%
-															if (list.size() > 0) {
-																for (int i=0; i<list.size(); i++) {
-																	BusinessDTO dto = list.get(i);
+															if (totalcnt > 0) {
 																	%>
+																	<c:forEach items="${businessView}" var="dto">
 																<tr style="cursor: pointer;">
-																	<td style="text-align:center;"><%=dto.getBusiNum()%></td>
-																	<td style="text-align:center;"><%=dto.getConstName()%></td>
-																	<td style="text-align:center;"><%=dto.getBusiName()%></td>
-																	<td style="text-align:center;"><%=dto.getBusiOpening()%></td>
-																	<td style="text-align:center;"><%=dto.getBusiPercent()%></td>
-																	<td style="text-align:center;"><%=dto.getBusiPrice()%></td>
-																	<td style="text-align:center;"><%=dto.getBusiWay()%></td>
-																	<td style="text-align:center;"><%=dto.getBusiArea()%></td>
-																	<td style="text-align:center;"><%=dto.getCrtDate()%></td>
-																	<td style="text-align:center;"><%=dto.getUdtDate()%></td>
-																	<td onclick="event.cancelBubble = true;"><button type="button" class="btn btn-primary" <%if("전체관리자".equals(role)){%>onclick="businessMod(<%=dto.getBusiNum()%>)"<%}else{%>onclick="alert('<%=role%>는 권한이없습니다')"<%}%>>수정</button></td>
-																	<td onclick="event.cancelBubble = true;"><button type="button" class="btn btn-primary" <%if("전체관리자".equals(role)){%>onclick="businessDel(<%=dto.getBusiNum()%>)"<%}else{%>onclick="alert('<%=role%>는 권한이없습니다')"<%}%>>삭제</button></td>
+																	<td style="text-align:center;">${dto.getBusiNum()}</td>
+																	<td style="text-align:center;">${dto.getConstName()}</td>
+																	<td style="text-align:center;">${dto.getBusiName()}</td>
+																	<td style="text-align:center;">${dto.getBusiOpening()}</td>
+																	<td style="text-align:center;">${dto.getBusiPercent()}</td>
+																	<td style="text-align:center;">${dto.getBusiPrice()}</td>
+																	<td style="text-align:center;">${dto.getBusiWay()}</td>
+																	<td style="text-align:center;">${dto.getBusiArea()}</td>
+																	<td style="text-align:center;">${dto.getCrtDate()}</td>
+																	<td style="text-align:center;">${dto.getUdtDate()}</td>
+																	<td onclick="event.cancelBubble = true;"><button type="button" class="btn btn-primary" onclick="businessMod(${dto.getBusiNum()})">수정</button></td>
+																	<td onclick="event.cancelBubble = true;"><button type="button" class="btn btn-primary" onclick="businessDel(${dto.getBusiNum()})">삭제</button></td>
 																</tr>
-																
-																<%
-																}
-															}else{
+																</c:forEach>
+																<%}else{
 																out.println("<tr><td align='center' colspan='9'>조회 결과가 없습니다.</td></tr>");
-															}
-															%>
+															}%>
+															
 														</tbody>
 													</table>
 												</div>
