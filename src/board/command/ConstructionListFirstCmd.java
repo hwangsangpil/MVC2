@@ -17,23 +17,25 @@ public class ConstructionListFirstCmd implements Cmd {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
 		// TODO Auto-generated method stub
-
-		HttpSession session=request.getSession();
 		
 		int pageno = Integer.parseInt(StringUtil.nchk(request.getParameter("pageno"), "1"));
 		String[] checked=request.getParameterValues("check");
-		
+		System.out.println("First checked:"+checked);
+		System.out.println("First pageno:"+pageno);
 		try {
 			String searchKeyword = URLDecoder.decode(StringUtil.nchk(request.getParameter("searchKeyword"),""),"UTF-8");
+			System.out.println("First searchKeyword:"+searchKeyword);
 			ConstructionDAO dao = new ConstructionDAO();
+			
 			int totalcnt = dao.constructionListTotalCnt(searchKeyword, checked);
 			ArrayList<ConstructionDTO> list = dao.constructionList(searchKeyword, pageno, totalcnt, checked);
 			
-			request.setAttribute("constructionList",list);
-			request.setAttribute("totalcnt", String.valueOf(totalcnt));
+			request.setAttribute("pageno", String.valueOf(pageno));
 			request.setAttribute("checked", checked);
 			request.setAttribute("searchKeyword", searchKeyword);
-			request.setAttribute("pageno", String.valueOf(pageno));
+
+			request.setAttribute("constructionList",list);
+			request.setAttribute("totalcnt", String.valueOf(totalcnt));
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

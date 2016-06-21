@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import board.model.BusinessDAO;
 import board.model.BusinessDTO;
@@ -17,6 +18,8 @@ public class BusinessViewCmd implements Cmd {
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
 		// TODO Auto-generated method stub
 				
+				HttpSession session = request.getSession();
+		
 				int pageno = Integer.parseInt(StringUtil.nchk(request.getParameter("pageno"), request.getAttribute("pageno"), "1"));
 				String[] checked = request.getParameterValues("check");
 				if(checked==null){
@@ -26,7 +29,7 @@ public class BusinessViewCmd implements Cmd {
 				try {
 					searchKeyword = URLDecoder.decode(StringUtil.nchk(request.getParameter("searchKeyword"), request.getAttribute("searchKeyword"), ""), "UTF-8");
 					
-					int constNum = Integer.parseInt(StringUtil.nchk(request.getParameter("constNum"), request.getAttribute("constNum"), "1"));
+					int constNum = Integer.parseInt(StringUtil.nchk(request.getParameter("constNum"), session.getAttribute("constNum"), "1"));
 					
 					BusinessDAO dao = new BusinessDAO();
 					int totalcnt = dao.businessViewTotalCnt(searchKeyword, constNum, checked);

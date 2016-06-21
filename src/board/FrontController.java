@@ -19,6 +19,7 @@ import board.command.BusinessModListCmd;
 import board.command.BusinessModOkCmd;
 import board.command.BusinessViewCmd;
 import board.command.BusinessViewFirstCmd;
+import board.command.BusinessViewModCmd;
 import board.command.Cmd;
 import board.command.ConstructionAddOkCmd;
 import board.command.ConstructionDelOkCmd;
@@ -144,6 +145,17 @@ public class FrontController extends HttpServlet {
 			cmd.execute(request, response);
 			viewPage = "/business/businessView.jsp";
 		}
+		
+		//공고 상세보기 수정페이지 이동
+		if(cmdURI.equals("/businessViewMod.bbs")){
+			cmd = new BusinessViewModCmd();
+			cmd.execute(request, response);
+			viewPage = "/business/businessMod.jsp";
+		}
+
+		//공고 상세보기 수정완료
+		
+		//공고 상세보기 삭제
 		
 		//공고등록 페이지
 		if(cmdURI.equals("/constructionAdd.bbs")){

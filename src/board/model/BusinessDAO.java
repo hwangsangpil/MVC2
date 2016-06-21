@@ -47,6 +47,7 @@ public class BusinessDAO {
 			sql.append("JOIN										\n");
 			sql.append("TB_BUSINESS	BUSINESS						\n");
 			sql.append("WHERE BUSINESS.DEL_YN <> 'Y'				\n");
+			sql.append("AND CONSTRUCTION.DEL_YN <> 'Y'			\n");
 			sql.append("AND CONSTRUCTION.CONSTRUCTION_NUM = 		\n");
 			sql.append("BUSINESS.CONSTRUCTION_NUM					\n");
 		
@@ -165,6 +166,7 @@ public class BusinessDAO {
 			sql.append("JOIN													\n");
 			sql.append("TB_BUSINESS	BUSINESS									\n");
 			sql.append("WHERE BUSINESS.DEL_YN <> 'Y'							\n");
+			sql.append("AND CONSTRUCTION.DEL_YN <> 'Y'							\n");
 			sql.append("AND CONSTRUCTION.CONSTRUCTION_NUM = 					\n");
 			sql.append("BUSINESS.CONSTRUCTION_NUM								\n");
 			
@@ -277,10 +279,11 @@ public class BusinessDAO {
 			sql.append("BUSINESS_PERCENT, BUSINESS_PRICE,  						\n");
 			sql.append("BUSINESS_WAY, BUSINESS_AREA,							\n");
 			sql.append("date_format(BUSINESS.CRT_DATE, '%Y.%m.%d') as CRT_DATE,	\n");
-			sql.append("date_format(BUSINESS.UDT_DATE, '%Y.%m.%d') as UDT_DATE			\n");
+			sql.append("date_format(BUSINESS.UDT_DATE, '%Y.%m.%d') as UDT_DATE	\n");
 			sql.append("FROM 													\n");
 			sql.append("TB_CONSTRUCTION CONSTRUCTION JOIN TB_BUSINESS BUSINESS	\n");
 			sql.append("WHERE BUSINESS.DEL_YN <> 'Y'  							\n");
+			sql.append("AND CONSTRUCTION.DEL_YN <> 'Y'							\n");
 			sql.append("AND CONSTRUCTION.CONSTRUCTION_NUM = 					\n");
 			sql.append("BUSINESS.CONSTRUCTION_NUM 								\n");
 			sql.append("AND BUSINESS_NUM=?										\n");
