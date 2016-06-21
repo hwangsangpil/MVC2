@@ -398,47 +398,6 @@ public class ConstructionDAO {
 			return result;
 		}
 	
-	//*
-	public ArrayList<ConstructionDTO> selectConstructionList(){
-		ArrayList<ConstructionDTO> list = new ArrayList<ConstructionDTO>();
-		ResultSet rs = null;
-		PreparedStatement pstmt = null;
-		Connection conn = null;
-
-		try {
-			conn = ds.getConnection();
-		StringBuffer sql = new StringBuffer();
-		sql.append("SELECT											\n");
-		sql.append("CONSTRUCTION_NAME, CONSTRUCTION_NUM				\n");
-		sql.append("FROM											\n");
-		sql.append("TB_CONSTRUCTION									\n");
-		sql.append("WHERE DEL_YN <> 'Y'								\n");
-
-			pstmt = conn.prepareStatement(sql.toString());
-			rs = pstmt.executeQuery();
-			while(rs.next()){
-				ConstructionDTO dto = new ConstructionDTO();
-				dto.setConstName(rs.getString("CONSTRUCTION_NAME"));
-				dto.setConstNum(rs.getInt("CONSTRUCTION_NUM"));
-				list.add(dto);
-			}
-		}catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try{
-				if(rs != null) rs.close();
-				if(pstmt != null) pstmt.close();
-				if(conn != null) conn.close();
-			}catch(SQLException e){
-				e.printStackTrace();
-			}
-		}
-		return list;
-	}
-	
-	
-	
-	
 	//공고등록
 	public int constructionAddOk(String constName, String constWay, String constArea,
 		 							String constPrice, String constLower, String constOpening,
@@ -910,7 +869,7 @@ public class ConstructionDAO {
 		try {
 			conn = ds.getConnection();
 		StringBuffer sql = new StringBuffer();
-		/*	�몢媛� �씠�긽 �궘�젣 �븷 �븣
+		/*	 몢媛   씠 긽  궘 젣  븷  븣
 		sql.append("DELETE TB_CONSTRUCTION, TB_BUSINESS FROM													\n");
 		sql.append("TB_CONSTRUCTION	JOIN TB_BUSINESS								\n");
 		sql.append("ON TB_CONSTRUCTION.DEL_YN = TB_BUSINESS.DEL_YN 												\n");

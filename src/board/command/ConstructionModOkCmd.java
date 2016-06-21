@@ -15,13 +15,13 @@ public class ConstructionModOkCmd implements Cmd {
 		
 		HttpSession session=request.getSession();
 		
-		String[] checked=(String[])session.getAttribute("checked");
 		String pageCast=(String)session.getAttribute("pageno");
 		int pageno = Integer.parseInt(pageCast);
+		String[] checked=(String[])session.getAttribute("checked");
 		String searchKeyword = (String)session.getAttribute("searchKeyword");
+		request.setAttribute("pageno", String.valueOf(pageno));
 		request.setAttribute("checked", checked);
 		request.setAttribute("searchKeyword", searchKeyword);
-		request.setAttribute("pageno", String.valueOf(pageno));
 		
 		String constWay = StringUtil.nchk(request.getParameter("constWay"),"");
 		String constArea = StringUtil.nchk(request.getParameter("constArea"),"");
@@ -32,12 +32,12 @@ public class ConstructionModOkCmd implements Cmd {
 		String constPercent = StringUtil.nchk(request.getParameter("constPercent"),"");
 		
 		String con = (String)session.getAttribute("constNum");
-		int constNum = 0; 
+		int constNum = 0;
 		if(con!=null){
 			constNum = Integer.parseInt(con);
 		}
 		ConstructionDAO dao = new ConstructionDAO();
-			
+		
 		int result = 0;
 		result = dao.constructionModOk(constNum, constWay, constArea, constPrice, constLower, constOpening, constInstitution, constPercent);
 		request.setAttribute("constructionModResult", String.valueOf(result));

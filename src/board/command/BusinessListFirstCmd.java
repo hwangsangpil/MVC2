@@ -21,13 +21,16 @@ public class BusinessListFirstCmd implements Cmd {
 		String[] checked = request.getParameterValues("check");
 		try {
 			String searchKeyword = URLDecoder.decode(StringUtil.nchk(request.getParameter("searchKeyword"),""),"UTF-8");
+			
 			BusinessDAO dao = new BusinessDAO();
+			
 			int totalcnt = dao.businessListTotalCnt(searchKeyword, checked);
 			ArrayList<BusinessDTO> list = dao.businessList(searchKeyword, pageno, totalcnt, checked);
 		
 			request.setAttribute("searchKeyword", searchKeyword);
 			request.setAttribute("pageno", String.valueOf(pageno));
 			request.setAttribute("checked", checked);
+			
 			request.setAttribute("totalcnt", String.valueOf(totalcnt));
 			request.setAttribute("businessList", list);
 		} catch (UnsupportedEncodingException e) {

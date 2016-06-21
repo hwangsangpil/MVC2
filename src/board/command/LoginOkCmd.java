@@ -23,7 +23,7 @@ public class LoginOkCmd implements Cmd{
 		String password = request.getParameter("password");
 		
 		try {
-			dto = dao.loginAdmin(id, HashUtil.encryptPassword(id,password));
+			dto = dao.adminLogin(id, HashUtil.encryptPassword(id,password));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

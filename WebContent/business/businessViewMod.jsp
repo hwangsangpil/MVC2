@@ -12,18 +12,7 @@
 <%@page import="java.net.URLDecoder"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
-
-int BusiNum = Integer.parseInt(StringUtil.nchk(request.getParameter("BusiNum"), "1"));
-int pageno = Integer.parseInt(StringUtil.nchk(request.getParameter("pageno"), "1"));
-int ConstNum = Integer.parseInt(StringUtil.nchk(request.getParameter("ConstNum"), "1"));
-
-
-String[] checked=request.getParameterValues("check");
-String searchKeyword = URLDecoder.decode(StringUtil.nchk(request.getParameter("searchKeyword"),""),"UTF-8");
-
 request.setCharacterEncoding("UTF-8");
-BusinessDAO dao = new BusinessDAO();
-BusinessDTO dto=dao.selectBusinessViewInfo(BusiNum, ConstNum);
 /* 
 ConstructionDAO conDao = new ConstructionDAO();
 ArrayList<ConstructionDTO> list = new ArrayList<ConstructionDTO>();
@@ -118,7 +107,7 @@ $(document).ready(function() {
 });
 
 function fnc_list(){
-	location.href = "/business/businessView.jsp?pageno="+<%=pageno%>+"&ConstNum="+<%=ConstNum%>
+	location = "businessViewModList.bbs";
 }
 
 function checkForm() {

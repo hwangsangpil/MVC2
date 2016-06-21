@@ -7,19 +7,20 @@
 <%@page import="util.DateUtil"%>
 <%@page import="java.net.URLEncoder"%>
 <%@page import="java.net.URLDecoder"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 request.setCharacterEncoding("UTF-8");
 
-int pageno = Integer.parseInt(StringUtil.nchk(request.getParameter("pageno"), "1"));
-String[] checked=request.getParameterValues("check");
-String searchKeyword = URLDecoder.decode(StringUtil.nchk(request.getParameter("searchKeyword"),""),"UTF-8");
+String totalCast = (String)request.getAttribute("totalcnt");
+int totalcnt = Integer.parseInt(totalCast);
 
-AdminDAO dao = new AdminDAO();
- 
-int totalcnt = dao.cntTotalAdmin(searchKeyword, checked);
-
-ArrayList<AdminDTO> list = dao.selectAdminList(searchKeyword, pageno, totalcnt, checked);
-//dao.closeConn();	
+String searchKeyword = (String)request.getAttribute("searchKeyword");
+String[] checked=(String[])request.getAttribute("checked");
+String pageCast = (String)request.getAttribute("pageno");
+int pageno = Integer.parseInt(pageCast);
+session.setAttribute("pageno", String.valueOf(pageno));
+session.setAttribute("searchKeyword", searchKeyword);
+session.setAttribute("checked", checked);
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -32,23 +33,11 @@ $(document).ready(function() {
 });
 
 function down(){
-	location.href = "exportToExcel.jsp?title=adminList.xls&pageno="+<%=pageno%>
-		<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("1")){%>+"&check="+<%=checked[i]%><%}}}%>
-    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("2")){%>+"&check="+<%=checked[i]%><%}}}%>
-    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("3")){%>+"&check="+<%=checked[i]%><%}}}%>
-    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("4")){%>+"&check="+<%=checked[i]%><%}}}%>
-    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("5")){%>+"&check="+<%=checked[i]%><%}}}%>
-			+"&searchKeyword="+encodeURI(encodeURIComponent("<%=searchKeyword%>"));
+	location = "AdminExportToExcel.bbs?title=adminList.xls";
 }
 
 	function fnc_view(no, pageno){
 		location.href = "adminView.jsp?no=" + no + "&pageno=" + pageno
-		<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("1")){%>+"&check="+<%=checked[i]%><%}}}%>
-    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("2")){%>+"&check="+<%=checked[i]%><%}}}%>
-    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("3")){%>+"&check="+<%=checked[i]%><%}}}%>
-    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("4")){%>+"&check="+<%=checked[i]%><%}}}%>
-    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("5")){%>+"&check="+<%=checked[i]%><%}}}%>
-			+"&searchKeyword="+encodeURI(encodeURIComponent("<%=searchKeyword%>"));
 	}
 	
 	function pageLink(arg) {
@@ -68,14 +57,35 @@ function down(){
 		document.frm.submit();
 	}
 	
-	function fnc_add(arg){
-		location.href = "/admin/adminAdd.jsp?pageno="+arg
-		<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("1")){%>+"&check="+<%=checked[i]%><%}}}%>
-    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("2")){%>+"&check="+<%=checked[i]%><%}}}%>
-    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("3")){%>+"&check="+<%=checked[i]%><%}}}%>
-    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("4")){%>+"&check="+<%=checked[i]%><%}}}%>
-    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("5")){%>+"&check="+<%=checked[i]%><%}}}%>
-			+"&searchKeyword="+encodeURI(encodeURIComponent("<%=searchKeyword%>"));
+	function fnc_add(){
+		if('<%=role%>'==="일반관리자"){
+			alert("<%=role%>는 권한이 없습니다.");
+			return;
+		}else{    //확인
+			location = "adminAdd.bbs?";
+		}
+	}
+	
+	function adminDel(seqNo){
+		if('<%=role%>'==="일반관리자"){
+			alert("<%=role%>는 권한이 없습니다.");
+			return;
+		}else if (confirm("정말 삭제하시겠습니까?")){    //확인
+			location = "AdminDelOk.bbs?seqNo="+seqNo;
+		}else{
+			return;
+		}
+	}
+	
+	function adminMod(seqNo){
+		if('<%=role%>'==="일반관리자"){
+			alert("<%=role%>는 권한이 없습니다.");
+			return;
+		}else if (confirm("정말 수정하시겠습니까?")){    //확인
+			location = "adminMod.bbs?seqNo="+seqNo;
+		}else{
+			return;
+		}
 	}
 </script>
 </head>
@@ -97,7 +107,7 @@ function down(){
 						<div class="page-title">관리자 관리</div>
 					</div>
 					<ol class="breadcrumb page-breadcrumb pull-right">
-						<li><i class="fa fa-home"></i>&nbsp;<a href="/home/home.jsp">Home</a>&nbsp;&nbsp;<i
+						<li><i class="fa fa-home"></i>&nbsp;<a href="home.bbs">Home</a>&nbsp;&nbsp;<i
 							class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
 						<li class="active"><a href="#">설정</a>&nbsp;&nbsp;<i
 							class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
@@ -108,7 +118,7 @@ function down(){
 				<!--END TITLE & BREADCRUMB PAGE-->
 				<!--BEGIN CONTENT-->
 				<div class="page-content">
-					<form name="frm" action="/admin/adminList.jsp" method="post">
+					<form name="frm" action="adminList.bbs" method="post">
 						<input type="hidden" name="pageno" value="<%=pageno%>">
 						<div id="tab-general">
 							<div class="row mbl">
@@ -133,44 +143,43 @@ function down(){
 														<thead>
 															<tr>
 																<th style="text-align:center; width: 50px;">NO</th>
-																<th style="text-align:center; width: 200px;">관리자 이름<input type="checkbox" tabindex="3" id="check" name="check" value="1" 
+																<th style="text-align:center; width: 200px;">관리자 이름<input type="checkbox" tabindex="3" id="check" name="check" value="0" 
+																<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("0")){ %>checked<%}}}%> /></th>
+																<th style="text-align:center; width: 150px;">아이디<input type="checkbox" tabindex="4" id="check" name="check" value="1" 
 																<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("1")){ %>checked<%}}}%> /></th>
-																<th style="text-align:center; width: 150px;">아이디<input type="checkbox" tabindex="4" id="check" name="check" value="2" 
+																<th style="text-align:center; width: 200px;">이메일<input type="checkbox" tabindex="5" id="check" name="check" value="2" 
 																<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("2")){ %>checked<%}}}%> /></th>
-																<th style="text-align:center; width: 200px;">이메일<input type="checkbox" tabindex="5" id="check" name="check" value="3" 
+																<th style="text-align:center; width: 200px;">폰번호<input type="checkbox" tabindex="6" id="check" name="check" value="3" 
 																<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("3")){ %>checked<%}}}%> /></th>
-																<th style="text-align:center; width: 200px;">폰번호<input type="checkbox" tabindex="6" id="check" name="check" value="4" 
+																<th style="text-align:center; width: 200px;">권한<input type="checkbox" tabindex="7" id="check" name="check" value="4" 
 																<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("4")){ %>checked<%}}}%> /></th>
-																<th style="text-align:center; width: 200px;">권한<input type="checkbox" tabindex="7" id="check" name="check" value="5" 
-																<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("5")){ %>checked<%}}}%> /></th>
 																<th style="text-align:center; width: 100px;">생성일</th>
 																<th style="text-align:center; width: 100px;">수정일</th>
+																<th style="text-align:center; ">수정</th>
+																<th style="text-align:center; ">삭제</th>
 															</tr>
 														</thead>
 														<tbody>
 															<%
-															if (list.size() > 0) {
-																for (int i=0; i<list.size(); i++) {
-																	AdminDTO dto = list.get(i);
-																	/* if(dto.getAdminId().equals("admin")){
-																		continue;
-																	} */
+															if (totalcnt > 0) {
 																	%>
-																<tr style="cursor: pointer;" onclick="javascript:fnc_view('<%=dto.getSeqNo()%>','<%=pageno%>')">
-																	<td style="text-align:center;"><%=dto.getSeqNo() %></td>
-																	<td style="text-align:center;"><%=dto.getAdminName() %></td>
-																	<td style="text-align:center;"><%=dto.getAdminId()%></td>
-																	<td style="text-align:center;"><%=dto.getAdminEmail()%></td>
-																	<td style="text-align:center;"><%=dto.getAdminPhone()%></td>
-																	<td style="text-align:center;"><%=dto.getAdminRole()%></td>
-																	<td style="text-align:center;"><%=dto.getCrtDate()%></td>
-																	<td style="text-align:center;"><%=dto.getUdtDate()%></td>
+																	<c:forEach items="${adminList}" var="dto">
+																<tr style="cursor: pointer;" onclick="javascript:fnc_view('${dto.getSeqNo()}','${pageno}')">
+																	<td style="text-align:center;">${dto.getSeqNo()}</td>
+																	<td style="text-align:center;">${dto.getAdminName()}</td>
+																	<td style="text-align:center;">${dto.getAdminId()}</td>
+																	<td style="text-align:center;">${dto.getAdminEmail()}</td>
+																	<td style="text-align:center;">${dto.getAdminPhone()}</td>
+																	<td style="text-align:center;">${dto.getAdminRole()}</td>
+																	<td style="text-align:center;">${dto.getCrtDate()}</td>
+																	<td style="text-align:center;">${dto.getUdtDate()}</td>
+																	<td onclick="event.cancelBubble = true;"><button type="button" tabindex="10" class="btn btn-primary" onclick="adminMod(${dto.getSeqNo()})">수정</button></td>
+																	<td onclick="event.cancelBubble = true;"><button type="button" tabindex="11" class="btn btn-primary" onclick="adminDel(${dto.getSeqNo()})">삭제</button></td>
 																</tr>
-																
+																</c:forEach>
 																<%
-																}
 															} else {
-																out.println("<tr><td align='center' colspan='7'>조회 결과가 없습니다.</td></tr>");
+																out.println("<tr><td align='center' colspan='10'>조회 결과가 없습니다.</td></tr>");
 															}
 															%>
 														</tbody>
@@ -183,7 +192,7 @@ function down(){
 													<jsp:param name="pageGroup" value="10"/>
 												</jsp:include>
 												<div class="text-right pal">
-												<button type="button" class="btn btn-primary" <%if("전체관리자".equals(role)){%>onclick="fnc_add(<%=pageno%>)"<%}else{%>onclick="alert('<%=role%>는 권한이없습니다')"<%}%> tabindex="8">관리자 추가</button>
+												<button type="button" class="btn btn-primary" onclick="fnc_add()" tabindex="8">관리자 추가</button>
 												<button type="button" class="btn btn-primary" onclick="down()" tabindex="9">엑셀 다운로드</button>
 												</div>
 											</div>

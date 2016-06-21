@@ -12,16 +12,13 @@ public class ConstructionDelOkCmd implements Cmd{
 		
 		HttpSession session = request.getSession();
 		
-		String searchKeyword = (String)session.getAttribute("searchKeyword");
 		String page = (String)session.getAttribute("pageno");
 		int pageno=0;
 		if(page!=null){
 			pageno = Integer.parseInt(page);
 		}
 		String[] checked = (String[])session.getAttribute("checked");
-		request.setAttribute("searchKeyword", searchKeyword);
-		request.setAttribute("pageno", String.valueOf(pageno));
-		request.setAttribute("checked", checked);
+		String searchKeyword = (String)session.getAttribute("searchKeyword");
 		
 		int constNum = Integer.parseInt(request.getParameter("constNum"));
 		
@@ -29,6 +26,10 @@ public class ConstructionDelOkCmd implements Cmd{
 		
 		int result = 0;
 		result = dao.ConstructionDelOk(constNum);
+		
+		request.setAttribute("pageno", String.valueOf(pageno));
+		request.setAttribute("checked", checked);
+		request.setAttribute("searchKeyword", searchKeyword);
 		
 		request.setAttribute("constructionDelResult", String.valueOf(result));
 	}

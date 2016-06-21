@@ -9,6 +9,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import board.command.AdminAddCmd;
+import board.command.AdminAddOkCmd;
+import board.command.AdminDelOkCmd;
+import board.command.AdminListCmd;
+import board.command.AdminListFirstCmd;
+import board.command.AdminModCmd;
+import board.command.AdminModListCmd;
+import board.command.AdminModOkCmd;
 import board.command.BusinessAddCmd;
 import board.command.BusinessAddOkCmd;
 import board.command.BusinessDelOkCmd;
@@ -18,8 +26,11 @@ import board.command.BusinessModCmd;
 import board.command.BusinessModListCmd;
 import board.command.BusinessModOkCmd;
 import board.command.BusinessViewCmd;
+import board.command.BusinessViewDelOkCmd;
 import board.command.BusinessViewFirstCmd;
 import board.command.BusinessViewModCmd;
+import board.command.BusinessViewModListCmd;
+import board.command.BusinessViewModOkCmd;
 import board.command.Cmd;
 import board.command.ConstructionAddOkCmd;
 import board.command.ConstructionDelOkCmd;
@@ -71,154 +82,170 @@ public class FrontController extends HttpServlet {
 		Cmd cmd = null;
 		String viewPage = null;
 		
-		//·Î±×ÀÎ ÈÄ ¸ŞÀÎÈ­¸é
+		//ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È­ï¿½ï¿½
 		if(cmdURI.equals("/loginOk.bbs")){
 			cmd = new LoginOkCmd();
 			cmd.execute(request, response);
 			viewPage = "/home/home.jsp";
 		}
 		
-		//·Î±×¾Æ¿ô
+		//ï¿½Î±×¾Æ¿ï¿½
 		if(cmdURI.equals("/logOut.bbs")){
 			cmd = new LogOutCmd();
 			cmd.execute(request, response);
 			viewPage = "/index.jsp";
 		}
 		
-		//¸ŞÀÎÈ­¸é
+		//ï¿½ï¿½ï¿½ï¿½È­ï¿½ï¿½
 		if(cmdURI.equals("/home.bbs")){
 			viewPage = "/home/home.jsp";
 		}
 		
-		//°ø°íÁ¶È¸ ¹öÆ°´©¸¦½Ã
+		//ï¿½ï¿½ï¿½ï¿½ï¿½È¸ ï¿½ï¿½Æ°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if(cmdURI.equals("/constructionListFirst.bbs")){
 			cmd = new ConstructionListFirstCmd();
 			cmd.execute(request, response);
 			viewPage = "/construction/constructionList.jsp";
 		}
 		
-		//°ø°íÁ¶È¸¿¡¼­ °Ë»ö¾î Ã¼Å©¹Ú½º À¯ÁöÇÏ°í ´Ù½Ã Á¶È¸
+		//ï¿½ï¿½ï¿½ï¿½ï¿½È¸ï¿½ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½ï¿½ï¿½ Ã¼Å©ï¿½Ú½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½È¸
 		if(cmdURI.equals("/constructionList.bbs")){
 			cmd = new ConstructionListCmd();
 			cmd.execute(request, response);
 			viewPage = "/construction/constructionList.jsp";
 		}
 		
-		//°ø°í¼öÁ¤ ÆäÀÌÁö ÀÌµ¿
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
 		if(cmdURI.equals("/constructionMod.bbs")){
 			cmd = new ConstructionModCmd();
 			cmd.execute(request, response);
 			viewPage = "/construction/constructionMod.jsp";
 		}
 		
-		//°ø°í¼öÁ¤ ¿Ï·á
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½
 		if(cmdURI.equals("/constructionModOk.bbs")){
 			cmd = new ConstructionModOkCmd();
 			cmd.execute(request,response);
 			viewPage = "constructionList.bbs";
 		}
 		
-		//°ø°í¼öÁ¤ ÆäÀÌÁö¿¡¼­ ¸ñ·Ï¹öÆ° ´©¸¦¶§
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ï¹ï¿½Æ° ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if(cmdURI.equals("/constructionModList.bbs")){
 			cmd = new ConstructionModListCmd();
 			cmd.execute(request,response);
 			viewPage = "constructionList.bbs";
 		}
 		
-		//°ø°í»èÁ¦
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if(cmdURI.equals("/constructionDelOk.bbs")){
 			cmd = new ConstructionDelOkCmd();
 			cmd.execute(request, response);
 			viewPage = "constructionList.bbs";
 		}
 		
-		//°ø°í »ó¼¼º¸±â
+		//ï¿½ï¿½ï¿½ ï¿½ó¼¼ºï¿½ï¿½ï¿½
 		if(cmdURI.equals("/businessViewFirst.bbs")){
 			cmd = new BusinessViewFirstCmd();
 			cmd.execute(request, response);
 			viewPage = "/business/businessView.jsp";
 		}
 		
-		//°ø°í »ó¼¼º¸±â
+		//ï¿½ï¿½ï¿½ ï¿½ó¼¼ºï¿½ï¿½ï¿½
 		if(cmdURI.equals("/businessView.bbs")){
 			cmd = new BusinessViewCmd();
 			cmd.execute(request, response);
 			viewPage = "/business/businessView.jsp";
 		}
 		
-		//°ø°í »ó¼¼º¸±â ¼öÁ¤ÆäÀÌÁö ÀÌµ¿
+		//ï¿½ï¿½ï¿½ ï¿½ó¼¼ºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
 		if(cmdURI.equals("/businessViewMod.bbs")){
 			cmd = new BusinessViewModCmd();
 			cmd.execute(request, response);
 			viewPage = "/business/businessMod.jsp";
 		}
 
-		//°ø°í »ó¼¼º¸±â ¼öÁ¤¿Ï·á
+		//ï¿½ï¿½ï¿½ ï¿½ó¼¼ºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï·ï¿½
+		if(cmdURI.equals("/businessViewModOk.bbs")){
+			cmd = new BusinessViewModOkCmd();
+			cmd.execute(request, response);
+			viewPage = "businessView.bbs";
+		}
+		//ï¿½ï¿½ï¿½ ï¿½ó¼¼ºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		if(cmdURI.equals("/businessViewModList.bbs")){
+			cmd = new BusinessViewModListCmd();
+			cmd.execute(request, response);
+			viewPage = "businessView.bbs";
+		}
 		
-		//°ø°í »ó¼¼º¸±â »èÁ¦
+		//ê³µê³ ìƒì„¸ ë³´ê¸° ì‚­ì œ
+		if(cmdURI.equals("/businessViewDelOk.bbs")){
+			cmd = new BusinessViewDelOkCmd();
+			cmd.execute(request, response);
+			viewPage ="businessView.bbs";
+		}
 		
-		//°ø°íµî·Ï ÆäÀÌÁö
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if(cmdURI.equals("/constructionAdd.bbs")){
 			viewPage = "/construction/constructionAdd.jsp";
 		}
 		
-		//°ø°íµî·Ï ¿Ï·á
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½
 		if(cmdURI.equals("/constructionAddOk.bbs")){
 			cmd = new ConstructionAddOkCmd();
 			cmd.execute(request, response);
 			viewPage = "constructionListFirst.bbs";
 		}
 		
-		//¾÷Ã¼°ü¸® ¸Ş´º ´©¸¦½Ã
+		//ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½Ş´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if(cmdURI.equals("/businessListFirst.bbs")){
 			cmd = new BusinessListFirstCmd();
 			cmd.execute(request, response);
 			viewPage = "/business/businessList.jsp";
 		}
 		
-		//¾÷Ã¼°ü¸® Á¶È¸
+		//ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½È¸
 		if(cmdURI.equals("/businessList.bbs")){
 			cmd = new BusinessListCmd();
 			cmd.execute(request, response);
 			viewPage = "/business/businessList.jsp";
 		}
 		
-		//¾÷Ã¼°ü¸® ¼öÁ¤ ÆäÀÌÁö ÀÌµ¿
+		//ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
 		if(cmdURI.equals("/businessMod.bbs")){
 			cmd = new BusinessModCmd();
 			cmd.execute(request, response);
 			viewPage = "/business/businessMod.jsp";
 		}
 		
-		//¾÷Ã¼°ü¸® ¼öÁ¤¿Ï·á
+		//ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï·ï¿½
 		if(cmdURI.equals("/businessModOk.bbs")){
 			cmd = new BusinessModOkCmd();
 			cmd.execute(request, response);
 			viewPage = "businessList.bbs";
 		}
 		
-		//¾÷Ã¼°ü¸® ¼öÁ¤È­¸é¿¡¼­ ¸ñ·ÏÀÌµ¿
+		//ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È­ï¿½é¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ìµï¿½
 		if(cmdURI.equals("/businessModList.bbs")){
 			cmd = new BusinessModListCmd();
 			cmd.execute(request, response);
 			viewPage = "businessList.bbs";
 		}
 		
-		//¾÷Ã¼°ü¸® »èÁ¦¿Ï·á
+		//ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï·ï¿½
 		if(cmdURI.equals("/businessDelOk.bbs")){
 			cmd = new BusinessDelOkCmd();
 			cmd.execute(request, response);
 			viewPage = "businessList.bbs";
 		}
 		
-		//¾÷Ã¼µî·Ï ÆäÀÌÁö
+		//ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if(cmdURI.equals("/businessAdd.bbs")){
 			cmd = new BusinessAddCmd();
 			cmd.execute(request, response);
 			viewPage = "/business/businessAdd.jsp";
 		}
 		
-		//¾÷Ã¼µî·Ï ¿Ï·á
+		//ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½
 		if(cmdURI.equals("/businessAddOk.bbs")){
 			cmd = new BusinessAddOkCmd();
 			try{
@@ -227,6 +254,60 @@ public class FrontController extends HttpServlet {
 				e.printStackTrace();
 			}
 			viewPage = "businessList.bbs";
+		}
+		
+		//ê´€ë¦¬ì ê´€ë¦¬ ë²„íŠ¼ ëˆ„ë¥¼ì‹œ 
+		if(cmdURI.equals("/adminListFirst.bbs")){
+			cmd = new AdminListFirstCmd();
+			cmd.execute(request, response);
+			viewPage = "/admin/adminList.jsp";
+		}
+		
+		//ê´€ë¦¬ì ë¦¬ìŠ¤íŠ¸
+		if(cmdURI.equals("/adminList.bbs")){
+			cmd = new AdminListCmd();
+			cmd.execute(request, response);
+			viewPage = "/admin/adminList.jsp";
+		}
+		
+		//ê´€ë¦¬ì ì¶”ê°€
+		if(cmdURI.equals("/adminAdd.bbs")){
+			viewPage = "/admin/adminAdd.jsp";
+		}
+		
+		//ê´€ë¦¬ì ì¶”ê°€ ì™„ë£Œ
+		if(cmdURI.equals("/adminAddOk.bbs")){
+			cmd = new AdminAddOkCmd();
+			cmd.execute(request, response);
+			viewPage = "adminList.bbs";
+		}
+		
+		//ê´€ë¦¬ì ìˆ˜ì •
+		if(cmdURI.equals("/adminMod.bbs")){
+			cmd = new AdminModCmd();
+			cmd.execute(request, response);
+			viewPage = "/admin/adminMod.jsp";
+		}
+		
+		//ê´€ë¦¬ì ìˆ˜ì • ì™„ë£Œ
+		if(cmdURI.equals("/adminModOk.bbs")){
+			cmd = new AdminModOkCmd();
+			cmd.execute(request, response);
+			viewPage = "adminList.bbs";
+		}
+		
+		//ê´€ë¦¬ì ìˆ˜ì • ëª©ë¡
+		if(cmdURI.equals("/adminModList.bbs")){
+			cmd = new AdminModListCmd();
+			cmd.execute(request, response);
+			viewPage = "adminList.bbs";
+		}
+		
+		//ê´€ë¦¬ì ì‚­ì œ
+		if(cmdURI.equals("/adminDelOk.bbs")){
+			cmd = new AdminDelOkCmd();
+			cmd.execute(request, response);
+			viewPage = "adminList.bbs";
 		}
 		
 		

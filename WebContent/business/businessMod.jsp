@@ -13,11 +13,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 request.setCharacterEncoding("UTF-8");
-
-String busiCast = (String)request.getAttribute("busiNum");
-int busiNum = Integer.parseInt(busiCast);
-System.out.println("jsp busiNum:"+busiNum);
-session.setAttribute("busiNum", String.valueOf(busiNum));
 %>
 <!DOCTYPE html>
 <html lang="ko">

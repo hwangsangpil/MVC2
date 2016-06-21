@@ -10,6 +10,9 @@ String constructionAddResult = (String)request.getAttribute("constructionAddResu
 String businessAddResult = (String)request.getAttribute("businessAddResult");
 String businessModResult = (String)request.getAttribute("businessModResult");
 String businessDelResult = (String)request.getAttribute("businessDelResult");
+String adminAddResult = (String)request.getAttribute("adminAddResult");
+String adminModResult = (String)request.getAttribute("adminModResult");
+String adminDelResult = (String)request.getAttribute("adminDelResult");
 %>
 <script>
 if('<%=constructionModResult%>' != "null"){
@@ -62,6 +65,33 @@ if('<%=businessDelResult%>' != "null"){
 		history.back();
 	}else{
 		alert("업체 삭제 성공");
+	}
+}
+
+if('<%=adminAddResult%>' != "null"){
+	if('<%=adminAddResult%>' === "0"){
+		alert("관리자 등록에 실패하였습니다.");
+		history.back();
+	}else{
+		alert("관리자 등록 성공");
+	}
+}
+
+if('<%=adminModResult%>' != "null"){
+	if('<%=adminModResult%>' === "0"){
+		alert("관리자 수정 실패");
+		history.back();
+	}else{
+		alert("관리자 수정 성공");
+	}
+}
+
+if('<%=adminDelResult%>' != "null"){
+	if('<%=adminDelResult%>' === "0"){
+		alert("관리자 삭제 실패");
+		history.back();
+	}else{
+		alert("관리자 삭제 성공");
 	}
 }
 </script>

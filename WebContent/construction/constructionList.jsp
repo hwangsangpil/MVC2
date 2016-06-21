@@ -18,9 +18,11 @@ String[] checked=(String[])request.getAttribute("checked");
 String pageCast=(String)request.getAttribute("pageno");
 int pageno = Integer.parseInt(pageCast);
 String searchKeyword = (String)request.getAttribute("searchKeyword");
+
 request.setAttribute("checked", checked);
 request.setAttribute("searchKeyword", searchKeyword);
 request.setAttribute("pageno", String.valueOf(pageno));
+
 session.setAttribute("checked", checked);
 session.setAttribute("searchKeyword", searchKeyword);
 session.setAttribute("pageno", String.valueOf(pageno));
@@ -39,55 +41,47 @@ System.out.println("checked["+i+"]:   "+checked[i] );
 <title>공고관리</title>
 <%@ include file="../include/inc_header.jsp"%>
 <script>
-$(document).ready(function() {
-	$("#searchKeyword").focus();
-});
-<%-- 
+	$(document).ready(function() {
+		$("#searchKeyword").focus();
+	});
+
 	function down(){
     
-    	location.href = "exportToExcel.jsp?title=constructionList.xls&pageno="+<%=pageno%>
-    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("1")){%>+"&check="+<%=checked[i]%><%}}}%>
-    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("2")){%>+"&check="+<%=checked[i]%><%}}}%>
-    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("3")){%>+"&check="+<%=checked[i]%><%}}}%>
-    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("4")){%>+"&check="+<%=checked[i]%><%}}}%>
-    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("5")){%>+"&check="+<%=checked[i]%><%}}}%>
-    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("6")){%>+"&check="+<%=checked[i]%><%}}}%>
-    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("7")){%>+"&check="+<%=checked[i]%><%}}}%>
-    	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("8")){%>+"&check="+<%=checked[i]%><%}}}%>
-    			+"&searchKeyword="+encodeURI(encodeURIComponent("<%=searchKeyword%>"));                                                   
+    	location = "constructionExportToExcel.bbs?title=constructionList.xls";
  	}
- --%>
-	function pageLink(arg) {
+
+	/* 
+ 	function pageLink(arg) {
 		document.frm.pageno.value = arg;
 		document.frm.submit();
 	}
-	
+	 */
 	function fnc_search(){
 		var searchKeyword = document.getElementById("searchKeyword").value;
 		document.frm.submit();
 	}
 	
-	function constructionDel(ConstNum){
+	function constructionDel(constNum){
 		if('<%=role%>'==="일반관리자"){
 			alert("<%=role%>는 권한이없습니다.");
 			document.frm.submit();
 			return;
 			}
 		if (confirm("정말 삭제하시겠습니까??")){    //확인
-			location = "constructionDelOk.bbs?constNum="+ConstNum;                                                   
+			location = "constructionDelOk.bbs?constNum="+constNum;                                                   
 		}else{
 			return;
 		}
 	}
 	
-	function constructionMod(ConstNum){
+	function constructionMod(constNum){
 		if('<%=role%>'==="일반관리자"){
 			alert("<%=role%>는 권한이없습니다.");
 			document.frm.submit();
 			return;
 			}
 		if (confirm("정말 수정하시겠습니까??")){    //확인
-			location = "constructionMod.bbs?constNum="+ConstNum;
+			location = "constructionMod.bbs?constNum="+constNum;
 		}else{
 			return;
 		}

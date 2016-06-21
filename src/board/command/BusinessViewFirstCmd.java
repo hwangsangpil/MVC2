@@ -29,6 +29,7 @@ public class BusinessViewFirstCmd implements Cmd {
 		request.setAttribute("pageno", String.valueOf(pageno));
 		request.setAttribute("checked", checked);
 		request.setAttribute("searchKeyword", searchKeyword);
+		
 		request.setAttribute("totalcnt", String.valueOf(totalcnt));
 		request.setAttribute("businessView", list);
 		request.setAttribute("constNum", String.valueOf(constNum));

@@ -9,15 +9,7 @@
 <%@page import="java.net.URLEncoder"%>
 <%@page import="java.net.URLDecoder"%>
 <%
-
-int no = Integer.parseInt(StringUtil.nchk(request.getParameter("no"), "1"));
-int pageno = Integer.parseInt(StringUtil.nchk(request.getParameter("pageno"), "1"));
-String searchKeyword = URLDecoder.decode(StringUtil.nchk(request.getParameter("searchKeyword"),""),"UTF-8");
-String[] checked=request.getParameterValues("check");
-
-AdminDAO dao = new AdminDAO();
-AdminDTO dto = dao.selectAdminInfo(no);
-//dao.closeConn();	
+request.setCharacterEncoding("UTF-8");
 %>
 
 <!DOCTYPE html>
@@ -26,6 +18,10 @@ AdminDTO dto = dao.selectAdminInfo(no);
 <title>관리자 상세관리</title>
 <%@ include file="../include/inc_header.jsp"%>
 <script type="text/javascript">
+$(document).ready(function() {
+	$("#adminName").focus();
+});
+
 function checkForm() {
 	var adminName = document.getElementById("adminName").value;
 	var adminId = document.getElementById("adminId").value;
@@ -48,7 +44,7 @@ function checkForm() {
 		return;
 	}
 	
-	/* if( adminPw.length == 0 ) {
+	 if( adminPw.length == 0 ) {
 		alert("비밀번호를 입력해주세요.");
 		document.getElementById("adminPw").focus();
 		return;
@@ -59,7 +55,7 @@ function checkForm() {
 		document.getElementById("adminConfirmPw").focus();
 		return;
 	}
-	 */
+	
 	if( adminEmail.length == 0 ) {
 		alert("이메일을 입력해주세요.");
 		document.getElementById("adminEmail").focus();
@@ -83,36 +79,28 @@ function checkForm() {
 		return;
 	}
 	
-	registForm.action = "adminModifyOk.jsp?pageno="+<%=pageno%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("1")){%>+"&check="+<%=checked[i]%><%}}}%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("2")){%>+"&check="+<%=checked[i]%><%}}}%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("3")){%>+"&check="+<%=checked[i]%><%}}}%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("4")){%>+"&check="+<%=checked[i]%><%}}}%>
-		+"&searchKeyword="+encodeURI(encodeURIComponent("<%=searchKeyword%>"));
 	registForm.submit();
 }
 
-function fnc_delete(){
-	if (confirm("정말 삭제하시겠습니까??") == true){    //확인
-		location.href = "/admin/adminDelOk.jsp?no="+<%=no%>+"&pageno="+<%=pageno%>
-		<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("1")){%>+"&check="+<%=checked[i]%><%}}}%>
-		<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("2")){%>+"&check="+<%=checked[i]%><%}}}%>
-		<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("3")){%>+"&check="+<%=checked[i]%><%}}}%>
-		<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("4")){%>+"&check="+<%=checked[i]%><%}}}%>
-			+"&searchKeyword="+encodeURI(encodeURIComponent("<%=searchKeyword%>"));
-	}else{
-		return;
-	}
-}
 
 function fnc_list(){
-	location.href = "/admin/adminList.jsp?pageno="+<%=pageno%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("1")){%>+"&check="+<%=checked[i]%><%}}}%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("2")){%>+"&check="+<%=checked[i]%><%}}}%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("3")){%>+"&check="+<%=checked[i]%><%}}}%>
-	<%if(checked!=null){for(int i=0;i<checked.length;i++){if(checked[i].equals("4")){%>+"&check="+<%=checked[i]%><%}}}%>
-		+"&searchKeyword="+encodeURI(encodeURIComponent("<%=searchKeyword%>"));
+	location = "adminModList.bbs";
 }
+
+function hitEnterKey(e){
+	  if(e.keyCode == 13){
+		  checkForm();
+	  }else{
+		  e.keyCode == 0;
+	 	  return;
+	  }
+} 
+
+function notModConName(){
+	alert("관리자 아이디는 수정할 수 없습니다");
+	$("#adminId").focus();
+}
+
 function changeView(a){
 	if(a==4){
 		document.all.branchGubun.style.display="block";
@@ -131,8 +119,6 @@ $(document).ready(function() {
 	    dataType: "html",
 	    success: function(data){
 	    	//alert(data);
-	        $('#branchCode').append(data);
-	        $("#branchCode").val("<%=dto.getAdminBranch()%>").attr("selected", "selected");
 	    },
 	    error: function(err) {
 	    	//alert(err.responseText);
@@ -159,7 +145,7 @@ $(document).ready(function() {
 						<div class="page-title">관리자 상세관리</div>
 					</div>
 					<ol class="breadcrumb page-breadcrumb pull-right">
-						<li><i class="fa fa-home"></i>&nbsp;<a href="/home/home.jsp">Home</a>&nbsp;&nbsp;<i
+						<li><i class="fa fa-home"></i>&nbsp;<a href="home.bbs">Home</a>&nbsp;&nbsp;<i
 							class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
 						<li class="active"><a href="#">설정</a>&nbsp;&nbsp;<i
 							class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
@@ -177,56 +163,54 @@ $(document).ready(function() {
 								<div class="panel panel-orange">
 		                            <div class="panel-heading">관리자 수정/삭제</div>
 		                            <div class="panel-body pan">
-		                                <form id="registForm" method="post">
-		                                <input type="hidden" name="no" value="<%=no%>">
+		                                <form id="registForm" action = "adminModOk.bbs" method="post">
 		                                <div class="form-body pal">
 		                                    <div class="form-group">
 		                                        <div class="input-icon right">
 		                                            <i class="fa fa-user"></i>
-		                                            <input id="adminName" name="adminName" type="text" placeholder="이름" class="form-control" value="<%=StringUtil.NVL(dto.getAdminName()) %>"
-		                                            onMouseOver="javascript: this.value='이름';" onmouseout="javascript: this.value='<%=dto.getAdminName()%>';" onclick="javascript: this.value='<%=dto.getAdminName()%>';"/></div>
+		                                            <input id="adminName" name="adminName" type="text" placeholder="이름" class="form-control" value="${adminMod.getAdminName()}" onKeypress="hitEnterKey(event)" tabindex="1"
+		                                            onMouseOver="javascript: this.value='이름';" onmouseout="javascript: this.value='${adminMod.getAdminName()}';" onclick="javascript: this.value='${adminMod.getAdminName()}';"/></div>
 		                                    </div>
 		                                    <div class="form-group">
 		                                        <div class="input-icon right">
 		                                            <i class="fa fa-envelope"></i>
-		                                            <input id="adminId" name="adminId" type="text" placeholder="아이디" class="form-control" value="<%=StringUtil.NVL(dto.getAdminId()) %>"
-		                                            onMouseOver="javascript: this.value='아이디';" onmouseout="javascript: this.value='<%=dto.getAdminId()%>';" onclick="javascript: this.value='<%=dto.getAdminId()%>';" readonly/></div>
+		                                            <input id="adminId" name="adminId" type="text" placeholder="아이디" class="form-control" value="${adminMod.getAdminId()}" onKeypress="hitEnterKey(event)" tabindex="2"
+		                                            onMouseOver="javascript: this.value='아이디';" onmouseout="javascript: this.value='${adminMod.getAdminId()}';" onclick="notModConName();" readonly/></div>
 		                                    </div>
 		                                    <div class="form-group">
 		                                        <div class="input-icon right">
 		                                            <i class="fa fa-lock"></i>
-		                                            <input id="adminPw" name="adminPw" type="password" placeholder="비밀번호" class="form-control" /></div>
+		                                            <input id="adminPw" name="adminPw" type="password" placeholder="비밀번호" class="form-control" onKeypress="hitEnterKey(event)" tabindex="3"/></div>
 		                                    </div>
 		                                    <div class="form-group">
 		                                        <div class="input-icon right">
 		                                            <i class="fa fa-lock"></i>
-		                                            <input id="adminConfirmPw" name="adminConfirmPw" type="password" placeholder="비밀번호 확인" class="form-control" /></div>
+		                                            <input id="adminConfirmPw" name="adminConfirmPw" type="password" placeholder="비밀번호 확인" class="form-control" onKeypress="hitEnterKey(event)" tabindex="4"/></div>
 		                                    </div>
 		                                    <div class="form-group">
 		                                        <div class="input-icon right">
 		                                            <i class="fa fa-envelope"></i>
-		                                            <input id="adminEmail" name="adminEmail" type="text" placeholder="이메일" class="form-control" value="<%=StringUtil.NVL(dto.getAdminEmail()) %>" 
-		                                            onMouseOver="javascript: this.value='이메일';" onmouseout="javascript: this.value='<%=dto.getAdminEmail()%>';" onclick="javascript: this.value='<%=dto.getAdminEmail()%>';"/></div>
+		                                            <input id="adminEmail" name="adminEmail" type="text" placeholder="이메일" class="form-control" value="${adminMod.getAdminEmail()}" onKeypress="hitEnterKey(event)" tabindex="5"
+		                                            onMouseOver="javascript: this.value='이메일';" onmouseout="javascript: this.value='${adminMod.getAdminEmail()}';" onclick="javascript: this.value='${adminMod.getAdminEmail()}';"/></div>
 		                                    </div>
 		                                    <div class="form-group">
 		                                        <div class="input-icon right">
 		                                            <i class="fa fa-envelope"></i>
-		                                            <input id="adminPhone" name="adminPhone" type="text" placeholder="핸드폰 번호" class="form-control" value="<%=StringUtil.NVL(dto.getAdminPhone()) %>" 
-		                                            onMouseOver="javascript: this.value='핸드폰 번호';" onmouseout="javascript: this.value='<%=dto.getAdminPhone()%>';" onclick="javascript: this.value='<%=dto.getAdminPhone()%>';"/></div>
+		                                            <input id="adminPhone" name="adminPhone" type="text" placeholder="핸드폰 번호" class="form-control" value="${adminMod.getAdminPhone()}" onKeypress="hitEnterKey(event)" tabindex="6"
+		                                            onMouseOver="javascript: this.value='핸드폰 번호';" onmouseout="javascript: this.value='${adminMod.getAdminPhone()}';" onclick="javascript: this.value='${adminMod.getAdminPhone()}';"/></div>
 		                                    </div>
 		                                    <div class="form-group">
-		                                        <select id="adminRole" name="adminRole" class="form-control" onChange="javascript:changeView(this.value)">
-		                                            <option value="-1" <%if("-1".equals(dto.getAdminRole())){%>selected<%}%>>메뉴 권한</option>
-		                                            <option value="전체관리자" <%if("전체관리자".equals(dto.getAdminRole())){%>selected<%}%>>전체 관리자</option>
-		                                            <option value="일반관리자" <%if("일반관리자".equals(dto.getAdminRole())){%>selected<%}%>>일반 관리자</option>
+		                                        <select id="adminRole" name="adminRole" class="form-control" onChange="javascript:changeView(this.value)" onKeypress="hitEnterKey(event)" tabindex="7">
+		                                            <option value="-1" <%if("-1".equals(role)){%>selected<%}%>>메뉴 권한</option>
+		                                            <option value="전체관리자" <%if("전체관리자".equals(role)){%>selected<%}%>>전체 관리자</option>
+		                                            <option value="일반관리자" <%if("일반관리자".equals(role)){%>selected<%}%>>일반 관리자</option>
 		                                        </select>
 		                                    </div>
 		                                   
 		                                </div>
 		                                <div class="form-actions text-right pal">
-		                                    <button type="button" <%if("전체관리자".equals(role)){%>onclick="checkForm();"<%}else{%>onclick="alert('<%=role%>는 권한이없습니다')"<%}%> class="btn btn-primary">수정</button>&nbsp;
-		                                    <button type="button" <%if("전체관리자".equals(role)){%>onclick="fnc_delete();"<%}else{%>onclick="alert('<%=role%>는 권한이없습니다')"<%}%> class="btn btn-primary">삭제</button>&nbsp;
-		                                    <button type="button" onclick="fnc_list();" class="btn btn-primary">목록</button>
+		                                    <button type="button" onclick="checkForm();" class="btn btn-primary" tabindex="8">수정</button>&nbsp;
+		                                    <button type="button" onclick="fnc_list();" class="btn btn-primary" tabindex="9">목록</button>
 		                                </div>
 		                                 <div>
                                                         <h5>&nbsp;&nbsp;&nbsp;전체 관리자 : 모든 메뉴 및 관리자 관리</h5>

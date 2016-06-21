@@ -35,11 +35,13 @@ public class ConstructionListCmd implements Cmd {
 			int totalcnt = dao.constructionListTotalCnt(searchKeyword, checked);
 			ArrayList<ConstructionDTO> list = dao.constructionList(searchKeyword, pageno, totalcnt, checked);
 			
-			request.setAttribute("constructionList",list);
-			request.setAttribute("totalcnt", String.valueOf(totalcnt));
+			request.setAttribute("pageno", String.valueOf(pageno));
 			request.setAttribute("checked", checked);
 			request.setAttribute("searchKeyword", searchKeyword);
-			request.setAttribute("pageno", String.valueOf(pageno));
+			
+			request.setAttribute("constructionList",list);
+			request.setAttribute("totalcnt", String.valueOf(totalcnt));
+			
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
